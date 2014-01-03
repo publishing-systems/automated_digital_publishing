@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2013-2014  Stephan Kreutzer
+
+This file is part of html2epub.
+
+html2epub is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+html2epub is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+-->
+
+
+<html2epub-config>
+  <in>
+    <inFile title="title 1">./in_1.html</inFile>
+    <inFile title="title 2">./in_2.html</inFile>
+    <xhtmlSchemaValidation>true</xhtmlSchemaValidation>
+    <!-- javax.xml.stream.isValidating: Turns on/off implementation specific DTD validation. -->
+    <xhtmlReaderDTDValidation>true</xhtmlReaderDTDValidation>
+    <!-- javax.xml.stream.isNamespaceAware: Turns on/off namespace processing for XML 1.0 support. -->
+    <xhtmlReaderNamespaceProcessing>true</xhtmlReaderNamespaceProcessing>
+    <!-- javax.xml.stream.isCoalescing: Requires the processor to coalesce adjacent character data. -->
+    <xhtmlReaderCoalesceAdjacentCharacterData>true</xhtmlReaderCoalesceAdjacentCharacterData>
+    <!-- javax.xml.stream.isReplacingEntityReferences: replace internal entity references with their replacement text and report them as characters. -->
+    <!-- Always true! -->
+    <!-- javax.xml.stream.isSupportingExternalEntities: Resolve external parsed entities. -->
+    <xhtmlReaderResolveExternalParsedEntities>true</xhtmlReaderResolveExternalParsedEntities>
+    <!-- javax.xml.stream.supportDTD: Use this property to request processors that do not support DTDs. -->
+    <xhtmlReaderUseDTDNotDTDFallback>false</xhtmlReaderUseDTDNotDTDFallback>
+  </in>
+  <out>
+    <outDirectory>./out/</outDirectory>
+    <metaData>
+      <title>Title</title>
+      <creator>Author, creator</creator>
+      <subject>Subject</subject>
+      <description>Description</description>
+      <publisher>Publisher</publisher>
+      <contributor>Contributor 1</contributor>
+      <contributor>Contributor 2</contributor>
+      <identifier>worldwide_unique_identifier</identifier>
+      <source>Source</source>
+      <language>Language (abbreviation according to RFC 3066)</language>
+      <coverage>Coverage</coverage>
+      <rights>Rights (copyright, trademarks)</rights>
+    </metaData>
+  </out>
+</html2epub-config>
