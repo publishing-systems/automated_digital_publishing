@@ -47,11 +47,11 @@ public class html2epub
     public static void main(String args[])
     {
         System.out.print("html2epub  Copyright (C) 2013-2014  Stephan Kreutzer\n" +
-                         "https://github.com/skreutzer/text_processing/html2epub/html2epub/\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details.\n\n");
+                         "License 3 or any later version for details. Also, see the\n" +
+                         "project page: https://github.com/skreutzer/text_processing/\n\n");
 
         if (args.length != 1)
         {

@@ -243,7 +243,7 @@ class XHTMLProcessor
             
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n");
-            writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/html2epub/html2epub/). -->\n");
+            writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
             writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
             writer.write("  <head profile=\"http://dublincore.org/documents/dcq-html/\">\n");
             writer.write("    <title>" + title + "</title>\n");

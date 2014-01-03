@@ -154,7 +154,7 @@ class EPUBSetup
                                             "UTF8"));
                     
                     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                    writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/html2epub/html2epub/). -->\n");
+                    writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                     writer.write("<container xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\" version=\"1.0\">\n");
                     writer.write("  <rootfiles>\n");
                     writer.write("    <rootfile full-path=\"content.opf\" media-type=\"application/oebps-package+xml\"/>\n");
@@ -195,7 +195,7 @@ class EPUBSetup
                                         "UTF8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/html2epub/html2epub/). -->\n");
+                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                 writer.write("<package xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\" xmlns=\"http://www.idpf.org/2007/opf\" version=\"2.0\" unique-identifier=\"BookId\">\n");
                 writer.write("  <metadata>\n");
                 
@@ -444,7 +444,7 @@ class EPUBSetup
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 writer.write("<!DOCTYPE ncx PUBLIC \"-//NISO//DTD ncx 2005-1//EN\" \"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd\">\n");
-                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/html2epub/html2epub/). -->\n");
+                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                 writer.write("<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\" xml:lang=\"de-DE\">\n");
                 writer.write("  <head>\n");
                 
