@@ -87,7 +87,7 @@ Missing features
 Zip processor, no support of CSS in <head>, other image file types than PNG,
 absolute paths for links and referenced images, table of contents based on
 <h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to
-which level of headings).
+which level of headings), anchor references of link URLs get lost.
 
 
 Contact
