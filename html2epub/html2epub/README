@@ -70,7 +70,7 @@ software package contains an example 'config.xml', where two input files
 are specified by <inFile>. Since every input file will reflect a "part" in
 the resulting EPUB file, the 'title' attribute specifies the name of the part
 for the table of contents. <xhtmlSchemaValidation> should be always set
-to 'true', for which to take effect www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
+to 'true', for which to take effect http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
 should be downloaded and saved in the html2epub installation directory. It
 might only be set to 'false', if the input XHTML files got already validated
 and weren't changed since. <outDirectory> specifies where html2epub will
@@ -84,10 +84,11 @@ there won't get a EPUB file generated, so it has to be created manually:
 Missing features
 ----------------
 
-Zip processor, no support of CSS in <head>, other image file types than PNG,
+No support of CSS in <head>, other image file types than PNG,
 absolute paths for links and referenced images, table of contents based on
 <h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to
-which level of headings), anchor references of link URLs get lost.
+which level of headings), anchor references of link URLs get lost, refuse to
+write invalid output.
 
 
 Contact

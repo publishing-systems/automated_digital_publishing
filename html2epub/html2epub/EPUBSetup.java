@@ -49,6 +49,7 @@ class EPUBSetup
     public EPUBSetup()
     {
         this.allReferencedImageFiles = new ArrayList<File>();
+        this.imageOutFiles = new ArrayList<File>();
     }
 
     public int run(File outDirectory,
@@ -396,6 +397,8 @@ class EPUBSetup
                         System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
                         System.exit(-34);
                     }
+                    
+                    this.imageOutFiles.add(outFile);
                 }
 
                 writer.write("  </manifest>\n");
@@ -519,6 +522,12 @@ class EPUBSetup
     {
         return this.allReferencedImageFiles;
     }
+    
+    public ArrayList<File> GetImageOutFiles()
+    {
+        return this.imageOutFiles;
+    }
 
     private ArrayList<File> allReferencedImageFiles;
+    private ArrayList<File> imageOutFiles;
 }

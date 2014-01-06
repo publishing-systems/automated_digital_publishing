@@ -97,7 +97,7 @@ public class html2epub
 
             if (schemaFile != null)
             {
-                System.out.print("html2epub: Validating XHTML files. This may take some time.\n");
+                System.out.print("html2epub: Validating XHTML files.\n");
             
                 try
                 {
@@ -117,7 +117,7 @@ public class html2epub
                     {
                         File inFile = inFileIter.next();
 
-                        System.out.print("html2epub: Validating '" + inFile.getAbsolutePath() + "'...\n");
+                        System.out.print("html2epub: Validating '" + inFile.getAbsolutePath() + "'.\n");
 
                         Document document = builder.parse(inFile);
                         validator.validate(new DOMSource(document));
@@ -180,6 +180,8 @@ public class html2epub
                       xhtmlReaderUseDTDNotDTDFallback);
 
         XHTMLProcessor xhtmlProcessor = new XHTMLProcessor();
+        ArrayList<File> xhtmlOutFiles = new ArrayList<File>();
+        ArrayList<File> imageOutFiles = new ArrayList<File>();
 
         for (int currentXHTMLFile = 1; currentXHTMLFile <= xhtmlInFiles.size(); currentXHTMLFile++)
         {
@@ -201,7 +203,20 @@ public class html2epub
                                        xhtmlReaderReplaceEntityReferences,
                                        xhtmlReaderResolveExternalParsedEntities,
                                        xhtmlReaderUseDTDNotDTDFallback);
+
+            xhtmlOutFiles.add(outFile);
         }
+        
+        System.out.print("html2epub: Packing to EPUB2.\n");
+        
+        // Note that it is actually possible to have one single XHTML file
+        // configured multiple times as input, so it can be re-used, while
+        // referenced image files will always be present only once.
+        ArrayList<File> packageFiles = new ArrayList<File>(xhtmlOutFiles);
+        packageFiles.addAll(epubSetup.GetImageOutFiles());
+        
+        ZipProcessor zipProcessor = new ZipProcessor();
+        zipProcessor.Run(packageFiles, outDirectory);
 
         System.exit(0);
     }

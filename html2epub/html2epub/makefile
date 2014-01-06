@@ -22,7 +22,7 @@ BINDIR ?= ${PREFIX}/bin
 
 
 
-html2epub: html2epub.class ConfigProcessor.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class
+html2epub: html2epub.class
 
 ConfigProcessor.class: ConfigProcessor.java
 	javac ConfigProcessor.java
@@ -36,7 +36,10 @@ EPUBSetup.class: EPUBSetup.java XHTMLProcessor.class
 ReferencedFiles.class: EPUBSetup.java
 	javac EPUBSetup.java
 
-html2epub.class: html2epub.java ConfigProcessor.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class
+ZipProcessor.class: ZipProcessor.java
+	javac ZipProcessor.java
+
+html2epub.class: html2epub.java ConfigProcessor.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
 	javac html2epub.java
 
 ${BINDIR}:
@@ -48,11 +51,13 @@ install: html2epub ${BINDIR}
 	cp XHTMLProcessor.class ${BINDIR}/html2epub
 	cp ReferencedFiles.class ${BINDIR}/html2epub
 	cp EPUBSetup.class ${BINDIR}/html2epub
+	cp ZipProcessor.class ${BINDIR}/html2epub
 	cp html2epub.class ${BINDIR}/html2epub
 
 clean:
 	rm -f html2epub.class
 	rm -f EPUBSetup.class
+	rm -f ZipProcessor.class
 	rm -f XHTMLProcessor.class
 	rm -f ConfigProcessor.class
 	rm -f ReferencedFiles.class
