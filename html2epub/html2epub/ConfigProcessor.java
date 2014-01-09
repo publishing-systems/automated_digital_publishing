@@ -98,7 +98,9 @@ class ConfigProcessor
                         
                         if (event.isCharacters() == true)
                         {
-                            File inFile = new File(event.asCharacters().getData());
+                            File inFile = new File(this.configFile.getAbsoluteFile().getParent() +
+                                                   System.getProperty("file.separator") +
+                                                   event.asCharacters().getData());
 
                             if (inFile.exists() != true)
                             {
@@ -139,7 +141,9 @@ class ConfigProcessor
                                 System.out.print("html2epub: Multiple out directories defined. Last one will win.\n");
                             }
 
-                            this.outDirectory = new File(event.asCharacters().getData());
+                            this.outDirectory = new File(this.configFile.getAbsoluteFile().getParent() +
+                                                         System.getProperty("file.separator") +
+                                                         event.asCharacters().getData());
 
                             if (outDirectory.exists() != true)
                             {
