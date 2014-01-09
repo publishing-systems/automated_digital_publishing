@@ -50,8 +50,8 @@ public class html2epub
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the\n" +
-                         "project page: https://github.com/skreutzer/text_processing/\n\n");
+                         "License 3 or any later version for details. Also, see the source\n" +
+                         "code repository: https://github.com/skreutzer/text_processing/\n\n");
 
         if (args.length != 1)
         {

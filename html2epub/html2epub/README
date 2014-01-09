@@ -3,8 +3,8 @@ Copyright (C) 2013-2014  Stephan Kreutzer
 This file is part of html2epub.
 
 html2epub is free software: you can redistribute it and/or modify
-it under the terms of the GNU Affero General Public License version 3 or any later version,
-as published by the Free Software Foundation.
+it under the terms of the GNU Affero General Public License version 3 or any
+later version, as published by the Free Software Foundation.
 
 html2epub is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -19,15 +19,13 @@ along with html2epub. If not, see <http://www.gnu.org/licenses/>.
 Description
 -----------
 
-html2epub is a tool to convert valid XHTML 1.0 Strict files to EPUB2.
-It is provided by https://github.com/skreutzer/text_processing/.
+html2epub is a tool to convert valid XHTML 1.0 Strict files to EPUB2. It is provided by https://github.com/skreutzer/text_processing/.
 
 
 Requirements
 ------------
 
-A proper Java SDK must be installed to produce the *.class files.
-The source code is at least compatible with Java 1.6 (OpenJDK).
+A proper Java SDK must be installed to produce the *.class files. The source code is at least compatible with Java 1.6 (OpenJDK).
 
 
 Installation
@@ -38,10 +36,7 @@ Type
     make
     make install
 
-in the directory containing the package's source code. By default, 'make install'
-installs the html2epub program files in '/usr/local/bin/html2epub/'. You may
-specify an installation prefix other than '/usr/local/' by giving 'make' the
-option 'PREFIX'. Example:
+in the directory containing the package's source code. By default, 'make install' installs the html2epub program files in '/usr/local/bin/html2epub/'. You may specify an installation prefix other than '/usr/local/' by giving 'make' the option 'PREFIX'. Example:
 
     make install PREFIX=~/
 
@@ -57,25 +52,17 @@ Type
 
     java html2epub config-file
 
-Either your working directory has to be 'BINDIR/html2epub/',
-or the CLASSPATH environment variable must contain it.
+Either your working directory has to be 'BINDIR/html2epub/', or the CLASSPATH environment variable must contain it.
 
 
 Usage
 -----
 
-The transformation process is driven by the XML-based configuration file,
-which needs to be passed as argument for the program call. The html2epub
-software package contains an example 'config.xml', where two input files
-are specified by <inFile>. Since every input file will reflect a "part" in
-the resulting EPUB file, the 'title' attribute specifies the name of the part
-for the table of contents. <xhtmlSchemaValidation> should be always set
-to 'true', for which to take effect http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
-should be downloaded and saved in the html2epub installation directory. It
-might only be set to 'false', if the input XHTML files got already validated
-and weren't changed since. <outDirectory> specifies where html2epub will
-place the temporary output files. Since the zip processor is still missing,
-there won't get a EPUB file generated, so it has to be created manually:
+The transformation process is driven by the XML-based configuration file, which needs to be passed as argument for the program call. The html2epub software package contains an example 'config.xml', where two input files are specified by <inFile>. Since every input file will reflect a "part" in the resulting EPUB file, the 'title' attribute specifies the name of the part for the table of contents. <xhtmlSchemaValidation> should be always set to 'true', for which to take effect
+
+    http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
+
+should be downloaded and saved in the html2epub installation directory. It might only be set to 'false', if the input XHTML files got already validated and weren't changed since. <outDirectory> specifies where html2epub will place the temporary output files. Those files can also be packed to EPUB manually by
 
     zip -X0 "out.epub" "mimetype"
     zip -Xr "out.epub" "META-INF" "content.opf" "toc.ncx" "page_1.xhtml" "page_2.xhtml" "image_1.png" "image_2.png"
@@ -84,16 +71,11 @@ there won't get a EPUB file generated, so it has to be created manually:
 Missing features
 ----------------
 
-No support of CSS in <head>, other image file types than PNG,
-absolute paths for links and referenced images, table of contents based on
-<h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to
-which level of headings), anchor references of link URLs get lost, refuse to
-write invalid output.
+No support of CSS in <head>, other image file types than PNG, absolute paths for links and referenced images, table of contents based on <h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to which level of headings), anchor references of link URLs get lost, refuse to write invalid output.
 
 
 Contact
 -------
 
-See https://github.com/skreutzer/text_processing/ or the contact form at
-the bottom of the page http://www.skreutzer.de/about.html.
+See https://github.com/skreutzer/text_processing/ or the contact form at the bottom of the page http://www.skreutzer.de/about.html.
 
