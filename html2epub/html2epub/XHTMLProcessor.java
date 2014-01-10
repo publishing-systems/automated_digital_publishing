@@ -143,7 +143,12 @@ class XHTMLProcessor
 
                         if (href != null)
                         {
-                            if (href.getValue().contains("://") == false)
+                            if (href.getValue().startsWith("#") == true)
+                            {
+                                // Referencing an anchor or ID within the same file,
+                                // just ignore.
+                            }
+                            else if (href.getValue().contains("://") == false)
                             {
                                 /**
                                  * @todo There's no OS independent mechanism in Java present to
@@ -345,14 +350,53 @@ class XHTMLProcessor
                     }
                     else if (tagName.equalsIgnoreCase("a") == true)
                     {
-                        String href = event.asStartElement().getAttributeByName(new QName("href")).getValue();
+                        Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
+                            
+                        if (attributeHref == null)
+                        {
+                            writer.write("<a");
+                            
+                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                            @SuppressWarnings("unchecked")
+                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                            
+                            while (attributes.hasNext() == true)
+                            {  
+                                Attribute attribute = attributes.next();
+                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                            }
+
+                            writer.write(">");
+                            
+                            continue;
+                        }
+                    
+                        String href = attributeHref.getValue();
 
                         if (href.startsWith("file://") == true)
                         {
                             href = href.substring(new String("file://").length());
                         }
 
-                        if (href.contains("://") == false)
+                        if (href.startsWith("#") == true)
+                        {
+                            // Referencing an anchor or ID within the same file.
+                            
+                            writer.write("<a");
+                            
+                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                            @SuppressWarnings("unchecked")
+                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                            
+                            while (attributes.hasNext() == true)
+                            {  
+                                Attribute attribute = attributes.next();
+                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                            }
+
+                            writer.write(">");
+                        }
+                        else if (href.contains("://") == false)
                         {
                             /**
                              * @todo There's no OS independent mechanism in Java present to
@@ -370,7 +414,23 @@ class XHTMLProcessor
                             
                                 if (currentXHTMLFile.getAbsolutePath().equalsIgnoreCase(hrefFile.getAbsolutePath()) == true)
                                 {
-                                    writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml\">");
+                                    writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml\"");
+                                    
+                                    // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                    @SuppressWarnings("unchecked")
+                                    Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                    
+                                    while (attributes.hasNext() == true)
+                                    {  
+                                        Attribute attribute = attributes.next();
+                                        
+                                        if (attribute.getName().getLocalPart().equalsIgnoreCase("href") != true)
+                                        {
+                                            writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                        }
+                                    }
+
+                                    writer.write(">");
 
                                     found = true;
                                     break;
