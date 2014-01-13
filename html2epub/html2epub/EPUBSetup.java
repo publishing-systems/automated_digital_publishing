@@ -339,10 +339,29 @@ class EPUBSetup
                 {
                     File inFile = this.allReferencedImageFiles.get(currentImageFile-1);
                     String fileName = inFile.getName().toLowerCase();
+                    String fileExtension = new String();
                     
-                    if (fileName.endsWith(".png") == true)
+                    {
+                        int dotPosition = fileName.lastIndexOf('.');
+                       
+                        if (dotPosition > 0)
+                        {
+                            fileExtension = fileName.substring(dotPosition).toLowerCase();
+                        }
+                        else
+                        {
+                            System.out.print("html2epub: No file extension in the name of image file '" + inFile.getAbsolutePath() + "'.\n");
+                            System.exit(-68);
+                        }
+                    }
+                    
+                    if (fileExtension.equals(".png") == true)
                     {
                         writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".png\" media-type=\"image/png\"/>\n");
+                    }
+                    else if (fileExtension.equals(".svg") == true)
+                    {
+                        writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".svg\" media-type=\"image/svg+xml\"/>\n");
                     }
                     else
                     {
@@ -351,7 +370,7 @@ class EPUBSetup
                     }
 
                     
-                    File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "image_" + currentImageFile + ".png");
+                    File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "image_" + currentImageFile + fileExtension);
 
                     try
                     {
