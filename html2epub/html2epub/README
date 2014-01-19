@@ -71,7 +71,7 @@ should be downloaded and saved in the html2epub installation directory. It might
 Missing features
 ----------------
 
-No support of CSS in <head>, other image file types than PNG, absolute paths for links and referenced images, table of contents based on <h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to which level of headings), anchor references of link URLs get lost, refuse to write invalid output.
+No support of CSS in <head>, absolute paths for links and referenced images, table of contents based on <h1>, <h2>, <h3>, <h4>, <h5> and <h6> headers (with option to choose up to which level of headings), refuse to write invalid output (check the existence of anchor target IDs).
 
 
 Contact

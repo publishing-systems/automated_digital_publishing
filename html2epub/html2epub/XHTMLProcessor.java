@@ -156,7 +156,22 @@ class XHTMLProcessor
                                  *     of handling relative file references.
                                  */
 
-                                File hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href.getValue());
+                                String hrefFilePart = href.getValue();
+                                //String hrefAnchor = new String();
+                                
+                                if (hrefFilePart.contains("?") == true)
+                                {
+                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
+                                }
+                                
+                                if (hrefFilePart.contains("#") == true)
+                                {
+                                    //hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
+                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
+                                }
+
+
+                                File hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
                                 
                                 if (referencedFiles.ContainsXHTMLFile(hrefFile.getAbsolutePath()) != true)
                                 {
@@ -404,7 +419,22 @@ class XHTMLProcessor
                              *     of handling relative file references.
                              */
 
-                            File hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                            String hrefFilePart = href;
+                            String hrefAnchor = new String();
+                            
+                            if (hrefFilePart.contains("?") == true)
+                            {
+                                hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
+                            }
+                            
+                            if (hrefFilePart.contains("#") == true)
+                            {
+                                hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
+                                hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
+                            }
+
+
+                            File hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
                             
                             boolean found = false;
                             
@@ -414,7 +444,7 @@ class XHTMLProcessor
                             
                                 if (currentXHTMLFile.getAbsolutePath().equalsIgnoreCase(hrefFile.getAbsolutePath()) == true)
                                 {
-                                    writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml\"");
+                                    writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml" + hrefAnchor + "\"");
                                     
                                     // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                     @SuppressWarnings("unchecked")
