@@ -273,10 +273,10 @@ class XHTMLProcessor
             writer.write("    <meta name=\"DC.format\" content=\"application/xhtml+xml\"/>\n");
             writer.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>\n");
             writer.write("    <meta http-equiv=\"content-style-type\" content=\"text/css\"/>\n");
-            writer.write("  </head>\n");
-            writer.write("  <body>\n");
 
-            
+
+            boolean head = false;
+            boolean style = false;
             boolean body = false;
 
             while (eventReader.hasNext() == true)
@@ -287,233 +287,294 @@ class XHTMLProcessor
                 {
                     String tagName = event.asStartElement().getName().getLocalPart();
 
+                    if (head == false &&
+                        tagName.equalsIgnoreCase("head") == true)
+                    {
+                        head = true;
+                        continue;
+                    }
+
                     if (body == false &&
                         tagName.equalsIgnoreCase("body") == true)
                     {
                         body = true;
+                        writer.write("\n<body>\n");
                         continue;
                     }
                     
-                    if (body == false)
+                    if (body == false &&
+                        head == false)
                     {
                         continue;
                     }
 
-                    if (tagName.equalsIgnoreCase("img") == true)
+                    if (head == true)
                     {
-                        String src = event.asStartElement().getAttributeByName(new QName("src")).getValue();
-
-                        if (src.startsWith("file://") == true)
+                        if (tagName.equalsIgnoreCase("style") == true)
                         {
-                            src = src.substring(new String("file://").length());
+                            style = true;
                         }
-
-                        if (src.contains("://") == false)
+                        
+                        if (style == true)
                         {
-                            /**
-                             * @todo There's no OS independent mechanism in Java present to
-                             *     check if a path is absolute. So this code is only capable
-                             *     of relative file references.
-                             */
-
-                            File srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
-
-                            boolean found = false;
+                            writer.write("<" + tagName);
                             
-                            for (int referencedImageFile = 1; referencedImageFile <= referencedImageFiles.size(); referencedImageFile++)
+                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                            @SuppressWarnings("unchecked")
+                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                            
+                            while (attributes.hasNext() == true)
+                            {  
+                                Attribute attribute = attributes.next();
+
+                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                            }
+                            
+                            writer.write(">");
+                        }
+                    }
+                    else if (body == true)
+                    {
+                        if (tagName.equalsIgnoreCase("img") == true)
+                        {
+                            String src = event.asStartElement().getAttributeByName(new QName("src")).getValue();
+
+                            if (src.startsWith("file://") == true)
                             {
-                                File currentImageFile = referencedImageFiles.get(referencedImageFile-1);
-                            
-                                if (currentImageFile.getAbsolutePath().equalsIgnoreCase(srcFile.getAbsolutePath()) == true)
-                                {
-                                    String extension = currentImageFile.getName().toLowerCase().substring(currentImageFile.getName().toLowerCase().lastIndexOf('.'));
+                                src = src.substring(new String("file://").length());
+                            }
+
+                            if (src.contains("://") == false)
+                            {
+                                /**
+                                 * @todo There's no OS independent mechanism in Java present to
+                                 *     check if a path is absolute. So this code is only capable
+                                 *     of relative file references.
+                                 */
+
+                                File srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+
+                                boolean found = false;
                                 
-                                    writer.write("<img src=\"image_" + referencedImageFile + extension + "\"");
-                                    
-                                    // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                                    @SuppressWarnings("unchecked")
-                                    Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                    
-                                    while (attributes.hasNext() == true)
-                                    {  
-                                        Attribute attribute = attributes.next();
-                                        
-                                        if (attribute.getName().getLocalPart().equalsIgnoreCase("src") != true)
-                                        {
-                                            writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
-                                        }
-                                    }
-                                    
-                                    writer.write(">");
-
-                                    found = true;
-                                    break;
-                                }
-                            }
-                            
-                            if (found == false)
-                            {
-                                System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
-                                System.exit(-58);
-                            }
-                        }
-                        else
-                        {
-                            System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
-                            System.exit(-59);
-                        }
-                    }
-                    else if (tagName.equalsIgnoreCase("a") == true)
-                    {
-                        Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
-                            
-                        if (attributeHref == null)
-                        {
-                            writer.write("<a");
-                            
-                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                            @SuppressWarnings("unchecked")
-                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                            
-                            while (attributes.hasNext() == true)
-                            {  
-                                Attribute attribute = attributes.next();
-                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
-                            }
-
-                            writer.write(">");
-                            
-                            continue;
-                        }
-                    
-                        String href = attributeHref.getValue();
-
-                        if (href.startsWith("file://") == true)
-                        {
-                            href = href.substring(new String("file://").length());
-                        }
-
-                        if (href.startsWith("#") == true)
-                        {
-                            // Referencing an anchor or ID within the same file.
-                            
-                            writer.write("<a");
-                            
-                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                            @SuppressWarnings("unchecked")
-                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                            
-                            while (attributes.hasNext() == true)
-                            {  
-                                Attribute attribute = attributes.next();
-                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
-                            }
-
-                            writer.write(">");
-                        }
-                        else if (href.contains("://") == false)
-                        {
-                            /**
-                             * @todo There's no OS independent mechanism in Java present to
-                             *     check if a path is absolute. So this code is only capable
-                             *     of handling relative file references.
-                             */
-
-                            String hrefFilePart = href;
-                            String hrefAnchor = new String();
-                            
-                            if (hrefFilePart.contains("?") == true)
-                            {
-                                hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
-                            }
-                            
-                            if (hrefFilePart.contains("#") == true)
-                            {
-                                hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
-                                hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
-                            }
-
-
-                            File hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
-                            
-                            boolean found = false;
-                            
-                            for (int referencedXHTMLFile = 1; referencedXHTMLFile <= xhtmlInFiles.size(); referencedXHTMLFile++)
-                            {
-                                File currentXHTMLFile = xhtmlInFiles.get(referencedXHTMLFile-1);
-                            
-                                if (currentXHTMLFile.getAbsolutePath().equalsIgnoreCase(hrefFile.getAbsolutePath()) == true)
+                                for (int referencedImageFile = 1; referencedImageFile <= referencedImageFiles.size(); referencedImageFile++)
                                 {
-                                    writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml" + hrefAnchor + "\"");
+                                    File currentImageFile = referencedImageFiles.get(referencedImageFile-1);
+                                
+                                    if (currentImageFile.getAbsolutePath().equalsIgnoreCase(srcFile.getAbsolutePath()) == true)
+                                    {
+                                        String extension = currentImageFile.getName().toLowerCase().substring(currentImageFile.getName().toLowerCase().lastIndexOf('.'));
                                     
-                                    // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                                    @SuppressWarnings("unchecked")
-                                    Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                    
-                                    while (attributes.hasNext() == true)
-                                    {  
-                                        Attribute attribute = attributes.next();
+                                        writer.write("<img src=\"image_" + referencedImageFile + extension + "\"");
                                         
-                                        if (attribute.getName().getLocalPart().equalsIgnoreCase("href") != true)
-                                        {
-                                            writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                        @SuppressWarnings("unchecked")
+                                        Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                        
+                                        while (attributes.hasNext() == true)
+                                        {  
+                                            Attribute attribute = attributes.next();
+                                            
+                                            if (attribute.getName().getLocalPart().equalsIgnoreCase("src") != true)
+                                            {
+                                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                            }
                                         }
+                                        
+                                        writer.write(">");
+
+                                        found = true;
+                                        break;
                                     }
-
-                                    writer.write(">");
-
-                                    found = true;
-                                    break;
+                                }
+                                
+                                if (found == false)
+                                {
+                                    System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                    System.exit(-58);
                                 }
                             }
-                            
-                            if (found == false)
+                            else
                             {
-                                System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files.\n");
-                                System.exit(-60);
+                                System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                System.exit(-59);
+                            }
+                        }
+                        else if (tagName.equalsIgnoreCase("a") == true)
+                        {
+                            Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
+                                
+                            if (attributeHref == null)
+                            {
+                                writer.write("<a");
+                                
+                                // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                @SuppressWarnings("unchecked")
+                                Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                
+                                while (attributes.hasNext() == true)
+                                {  
+                                    Attribute attribute = attributes.next();
+                                    writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                }
+
+                                writer.write(">");
+                                
+                                continue;
+                            }
+                        
+                            String href = attributeHref.getValue();
+
+                            if (href.startsWith("file://") == true)
+                            {
+                                href = href.substring(new String("file://").length());
+                            }
+
+                            if (href.startsWith("#") == true)
+                            {
+                                // Referencing an anchor or ID within the same file.
+                                
+                                writer.write("<a");
+                                
+                                // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                @SuppressWarnings("unchecked")
+                                Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                
+                                while (attributes.hasNext() == true)
+                                {  
+                                    Attribute attribute = attributes.next();
+                                    writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                }
+
+                                writer.write(">");
+                            }
+                            else if (href.contains("://") == false)
+                            {
+                                /**
+                                 * @todo There's no OS independent mechanism in Java present to
+                                 *     check if a path is absolute. So this code is only capable
+                                 *     of handling relative file references.
+                                 */
+
+                                String hrefFilePart = href;
+                                String hrefAnchor = new String();
+                                
+                                if (hrefFilePart.contains("?") == true)
+                                {
+                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
+                                }
+                                
+                                if (hrefFilePart.contains("#") == true)
+                                {
+                                    hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
+                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
+                                }
+
+
+                                File hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                
+                                boolean found = false;
+                                
+                                for (int referencedXHTMLFile = 1; referencedXHTMLFile <= xhtmlInFiles.size(); referencedXHTMLFile++)
+                                {
+                                    File currentXHTMLFile = xhtmlInFiles.get(referencedXHTMLFile-1);
+                                
+                                    if (currentXHTMLFile.getAbsolutePath().equalsIgnoreCase(hrefFile.getAbsolutePath()) == true)
+                                    {
+                                        writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml" + hrefAnchor + "\"");
+                                        
+                                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                        @SuppressWarnings("unchecked")
+                                        Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                        
+                                        while (attributes.hasNext() == true)
+                                        {  
+                                            Attribute attribute = attributes.next();
+                                            
+                                            if (attribute.getName().getLocalPart().equalsIgnoreCase("href") != true)
+                                            {
+                                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                            }
+                                        }
+
+                                        writer.write(">");
+
+                                        found = true;
+                                        break;
+                                    }
+                                }
+                                
+                                if (found == false)
+                                {
+                                    System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files.\n");
+                                    System.exit(-60);
+                                }
+                            }
+                            else
+                            {
+                                writer.write("<a href=\"" + href + "\">");
                             }
                         }
                         else
                         {
-                            writer.write("<a href=\"" + href + "\">");
-                        }
-                    }
-                    else
-                    {
-                        writer.write("<" + tagName);
-                        
-                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                        @SuppressWarnings("unchecked")
-                        Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                        
-                        while (attributes.hasNext() == true)
-                        {  
-                            Attribute attribute = attributes.next();
+                            writer.write("<" + tagName);
+                            
+                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                            @SuppressWarnings("unchecked")
+                            Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                            
+                            while (attributes.hasNext() == true)
+                            {  
+                                Attribute attribute = attributes.next();
 
-                            writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                            }
+                            
+                            writer.write(">");
                         }
-                        
-                        writer.write(">");
                     }
                 }
                 else if (event.isEndElement() == true)
                 {
-                    String tagName = event.asEndElement().getName().getLocalPart();
+                    if (head == true)
+                    {
+                        String tagName = event.asEndElement().getName().getLocalPart();
 
-                    if (tagName.equalsIgnoreCase("body") == true)
-                    {
-                        body = false;
-                        continue;
+                        if (tagName.equalsIgnoreCase("head") == true)
+                        {
+                            head = false;
+                            writer.write("\n</head>\n");
+                            continue;
+                        }
+                        
+                        if (tagName.equalsIgnoreCase("style") == true)
+                        {
+                            style = false;
+                            writer.write("</" + tagName + ">");
+                        }
                     }
-                    
-                    if (body == true)
+                    else if (body == true)
                     {
+                        String tagName = event.asEndElement().getName().getLocalPart();
+
+                        if (tagName.equalsIgnoreCase("body") == true)
+                        {
+                            body = false;
+                            continue;
+                        }
+                        
                         writer.write("</" + tagName + ">");
                     }
                 }
                 else if (event.isCharacters() == true)
                 {
-                    if (body == true)
+                    if (head == true)
+                    {
+                        if (style == true)
+                        {
+                            event.writeAsEncodedUnicode(writer);
+                        }
+                    }
+                    else if (body == true)
                     {
                         event.writeAsEncodedUnicode(writer);
                     }
