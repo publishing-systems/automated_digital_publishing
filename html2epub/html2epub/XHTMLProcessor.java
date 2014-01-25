@@ -79,6 +79,9 @@ class XHTMLProcessor
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
 
             XMLEvent event = null;
+            
+            boolean head = false;
+            boolean body = false;
 
 
             while (eventReader.hasNext() == true)
@@ -89,120 +92,255 @@ class XHTMLProcessor
                 {
                     String tagName = event.asStartElement().getName().getLocalPart();
 
-                    if (tagName.equalsIgnoreCase("img") == true)
+                    if (head == false &&
+                        tagName.equalsIgnoreCase("head") == true)
                     {
-                        String src = event.asStartElement().getAttributeByName(new QName("src")).getValue();
+                        head = true;
+                        continue;
+                    }
 
-                        if (src.startsWith("file://") == true)
-                        {
-                            src = src.substring(new String("file://").length());
-                        }
+                    if (body == false &&
+                        tagName.equalsIgnoreCase("body") == true)
+                    {
+                        body = true;
+                        continue;
+                    }
+                    
+                    if (body == false &&
+                        head == false)
+                    {
+                        continue;
+                    }
 
-                        if (src.contains("://") == false)
-                        {
-                            /**
-                             * @todo There's no OS independent mechanism in Java present to
-                             *     check if a path is absolute. So this code is only capable
-                             *     of relative file references.
-                             */
+                    if (head == true)
+                    {
+                        if (tagName.equalsIgnoreCase("link") == true)
+                        { 
+                            String rel = null;
+                            String type = null;
+                            String href = null;
 
-                            File srcFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
-
-                            if (referencedFiles.ContainsImageFile(srcFile.getAbsolutePath()) != true)
                             {
-                                if (srcFile.exists() != true)
+                                Attribute attributeRel = event.asStartElement().getAttributeByName(new QName("rel"));
+                                
+                                if (attributeRel != null)
                                 {
-                                    System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
-                                    System.exit(-49);
+                                    rel = attributeRel.getValue();
                                 }
-
-                                if (srcFile.isFile() != true)
-                                {
-                                    System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
-                                    System.exit(-50);
-                                }
-
-                                if (srcFile.canRead() != true)
-                                {
-                                    System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
-                                    System.exit(-51);
-                                }
-
-                                referencedFiles.AddImageFile(srcFile);
                             }
-                        }
-                        else
-                        {
-                            System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
-                            System.exit(-52);
+
+                            {
+                                Attribute attributeType = event.asStartElement().getAttributeByName(new QName("type"));
+                                
+                                if (attributeType != null)
+                                {
+                                    type = attributeType.getValue();
+                                }
+                            }
+                            
+                            {
+                                Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
+                                
+                                if (attributeHref != null)
+                                {
+                                    href = attributeHref.getValue();
+                                }
+                            }
+                            
+                            if (rel != null &&
+                                type != null &&
+                                href != null)
+                            {
+                                if (rel.equalsIgnoreCase("stylesheet") == true &&
+                                    type.equalsIgnoreCase("text/css") == true)
+                                {
+                                    if (href.startsWith("file://") == true)
+                                    {
+                                        href = href.substring(new String("file://").length());
+                                    }
+
+                                    if (href.contains("://") == false)
+                                    {
+                                        /**
+                                         * @todo There's no OS independent mechanism in Java present to
+                                         *     check if a path is absolute. So this code is only capable
+                                         *     of relative file references.
+                                         */
+
+                                        File cssFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+
+                                        if (referencedFiles.ContainsCSSFile(cssFile.getAbsolutePath()) != true)
+                                        {
+                                            if (cssFile.exists() != true)
+                                            {
+                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                                System.exit(-69);
+                                            }
+
+                                            if (cssFile.isFile() != true)
+                                            {
+                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                                System.exit(-70);
+                                            }
+
+                                            if (cssFile.canRead() != true)
+                                            {
+                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                                System.exit(-71);
+                                            }
+
+                                            referencedFiles.AddCSSFile(cssFile);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.print("html2epub: As for the CSS file '" + href + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                        System.exit(-72);
+                                    } 
+                                }
+                            }
                         }
                     }
-                    else if (tagName.equalsIgnoreCase("a") == true)
+                    else if (body == true)
                     {
-                        Attribute href = event.asStartElement().getAttributeByName(new QName("href"));
-
-                        if (href != null)
+                        if (tagName.equalsIgnoreCase("img") == true)
                         {
-                            if (href.getValue().startsWith("#") == true)
+                            String src = event.asStartElement().getAttributeByName(new QName("src")).getValue();
+
+                            if (src.startsWith("file://") == true)
                             {
-                                // Referencing an anchor or ID within the same file,
-                                // just ignore.
+                                src = src.substring(new String("file://").length());
                             }
-                            else if (href.getValue().contains("://") == false)
+
+                            if (src.contains("://") == false)
                             {
                                 /**
                                  * @todo There's no OS independent mechanism in Java present to
                                  *     check if a path is absolute. So this code is only capable
-                                 *     of handling relative file references.
+                                 *     of relative file references.
                                  */
 
-                                String hrefFilePart = href.getValue();
-                                //String hrefAnchor = new String();
-                                
-                                if (hrefFilePart.contains("?") == true)
-                                {
-                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
-                                }
-                                
-                                if (hrefFilePart.contains("#") == true)
-                                {
-                                    //hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
-                                    hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
-                                }
+                                File srcFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
 
-
-                                File hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
-                                
-                                if (referencedFiles.ContainsXHTMLFile(hrefFile.getAbsolutePath()) != true)
+                                if (referencedFiles.ContainsImageFile(srcFile.getAbsolutePath()) != true)
                                 {
-                                    if (hrefFile.exists() != true)
+                                    if (srcFile.exists() != true)
                                     {
-                                        System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
-                                        System.exit(-53);
+                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                        System.exit(-49);
                                     }
 
-                                    if (hrefFile.isFile() != true)
+                                    if (srcFile.isFile() != true)
                                     {
-                                        System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
-                                        System.exit(-54);
+                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                        System.exit(-50);
                                     }
 
-                                    if (hrefFile.canRead() != true)
+                                    if (srcFile.canRead() != true)
                                     {
-                                        System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
-                                        System.exit(-55);
+                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                        System.exit(-51);
                                     }
 
-                                    referencedFiles.AddXHTMLFile(hrefFile);
+                                    referencedFiles.AddImageFile(srcFile);
                                 }
                             }
                             else
                             {
-                                if (href.getValue().startsWith("file://") == true)
+                                System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                System.exit(-52);
+                            }
+                        }
+                        else if (tagName.equalsIgnoreCase("a") == true)
+                        {
+                            Attribute href = event.asStartElement().getAttributeByName(new QName("href"));
+
+                            if (href != null)
+                            {
+                                if (href.getValue().startsWith("#") == true)
                                 {
-                                
+                                    // Referencing an anchor or ID within the same file,
+                                    // just ignore.
+                                }
+                                else if (href.getValue().contains("://") == false)
+                                {
+                                    /**
+                                     * @todo There's no OS independent mechanism in Java present to
+                                     *     check if a path is absolute. So this code is only capable
+                                     *     of handling relative file references.
+                                     */
+
+                                    String hrefFilePart = href.getValue();
+                                    //String hrefAnchor = new String();
+                                    
+                                    if (hrefFilePart.contains("?") == true)
+                                    {
+                                        hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
+                                    }
+                                    
+                                    if (hrefFilePart.contains("#") == true)
+                                    {
+                                        //hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
+                                        hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("#"));
+                                    }
+
+
+                                    File hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                    
+                                    if (referencedFiles.ContainsXHTMLFile(hrefFile.getAbsolutePath()) != true)
+                                    {
+                                        if (hrefFile.exists() != true)
+                                        {
+                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                            System.exit(-53);
+                                        }
+
+                                        if (hrefFile.isFile() != true)
+                                        {
+                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                            System.exit(-54);
+                                        }
+
+                                        if (hrefFile.canRead() != true)
+                                        {
+                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                            System.exit(-55);
+                                        }
+
+                                        referencedFiles.AddXHTMLFile(hrefFile);
+                                    }
+                                }
+                                else
+                                {
+                                    if (href.getValue().startsWith("file://") == true)
+                                    {
+                                    
+                                    }
                                 }
                             }
+                        }
+                    }
+                }
+                else if (event.isEndElement() == true)
+                {
+                    if (head == true)
+                    {
+                        String tagName = event.asEndElement().getName().getLocalPart();
+
+                        if (tagName.equalsIgnoreCase("head") == true)
+                        {
+                            head = false;
+                            continue;
+                        }
+                    }
+                    else if (body == true)
+                    {
+                        String tagName = event.asEndElement().getName().getLocalPart();
+
+                        if (tagName.equalsIgnoreCase("body") == true)
+                        {
+                            body = false;
+                            continue;
                         }
                     }
                 }
@@ -227,6 +365,7 @@ class XHTMLProcessor
                                String title,
                                ArrayList<File> xhtmlInFiles,
                                ArrayList<File> referencedImageFiles,
+                               ArrayList<File> referencedCSSFiles,
                                boolean xhtmlReaderDTDValidation,
                                boolean xhtmlReaderNamespaceProcessing,
                                boolean xhtmlReaderCoalesceAdjacentCharacterData,
@@ -313,10 +452,7 @@ class XHTMLProcessor
                         if (tagName.equalsIgnoreCase("style") == true)
                         {
                             style = true;
-                        }
-                        
-                        if (style == true)
-                        {
+
                             writer.write("<" + tagName);
                             
                             // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
@@ -331,6 +467,90 @@ class XHTMLProcessor
                             }
                             
                             writer.write(">");
+                        }
+                        else if (tagName.equalsIgnoreCase("link") == true)
+                        {
+                            String rel = null;
+                            String type = null;
+                            String href = null;
+
+                            {
+                                Attribute attributeRel = event.asStartElement().getAttributeByName(new QName("rel"));
+                                
+                                if (attributeRel != null)
+                                {
+                                    rel = attributeRel.getValue();
+                                }
+                            }
+
+                            {
+                                Attribute attributeType = event.asStartElement().getAttributeByName(new QName("type"));
+                                
+                                if (attributeType != null)
+                                {
+                                    type = attributeType.getValue();
+                                }
+                            }
+                            
+                            {
+                                Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
+                                
+                                if (attributeHref != null)
+                                {
+                                    href = attributeHref.getValue();
+                                }
+                            }
+                            
+                            if (rel != null &&
+                                type != null &&
+                                href != null)
+                            {
+                                if (rel.equalsIgnoreCase("stylesheet") == true &&
+                                    type.equalsIgnoreCase("text/css") == true)
+                                {
+                                    if (href.startsWith("file://") == true)
+                                    {
+                                        href = href.substring(new String("file://").length());
+                                    }
+
+                                    if (href.contains("://") == false)
+                                    {
+                                        /**
+                                         * @todo There's no OS independent mechanism in Java present to
+                                         *     check if a path is absolute. So this code is only capable
+                                         *     of relative file references.
+                                         */
+
+                                        File cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+
+                                        boolean found = false;
+                                        
+                                        for (int referencedCSSFile = 1; referencedCSSFile <= referencedCSSFiles.size(); referencedCSSFile++)
+                                        {
+                                            File currentCSSFile = referencedCSSFiles.get(referencedCSSFile-1);
+                                        
+                                            if (currentCSSFile.getAbsolutePath().equalsIgnoreCase(cssFile.getAbsolutePath()) == true)
+                                            {
+                                                writer.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"style_" + referencedCSSFile + ".css\"/>");
+                                                
+                                                found = true;
+                                                break;
+                                            }
+                                        }
+                                        
+                                        if (found == false)
+                                        {
+                                            System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                            System.exit(-78);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.print("html2epub: As for the CSS file '" + href + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                        System.exit(-79);
+                                    }
+                                }
+                            }
                         }
                     }
                     else if (body == true)
@@ -614,6 +834,7 @@ class ReferencedFiles
     {
         this.xhtmlFiles = new ArrayList<File>();
         this.imageFiles = new ArrayList<File>();
+        this.cssFiles = new ArrayList<File>();
     }
     
     public boolean AddXHTMLFile(File xhtmlFile)
@@ -626,6 +847,11 @@ class ReferencedFiles
         return this.imageFiles.add(imageFile);
     }
     
+    public boolean AddCSSFile(File cssFile)
+    {
+        return this.cssFiles.add(cssFile);
+    }
+    
     public ArrayList<File> GetXHTMLFiles()
     {
         return this.xhtmlFiles;
@@ -634,6 +860,11 @@ class ReferencedFiles
     public ArrayList<File> GetImageFiles()
     {
         return this.imageFiles;
+    }
+    
+    public ArrayList<File> GetCSSFiles()
+    {
+        return this.cssFiles;
     }
     
     public boolean ContainsXHTMLFile(String absolutePath)
@@ -661,7 +892,21 @@ class ReferencedFiles
         
         return false;
     }
+    
+    public boolean ContainsCSSFile(String absolutePath)
+    {
+        for (int i = 0; i < this.cssFiles.size(); i++)
+        {
+            if (this.cssFiles.get(i).getAbsolutePath().equalsIgnoreCase(absolutePath) == true)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     private ArrayList<File> xhtmlFiles;
     private ArrayList<File> imageFiles;
+    private ArrayList<File> cssFiles;
 }

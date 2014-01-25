@@ -49,7 +49,9 @@ class EPUBSetup
     public EPUBSetup()
     {
         this.allReferencedImageFiles = new ArrayList<File>();
+        this.allReferencedCSSFiles = new ArrayList<File>();
         this.imageOutFiles = new ArrayList<File>();
+        this.cssOutFiles = new ArrayList<File>();
     }
 
     public int run(File outDirectory,
@@ -64,6 +66,7 @@ class EPUBSetup
                    boolean xhtmlReaderUseDTDNotDTDFallback)
     {
         this.allReferencedImageFiles.clear();
+        this.allReferencedCSSFiles.clear();
     
         String identifier = "ebook";
         
@@ -289,6 +292,7 @@ class EPUBSetup
 
                     ArrayList<File> referencedXHTMLFiles = referencedFiles.GetXHTMLFiles();
                     ArrayList<File> referencedImageFiles = referencedFiles.GetImageFiles();
+                    ArrayList<File> referencedCSSFiles = referencedFiles.GetCSSFiles();
 
                     ListIterator<File> iter = referencedXHTMLFiles.listIterator();
                             
@@ -331,6 +335,27 @@ class EPUBSetup
                         if (alreadyKnown != true)
                         {
                             this.allReferencedImageFiles.add(referencedImageFile);
+                        }
+                    }
+                    
+                    iter = referencedCSSFiles.listIterator();
+
+                    while (iter.hasNext())
+                    {
+                        File referencedCSSFile = iter.next();
+                        boolean alreadyKnown = false;
+
+                        for (int currentAllReferencedCSSFile = 0; currentAllReferencedCSSFile < this.allReferencedCSSFiles.size(); currentAllReferencedCSSFile++)
+                        {
+                            if (this.allReferencedCSSFiles.get(currentAllReferencedCSSFile).getAbsolutePath().equalsIgnoreCase(referencedCSSFile.getAbsolutePath()) == true)
+                            {
+                                alreadyKnown = true;
+                            }
+                        }
+                        
+                        if (alreadyKnown != true)
+                        {
+                            this.allReferencedCSSFiles.add(referencedCSSFile);
                         }
                     }
                 }
@@ -418,6 +443,62 @@ class EPUBSetup
                     }
                     
                     this.imageOutFiles.add(outFile);
+                }
+
+                for (int currentCSSFile = 1; currentCSSFile <= this.allReferencedCSSFiles.size(); currentCSSFile++)
+                {
+                    File inFile = this.allReferencedCSSFiles.get(currentCSSFile-1);
+
+                    writer.write("    <item id=\"id_style_" + currentCSSFile + "\" href=\"style_" + currentCSSFile + ".css\" media-type=\"text/css\"/>\n");
+
+                    File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "style_" + currentCSSFile + ".css");
+
+                    try
+                    {
+                        InputStream inStream = new FileInputStream(inFile);
+                        OutputStream outStream = new FileOutputStream(outFile);
+
+                        byte[] buffer = new byte[1024];
+                        int length = 0;
+
+                        while ((length = inStream.read(buffer)) > 0)
+                        {
+                            outStream.write(buffer, 0, length);
+                        }
+
+                        inStream.close();
+                        outStream.close();
+                    }
+                    catch(FileNotFoundException ex)
+                    {
+                        ex.printStackTrace();
+                        System.exit(-73);
+                    }
+                    catch(IOException ex)
+                    {
+                        ex.printStackTrace();
+                        System.exit(-74);
+                    }
+                    
+                    if (outFile.exists() != true)
+                    {
+                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' wasn't copied.\n");
+                        System.exit(-75);
+                    }
+
+                    if (outFile.isFile() != true)
+                    {
+                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't a file.\n");
+                        System.exit(-76);
+                    }
+
+                    if (outFile.canRead() != true)
+                    {
+                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
+                        System.exit(-77);
+                    }
+                    
+                    this.cssOutFiles.add(outFile);
                 }
 
                 writer.write("  </manifest>\n");
@@ -542,11 +623,23 @@ class EPUBSetup
         return this.allReferencedImageFiles;
     }
     
+    public ArrayList<File> GetReferencedCSSFiles()
+    {
+        return this.allReferencedCSSFiles;
+    }
+    
     public ArrayList<File> GetImageOutFiles()
     {
         return this.imageOutFiles;
     }
+    
+    public ArrayList<File> GetCSSOutFiles()
+    {
+        return this.cssOutFiles;
+    }
 
     private ArrayList<File> allReferencedImageFiles;
+    private ArrayList<File> allReferencedCSSFiles;
     private ArrayList<File> imageOutFiles;
+    private ArrayList<File> cssOutFiles;
 }

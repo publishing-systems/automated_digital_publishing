@@ -197,6 +197,7 @@ public class html2epub
                                        title,
                                        xhtmlInFiles,
                                        epubSetup.GetReferencedImageFiles(),
+                                       epubSetup.GetReferencedCSSFiles(),
                                        xhtmlReaderDTDValidation,
                                        xhtmlReaderNamespaceProcessing,
                                        xhtmlReaderCoalesceAdjacentCharacterData,
@@ -214,6 +215,7 @@ public class html2epub
         // referenced image files will always be present only once.
         ArrayList<File> packageFiles = new ArrayList<File>(xhtmlOutFiles);
         packageFiles.addAll(epubSetup.GetImageOutFiles());
+        packageFiles.addAll(epubSetup.GetCSSOutFiles());
         
         ZipProcessor zipProcessor = new ZipProcessor();
         zipProcessor.Run(packageFiles, outDirectory);
