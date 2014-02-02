@@ -1,21 +1,21 @@
 /* Copyright (C) 2013-2014  Stephan Kreutzer
  *
- * This file is part of html2epub.
+ * This file is part of html2epub1.
  *
- * html2epub is free software: you can redistribute it and/or modify
+ * html2epub1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html2epub is distributed in the hope that it will be useful,
+ * html2epub1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+ * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html2epub.java
+ * @file $/html2epub1.java
  * @brief The main module that delegates to the specific processors.
  * @author Stephan Kreutzer
  * @since 2013-12-10
@@ -29,11 +29,11 @@ import java.util.ListIterator;
 
 
 
-public class html2epub
+public class html2epub1
 {
     public static void main(String args[])
     {
-        System.out.print("html2epub  Copyright (C) 2013-2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1  Copyright (C) 2013-2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -43,13 +43,13 @@ public class html2epub
         if (args.length != 1)
         {
             System.out.print("Usage:\n" +
-                             "\thtml2epub config-file\n\n");
+                             "\thtml2epub1 config-file\n\n");
 
             System.exit(1);
         }
 
 
-        System.out.print("html2epub: Reading configuration.\n");
+        System.out.print("html2epub1: Reading configuration.\n");
 
         ConfigProcessor configuration = new ConfigProcessor(args[0]);
         configuration.run();
@@ -65,7 +65,7 @@ public class html2epub
             {
                 File inFile = inFileIter.next();
 
-                System.out.print("html2epub: Validating '" + inFile.getAbsolutePath() + "'.\n");
+                System.out.print("html2epub1: Validating '" + inFile.getAbsolutePath() + "'.\n");
 
                 XHTMLValidator xhtmlValidator = new XHTMLValidator();
                 xhtmlValidator.validate(inFile);
@@ -92,7 +92,7 @@ public class html2epub
             xhtmlReaderUseDTDNotDTDFallback = false;
         }
 
-        System.out.print("html2epub: Setting up EPUB2.\n");
+        System.out.print("html2epub1: Setting up EPUB2.\n");
         
         EPUBSetup epubSetup = new EPUBSetup();
         epubSetup.run(outDirectory,
@@ -117,7 +117,7 @@ public class html2epub
             
             String title = xhtmlInFileTitles.get(currentXHTMLFile-1);
 
-            System.out.print("html2epub: Processing '" + inFile.getAbsolutePath() + "'.\n");
+            System.out.print("html2epub1: Processing '" + inFile.getAbsolutePath() + "'.\n");
             
             xhtmlProcessor.processFile(inFile,
                                        outFile,
@@ -135,7 +135,7 @@ public class html2epub
             xhtmlOutFiles.add(outFile);
         }
         
-        System.out.print("html2epub: Packing to EPUB2.\n");
+        System.out.print("html2epub1: Packing to EPUB2.\n");
         
         // Note that it is actually possible to have one single XHTML file
         // configured multiple times as input, so it can be re-used, while

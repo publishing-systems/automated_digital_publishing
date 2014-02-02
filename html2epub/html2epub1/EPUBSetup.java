@@ -1,18 +1,18 @@
 /* Copyright (C) 2013-2014  Stephan Kreutzer
  *
- * This file is part of html2epub.
+ * This file is part of html2epub1.
  *
- * html2epub is free software: you can redistribute it and/or modify
+ * html2epub1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html2epub is distributed in the hope that it will be useful,
+ * html2epub1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+ * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/EPUBSetup.java
@@ -114,13 +114,13 @@ class EPUBSetup
 
             if (mimetypeFile.exists() != true)
             {
-                System.out.print("html2epub: '" + mimetypeFile.getAbsolutePath() + "' wasn't created.\n");
+                System.out.print("html2epub1: '" + mimetypeFile.getAbsolutePath() + "' wasn't created.\n");
                 System.exit(-44);
             }
 
             if (mimetypeFile.isFile() != true)
             {
-                System.out.print("html2epub: '" + mimetypeFile.getAbsolutePath() + "' was created, but isn't a file.\n");
+                System.out.print("html2epub1: '" + mimetypeFile.getAbsolutePath() + "' was created, but isn't a file.\n");
                 System.exit(-45);
             }
         }
@@ -131,19 +131,19 @@ class EPUBSetup
 
             if (metaInfDirectory.exists() != true)
             {
-                System.out.print("html2epub: '" + metaInfDirectory.getAbsolutePath() + "' wasn't created.\n");
+                System.out.print("html2epub1: '" + metaInfDirectory.getAbsolutePath() + "' wasn't created.\n");
                 System.exit(-46);
             }
 
             if (metaInfDirectory.isDirectory() != true)
             {
-                System.out.print("html2epub: '" + metaInfDirectory.getAbsolutePath() + "' was created, but isn't a directory.\n");
+                System.out.print("html2epub1: '" + metaInfDirectory.getAbsolutePath() + "' was created, but isn't a directory.\n");
                 System.exit(-47);
             }
             
             if (metaInfDirectory.canWrite() != true)
             {
-                System.out.print("html2epub: '" + metaInfDirectory.getAbsolutePath() + "' was created, but isn't writable.\n");
+                System.out.print("html2epub1: '" + metaInfDirectory.getAbsolutePath() + "' was created, but isn't writable.\n");
                 System.exit(-48);
             }
 
@@ -158,7 +158,7 @@ class EPUBSetup
                                             "UTF8"));
                     
                     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                    writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
+                    writer.write("<!-- This file was created by html2epub1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                     writer.write("<container xmlns=\"urn:oasis:names:tc:opendocument:xmlns:container\" version=\"1.0\">\n");
                     writer.write("  <rootfiles>\n");
                     writer.write("    <rootfile full-path=\"content.opf\" media-type=\"application/oebps-package+xml\"/>\n");
@@ -176,13 +176,13 @@ class EPUBSetup
 
                 if (containerFile.exists() != true)
                 {
-                    System.out.print("html2epub: '" + containerFile.getAbsolutePath() + "' wasn't created.\n");
+                    System.out.print("html2epub1: '" + containerFile.getAbsolutePath() + "' wasn't created.\n");
                     System.exit(-26);
                 }
 
                 if (containerFile.isFile() != true)
                 {
-                    System.out.print("html2epub: '" + containerFile.getAbsolutePath() + "' was created, but isn't a file.\n");
+                    System.out.print("html2epub1: '" + containerFile.getAbsolutePath() + "' was created, but isn't a file.\n");
                     System.exit(-27);
                 }
             }
@@ -199,7 +199,7 @@ class EPUBSetup
                                         "UTF8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
+                writer.write("<!-- This file was created by html2epub1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                 writer.write("<package xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:opf=\"http://www.idpf.org/2007/opf\" xmlns=\"http://www.idpf.org/2007/opf\" version=\"2.0\" unique-identifier=\"BookId\">\n");
                 writer.write("  <metadata>\n");
                 
@@ -312,7 +312,7 @@ class EPUBSetup
                         
                         if (found != true)
                         {
-                            System.out.print("html2epub: '" + referencedXHTMLFile.getAbsolutePath() + "' referenced in '" + inFile.getAbsolutePath() + "', but not configured as input file.\n");
+                            System.out.print("html2epub1: '" + referencedXHTMLFile.getAbsolutePath() + "' referenced in '" + inFile.getAbsolutePath() + "', but not configured as input file.\n");
                             System.exit(-28);
                         }
                     }
@@ -375,7 +375,7 @@ class EPUBSetup
                         }
                         else
                         {
-                            System.out.print("html2epub: No file extension in the name of image file '" + inFile.getAbsolutePath() + "'.\n");
+                            System.out.print("html2epub1: No file extension in the name of image file '" + inFile.getAbsolutePath() + "'.\n");
                             System.exit(-68);
                         }
                     }
@@ -390,7 +390,7 @@ class EPUBSetup
                     }
                     else
                     {
-                        System.out.print("html2epub: Unsupported file type for image '" + inFile.getAbsolutePath() + "'.\n");
+                        System.out.print("html2epub1: Unsupported file type for image '" + inFile.getAbsolutePath() + "'.\n");
                         System.exit(-29);
                     }
 
@@ -426,19 +426,19 @@ class EPUBSetup
                     
                     if (outFile.exists() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' wasn't copied.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' wasn't copied.\n");
                         System.exit(-32);
                     }
 
                     if (outFile.isFile() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't a file.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' was copied, but isn't a file.\n");
                         System.exit(-33);
                     }
 
                     if (outFile.canRead() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
                         System.exit(-34);
                     }
                     
@@ -482,19 +482,19 @@ class EPUBSetup
                     
                     if (outFile.exists() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' wasn't copied.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' wasn't copied.\n");
                         System.exit(-75);
                     }
 
                     if (outFile.isFile() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't a file.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' was copied, but isn't a file.\n");
                         System.exit(-76);
                     }
 
                     if (outFile.canRead() != true)
                     {
-                        System.out.print("html2epub: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
+                        System.out.print("html2epub1: '" + outFile.getAbsolutePath() + "' was copied, but isn't readable.\n");
                         System.exit(-77);
                     }
                     
@@ -523,13 +523,13 @@ class EPUBSetup
 
             if (opfFile.exists() != true)
             {
-                System.out.print("html2epub: '" + opfFile.getAbsolutePath() + "' wasn't created.\n");
+                System.out.print("html2epub1: '" + opfFile.getAbsolutePath() + "' wasn't created.\n");
                 System.exit(-36);
             }
 
             if (opfFile.isFile() != true)
             {
-                System.out.print("html2epub: '" + opfFile.getAbsolutePath() + "' was created, but isn't a file.\n");
+                System.out.print("html2epub1: '" + opfFile.getAbsolutePath() + "' was created, but isn't a file.\n");
                 System.exit(-37);
             }
         }
@@ -547,7 +547,7 @@ class EPUBSetup
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 writer.write("<!DOCTYPE ncx PUBLIC \"-//NISO//DTD ncx 2005-1//EN\" \"http://www.daisy.org/z3986/2005/ncx-2005-1.dtd\">\n");
-                writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
+                writer.write("<!-- This file was created by html2epub1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
                 writer.write("<ncx xmlns=\"http://www.daisy.org/z3986/2005/ncx/\" version=\"2005-1\" xml:lang=\"de-DE\">\n");
                 writer.write("  <head>\n");
                 
@@ -557,7 +557,7 @@ class EPUBSetup
                 }
                 else
                 {
-                    System.out.print("html2epub: Title is missing in the metadata.\n");
+                    System.out.print("html2epub1: Title is missing in the metadata.\n");
                     System.exit(-38);
                 }
                 
@@ -572,7 +572,7 @@ class EPUBSetup
                 }
                 else
                 {
-                    System.out.print("html2epub: Title is missing in the metadata.\n");
+                    System.out.print("html2epub1: Title is missing in the metadata.\n");
                     System.exit(-39);
                 }
                 
@@ -604,13 +604,13 @@ class EPUBSetup
 
             if (ncxFile.exists() != true)
             {
-                System.out.print("html2epub: '" + ncxFile.getAbsolutePath() + "' wasn't created.\n");
+                System.out.print("html2epub1: '" + ncxFile.getAbsolutePath() + "' wasn't created.\n");
                 System.exit(-41);
             }
 
             if (ncxFile.isFile() != true)
             {
-                System.out.print("html2epub: '" + ncxFile.getAbsolutePath() + "' was created, but isn't a file.\n");
+                System.out.print("html2epub1: '" + ncxFile.getAbsolutePath() + "' was created, but isn't a file.\n");
                 System.exit(-42);
             }
         }

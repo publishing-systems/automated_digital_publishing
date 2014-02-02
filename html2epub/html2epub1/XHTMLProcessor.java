@@ -1,18 +1,18 @@
 /* Copyright (C) 2013-2014  Stephan Kreutzer
  *
- * This file is part of html2epub.
+ * This file is part of html2epub1.
  *
- * html2epub is free software: you can redistribute it and/or modify
+ * html2epub1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html2epub is distributed in the hope that it will be useful,
+ * html2epub1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+ * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/XHTMLProcessor.java
@@ -173,19 +173,19 @@ class XHTMLProcessor
                                         {
                                             if (cssFile.exists() != true)
                                             {
-                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                                System.out.print("html2epub1: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
                                                 System.exit(-69);
                                             }
 
                                             if (cssFile.isFile() != true)
                                             {
-                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                                System.out.print("html2epub1: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
                                                 System.exit(-70);
                                             }
 
                                             if (cssFile.canRead() != true)
                                             {
-                                                System.out.print("html2epub: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                                System.out.print("html2epub1: '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
                                                 System.exit(-71);
                                             }
 
@@ -194,7 +194,7 @@ class XHTMLProcessor
                                     }
                                     else
                                     {
-                                        System.out.print("html2epub: As for the CSS file '" + href + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                        System.out.print("html2epub1: As for the CSS file '" + href + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
                                         System.exit(-72);
                                     } 
                                 }
@@ -226,19 +226,19 @@ class XHTMLProcessor
                                 {
                                     if (srcFile.exists() != true)
                                     {
-                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                        System.out.print("html2epub1: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
                                         System.exit(-49);
                                     }
 
                                     if (srcFile.isFile() != true)
                                     {
-                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                        System.out.print("html2epub1: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
                                         System.exit(-50);
                                     }
 
                                     if (srcFile.canRead() != true)
                                     {
-                                        System.out.print("html2epub: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                        System.out.print("html2epub1: '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
                                         System.exit(-51);
                                     }
 
@@ -247,7 +247,7 @@ class XHTMLProcessor
                             }
                             else
                             {
-                                System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                System.out.print("html2epub1: As for the image '" + src + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
                                 System.exit(-52);
                             }
                         }
@@ -291,19 +291,19 @@ class XHTMLProcessor
                                     {
                                         if (hrefFile.exists() != true)
                                         {
-                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
+                                            System.out.print("html2epub1: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', doesn't exist.\n");
                                             System.exit(-53);
                                         }
 
                                         if (hrefFile.isFile() != true)
                                         {
-                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
+                                            System.out.print("html2epub1: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't a file.\n");
                                             System.exit(-54);
                                         }
 
                                         if (hrefFile.canRead() != true)
                                         {
-                                            System.out.print("html2epub: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
+                                            System.out.print("html2epub1: '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlFile.getAbsolutePath() + "', isn't readable.\n");
                                             System.exit(-55);
                                         }
 
@@ -402,12 +402,12 @@ class XHTMLProcessor
             
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\" \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n");
-            writer.write("<!-- This file was created by html2epub, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
+            writer.write("<!-- This file was created by html2epub1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/text_processing/). -->\n");
             writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
             writer.write("  <head profile=\"http://dublincore.org/documents/dcq-html/\">\n");
             writer.write("    <title>" + title + "</title>\n");
             writer.write("    <link rel=\"schema.DC\" href=\"http://purl.org/dc/elements/1.1/\"/>\n");
-            writer.write("    <meta name=\"DC.generator\" content=\"html2epub\"/>\n");
+            writer.write("    <meta name=\"DC.generator\" content=\"html2epub1\"/>\n");
             writer.write("    <meta name=\"DC.type\" content=\"Text\"/>\n");
             writer.write("    <meta name=\"DC.format\" content=\"application/xhtml+xml\"/>\n");
             writer.write("    <meta http-equiv=\"content-type\" content=\"text/html; charset=UTF-8\"/>\n");
@@ -540,13 +540,13 @@ class XHTMLProcessor
                                         
                                         if (found == false)
                                         {
-                                            System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                            System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
                                             System.exit(-78);
                                         }
                                     }
                                     else
                                     {
-                                        System.out.print("html2epub: As for the CSS file '" + href + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                        System.out.print("html2epub1: As for the CSS file '" + href + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
                                         System.exit(-79);
                                     }
                                 }
@@ -609,13 +609,13 @@ class XHTMLProcessor
                                 
                                 if (found == false)
                                 {
-                                    System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
                                     System.exit(-58);
                                 }
                             }
                             else
                             {
-                                System.out.print("html2epub: As for the image '" + src + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
+                                System.out.print("html2epub1: As for the image '" + src + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "', remote resources are not allowed in an EPUB2 file.\n");
                                 System.exit(-59);
                             }
                         }
@@ -725,7 +725,7 @@ class XHTMLProcessor
                                 
                                 if (found == false)
                                 {
-                                    System.out.print("html2epub: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files.\n");
+                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files.\n");
                                     System.exit(-60);
                                 }
                             }

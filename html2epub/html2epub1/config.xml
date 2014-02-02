@@ -2,23 +2,23 @@
 <!--
 Copyright (C) 2013-2014  Stephan Kreutzer
 
-This file is part of html2epub.
+This file is part of html2epub1.
 
-html2epub is free software: you can redistribute it and/or modify
+html2epub1 is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License version 3 or any later version,
 as published by the Free Software Foundation.
 
-html2epub is distributed in the hope that it will be useful,
+html2epub1 is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License 3 for more details.
 
 You should have received a copy of the GNU Affero General Public License 3
-along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
 -->
 
 
-<html2epub-config>
+<html2epub1-config>
   <in>
     <inFile title="title 1">./in_1.html</inFile>
     <inFile title="title 2">./in_2.html</inFile>
@@ -53,4 +53,4 @@ along with html2epub. If not, see <http://www.gnu.org/licenses/>.
       <rights>Rights (copyright, trademarks)</rights>
     </metaData>
   </out>
-</html2epub-config>
+</html2epub1-config>

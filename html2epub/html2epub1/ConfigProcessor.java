@@ -1,18 +1,18 @@
 /* Copyright (C) 2013-2014  Stephan Kreutzer
  *
- * This file is part of html2epub.
+ * This file is part of html2epub1.
  *
- * html2epub is free software: you can redistribute it and/or modify
+ * html2epub1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html2epub is distributed in the hope that it will be useful,
+ * html2epub1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html2epub. If not, see <http://www.gnu.org/licenses/>.
+ * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/ConfigProcessor.java
@@ -60,19 +60,19 @@ class ConfigProcessor
     {
         if (this.configFile.exists() != true)
         {
-            System.out.print("html2epub: '" + this.configFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("html2epub1: '" + this.configFile.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-4);
         }
 
         if (this.configFile.isFile() != true)
         {
-            System.out.print("html2epub: '" + this.configFile.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("html2epub1: '" + this.configFile.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-5);
         }
 
         if (this.configFile.canRead() != true)
         {
-            System.out.print("html2epub: '" + this.configFile.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("html2epub1: '" + this.configFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-6);
         }
 
@@ -104,25 +104,25 @@ class ConfigProcessor
 
                             if (inFile.exists() != true)
                             {
-                                System.out.print("html2epub: '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
+                                System.out.print("html2epub1: '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
                                 System.exit(-7);
                             }
 
                             if (inFile.isFile() != true)
                             {
-                                System.out.print("html2epub: '" + inFile.getAbsolutePath() + "' isn't a file.\n");
+                                System.out.print("html2epub1: '" + inFile.getAbsolutePath() + "' isn't a file.\n");
                                 System.exit(-8);
                             }
 
                             if (inFile.canRead() != true)
                             {
-                                System.out.print("html2epub: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
+                                System.out.print("html2epub1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
                                 System.exit(-9);
                             }
                             
                             if (title == null)
                             {
-                                System.out.print("html2epub: Missing title for '" + inFile.getAbsolutePath() + "' in configuration.\n");
+                                System.out.print("html2epub1: Missing title for '" + inFile.getAbsolutePath() + "' in configuration.\n");
                                 System.exit(-10);
                             }
 
@@ -138,7 +138,7 @@ class ConfigProcessor
                         {
                             if (this.outDirectory != null)
                             {
-                                System.out.print("html2epub: Multiple out directories defined. Last one will win.\n");
+                                System.out.print("html2epub1: Multiple out directories defined. Last one will win.\n");
                             }
 
                             this.outDirectory = new File(this.configFile.getAbsoluteFile().getParent() +
@@ -147,19 +147,19 @@ class ConfigProcessor
 
                             if (outDirectory.exists() != true)
                             {
-                                System.out.print("html2epub: '" + outDirectory.getAbsolutePath() + "' doesn't exist.\n");
+                                System.out.print("html2epub1: '" + outDirectory.getAbsolutePath() + "' doesn't exist.\n");
                                 System.exit(-11);
                             }
 
                             if (outDirectory.isDirectory() != true)
                             {
-                                System.out.print("html2epub: '" + outDirectory.getAbsolutePath() + "' isn't a directory.\n");
+                                System.out.print("html2epub1: '" + outDirectory.getAbsolutePath() + "' isn't a directory.\n");
                                 System.exit(-12);
                             }
 
                             if (outDirectory.canWrite() != true)
                             {
-                                System.out.print("html2epub: '" + outDirectory.getAbsolutePath() + "' isn't writable.\n");
+                                System.out.print("html2epub1: '" + outDirectory.getAbsolutePath() + "' isn't writable.\n");
                                 System.exit(-13);
                             }
                         }
@@ -319,19 +319,19 @@ class ConfigProcessor
 
         if (this.inFiles.size() <= 0)
         {
-            System.out.print("html2epub: No input files configured.\n");
+            System.out.print("html2epub1: No input files configured.\n");
             System.exit(-16);
         }
 
         if (this.outDirectory == null)
         {
-            System.out.print("html2epub: No output directory configured.\n");
+            System.out.print("html2epub1: No output directory configured.\n");
             System.exit(-17);
         }
         
         if (this.metaData.containsKey("title") == false)
         {
-            System.out.print("html2epub: Title is missing in the metadata.\n");
+            System.out.print("html2epub1: Title is missing in the metadata.\n");
             System.exit(-18);
         }
         
