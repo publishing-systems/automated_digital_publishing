@@ -25,20 +25,7 @@
 
 import java.util.ArrayList;
 import java.io.File;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.validation.SchemaFactory;
-import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
-import javax.xml.transform.stream.StreamSource;
-import javax.xml.validation.Schema;
-import javax.xml.validation.Validator;
 import java.util.ListIterator;
-import org.w3c.dom.Document;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import java.io.IOException;
 
 
 
@@ -72,76 +59,16 @@ public class html2epub
 
         if (configuration.GetXHTMLSchemaValidation() == true)
         {
-            File schemaFile = new File("xhtml1-strict.xsd");
-
-            if (schemaFile.exists() != true)
-            {
-                schemaFile = null;
-            }
-
-            if (schemaFile != null)
-            {
-                if (schemaFile.isFile() != true)
-                {
-                    schemaFile = null;
-                }
-            }
-
-            if (schemaFile != null)
-            {
-                if (schemaFile.canRead() != true)
-                {
-                    schemaFile = null;
-                }
-            }
-
-            if (schemaFile != null)
-            {
-                System.out.print("html2epub: Validating XHTML files.\n");
+            ListIterator<File> inFileIter = xhtmlInFiles.listIterator();
             
-                try
-                {
-                    DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-                    documentFactory.setNamespaceAware(true);
-                    DocumentBuilder builder = documentFactory.newDocumentBuilder();
-
-                    SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-                    Source schemaSource = new StreamSource(schemaFile);
-                    Schema schema = schemaFactory.newSchema(schemaSource);
-                    Validator validator = schema.newValidator();
-                    
-
-                    ListIterator<File> inFileIter = xhtmlInFiles.listIterator();
-                    
-                    while (inFileIter.hasNext())
-                    {
-                        File inFile = inFileIter.next();
-
-                        System.out.print("html2epub: Validating '" + inFile.getAbsolutePath() + "'.\n");
-
-                        Document document = builder.parse(inFile);
-                        validator.validate(new DOMSource(document));
-                    }
-                }
-                catch (ParserConfigurationException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-1);
-                }
-                catch (SAXException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-2);
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-3);
-                }
-            }
-            else
+            while (inFileIter.hasNext())
             {
-                System.out.print("html2epub: Can't validate XHTML files - schema 'xhtml1-strict.xsd' is missing.\n");
+                File inFile = inFileIter.next();
+
+                System.out.print("html2epub: Validating '" + inFile.getAbsolutePath() + "'.\n");
+
+                XHTMLValidator xhtmlValidator = new XHTMLValidator();
+                xhtmlValidator.validate(inFile);
             }
         }
 

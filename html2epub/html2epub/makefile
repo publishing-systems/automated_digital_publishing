@@ -26,6 +26,9 @@ html2epub: html2epub.class
 
 ConfigProcessor.class: ConfigProcessor.java
 	javac ConfigProcessor.java
+	
+XHTMLValidator.class: XHTMLValidator.java
+	javac XHTMLValidator.java
 
 XHTMLProcessor.class: XHTMLProcessor.java
 	javac XHTMLProcessor.java
@@ -39,7 +42,7 @@ ReferencedFiles.class: EPUBSetup.java
 ZipProcessor.class: ZipProcessor.java
 	javac ZipProcessor.java
 
-html2epub.class: html2epub.java ConfigProcessor.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
+html2epub.class: html2epub.java ConfigProcessor.class XHTMLValidator.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
 	javac html2epub.java
 
 ${BINDIR}:
@@ -48,6 +51,7 @@ ${BINDIR}:
 install: html2epub ${BINDIR}
 	mkdir -p ${BINDIR}/html2epub
 	cp ConfigProcessor.class ${BINDIR}/html2epub
+	cp XHTMLValidator.class ${BINDIR}/html2epub
 	cp XHTMLProcessor.class ${BINDIR}/html2epub
 	cp ReferencedFiles.class ${BINDIR}/html2epub
 	cp EPUBSetup.class ${BINDIR}/html2epub
@@ -59,5 +63,6 @@ clean:
 	rm -f EPUBSetup.class
 	rm -f ZipProcessor.class
 	rm -f XHTMLProcessor.class
+	rm -f XHTMLValidator.class
 	rm -f ConfigProcessor.class
 	rm -f ReferencedFiles.class
