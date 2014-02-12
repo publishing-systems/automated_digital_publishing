@@ -27,17 +27,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.XMLConstants;
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
-import org.w3c.dom.Document;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 
@@ -142,22 +137,13 @@ class XHTMLValidator
             {
                 try
                 {
-                    DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
-                    documentFactory.setNamespaceAware(true);
-                    DocumentBuilder builder = documentFactory.newDocumentBuilder();
-
                     SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                     Source schemaSource = new StreamSource(schemaFile);
                     Schema schema = schemaFactory.newSchema(schemaSource);
+                    Source fileSource = new StreamSource(xhtmlFile);
                     Validator validator = schema.newValidator();
 
-                    Document document = builder.parse(xhtmlFile);
-                    validator.validate(new DOMSource(document));
-                }
-                catch (ParserConfigurationException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-1);
+                    validator.validate(fileSource);
                 }
                 catch (SAXException ex)
                 {
