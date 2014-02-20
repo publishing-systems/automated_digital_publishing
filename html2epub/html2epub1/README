@@ -19,7 +19,7 @@ along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
 Description
 -----------
 
-html2epub1 is a tool to convert valid XHTML 1.0 Strict files to EPUB2. It is provided by https://github.com/skreutzer/text_processing/.
+html2epub1 is a tool to convert valid XHTML 1.0 Strict files to EPUB2. It is provided by https://github.com/skreutzer/automated_digital_publishing/.
 
 
 Requirements
@@ -77,5 +77,5 @@ Missing features
 Contact
 -------
 
-See https://github.com/skreutzer/text_processing/ or the contact form at the bottom of the page http://www.skreutzer.de/about.html.
+See https://github.com/skreutzer/automated_digital_publishing/ or the contact form at the bottom of the page http://www.skreutzer.de/about.html.
 
