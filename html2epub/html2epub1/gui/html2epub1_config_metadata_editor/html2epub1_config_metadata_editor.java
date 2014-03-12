@@ -65,17 +65,18 @@ public class html2epub1_config_metadata_editor
 {
     public static void main(String[] args)
     {
+        System.out.print("html2epub1  Copyright (C) 2014  Stephan Kreutzer\n" +
+                         "This program comes with ABSOLUTELY NO WARRANTY.\n" +
+                         "This is free software, and you are welcome to redistribute it\n" +
+                         "under certain conditions. See the GNU Affero General Public\n" +
+                         "License 3 or any later version for details. Also, see the source\n" +
+                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+
+
         File configFile = null;
     
         if (args.length == 1)
         {
-            System.out.print("html2epub  Copyright (C) 2014  Stephan Kreutzer\n" +
-                             "This program comes with ABSOLUTELY NO WARRANTY.\n" +
-                             "This is free software, and you are welcome to redistribute it\n" +
-                             "under certain conditions. See the GNU Affero General Public\n" +
-                             "License 3 or any later version for details. Also, see the source\n" +
-                             "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
-        
             configFile = new File(args[0]);
             
             if (configFile.exists() != true)
