@@ -543,7 +543,7 @@ public class html2epub1_config_metadata_editor
             metaDataNode.appendChild(nodeSubject);
             
             Node nodeDescription = document.createElement("description");
-            Text nodeDescriptionText = document.createTextNode(this.textFieldCreator.getText());
+            Text nodeDescriptionText = document.createTextNode(this.textFieldDescription.getText());
             nodeDescription.appendChild(nodeDescriptionText);
             metaDataNode.appendChild(nodeDescription);
             
