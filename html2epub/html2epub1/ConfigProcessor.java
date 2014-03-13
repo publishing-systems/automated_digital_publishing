@@ -187,6 +187,15 @@ class ConfigProcessor
                                     }
                                 }
                             }
+                            else if (event.isEndElement() == true)
+                            {
+                                tagName = event.asEndElement().getName().getLocalPart();
+                                
+                                if (tagName.equalsIgnoreCase("metaData") == true)
+                                {
+                                    break;
+                                }
+                            }
                         }
                     }
                     else if (tagName.equalsIgnoreCase("xhtmlSchemaValidation") == true)

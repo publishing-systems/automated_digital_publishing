@@ -95,7 +95,7 @@ public class html2epub1_config_file_setup
         }
         else
         {
-            final JFileChooser chooser = new JFileChooser("Select html2epub2 configuration file");
+            final JFileChooser chooser = new JFileChooser("Select html2epub1 configuration file");
             chooser.setDialogType(JFileChooser.OPEN_DIALOG);
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
@@ -122,7 +122,7 @@ public class html2epub1_config_file_setup
             }
             else
             {
-                System.exit(0);
+                System.exit(1);
             }
         }
 
@@ -266,7 +266,7 @@ public class html2epub1_config_file_setup
             {
                 event.getWindow().setVisible(false);
                 event.getWindow().dispose();
-                System.exit(0);
+                System.exit(2);
             }
         });
         
@@ -855,17 +855,17 @@ public class html2epub1_config_file_setup
         catch (ParserConfigurationException ex)
         {
             ex.printStackTrace();
-            System.exit(-16);
+            System.exit(-4);
         }
         catch (SAXException ex)
         {
             ex.printStackTrace();
-            System.exit(-17);
+            System.exit(-5);
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-20);
+            System.exit(-6);
         }
     
         return true;
@@ -955,27 +955,27 @@ public class html2epub1_config_file_setup
         catch (ParserConfigurationException ex)
         {
             ex.printStackTrace();
-            System.exit(-16);
+            System.exit(-7);
         }
         catch (SAXException ex)
         {
             ex.printStackTrace();
-            System.exit(-17);
+            System.exit(-8);
         }
         catch (TransformerConfigurationException ex)
         {
             ex.printStackTrace();
-            System.exit(-18);
+            System.exit(-9);
         }
         catch (TransformerException ex)
         {
             ex.printStackTrace();
-            System.exit(-19);
+            System.exit(-10);
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-20);
+            System.exit(-11);
         }
         
         return true;

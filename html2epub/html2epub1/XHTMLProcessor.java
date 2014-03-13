@@ -460,10 +460,18 @@ class XHTMLProcessor
                             Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
                             
                             while (attributes.hasNext() == true)
-                            {  
+                            {
                                 Attribute attribute = attributes.next();
+                                QName attributeName = attribute.getName();
+                                
+                                writer.write(" ");
+                                
+                                if (attributeName.getPrefix().length() > 0)
+                                {
+                                    writer.write(attributeName.getPrefix() + ":");
+                                }
 
-                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                             }
                             
                             writer.write(">");
@@ -593,10 +601,18 @@ class XHTMLProcessor
                                         while (attributes.hasNext() == true)
                                         {  
                                             Attribute attribute = attributes.next();
+                                            QName attributeName = attribute.getName();
                                             
-                                            if (attribute.getName().getLocalPart().equalsIgnoreCase("src") != true)
+                                            if (attributeName.getLocalPart().equalsIgnoreCase("src") != true)
                                             {
-                                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                                writer.write(" ");
+                                                
+                                                if (attributeName.getPrefix().length() > 0)
+                                                {
+                                                    writer.write(attributeName.getPrefix() + ":");
+                                                }
+
+                                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                                             }
                                         }
                                         
@@ -634,7 +650,16 @@ class XHTMLProcessor
                                 while (attributes.hasNext() == true)
                                 {  
                                     Attribute attribute = attributes.next();
-                                    writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                    QName attributeName = attribute.getName();
+                                    
+                                    writer.write(" ");
+                                    
+                                    if (attributeName.getPrefix().length() > 0)
+                                    {
+                                        writer.write(attributeName.getPrefix() + ":");
+                                    }
+
+                                    writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                                 }
 
                                 writer.write(">");
@@ -662,7 +687,16 @@ class XHTMLProcessor
                                 while (attributes.hasNext() == true)
                                 {  
                                     Attribute attribute = attributes.next();
-                                    writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                    QName attributeName = attribute.getName();
+                                    
+                                    writer.write(" ");
+                                    
+                                    if (attributeName.getPrefix().length() > 0)
+                                    {
+                                        writer.write(attributeName.getPrefix() + ":");
+                                    }
+
+                                    writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                                 }
 
                                 writer.write(">");
@@ -709,10 +743,18 @@ class XHTMLProcessor
                                         while (attributes.hasNext() == true)
                                         {  
                                             Attribute attribute = attributes.next();
+                                            QName attributeName = attribute.getName();
                                             
-                                            if (attribute.getName().getLocalPart().equalsIgnoreCase("href") != true)
+                                            if (attributeName.getLocalPart().equalsIgnoreCase("href") != true)
                                             {
-                                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                                writer.write(" ");
+                                                
+                                                if (attributeName.getPrefix().length() > 0)
+                                                {
+                                                    writer.write(attributeName.getPrefix() + ":");
+                                                }
+
+                                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                                             }
                                         }
 
@@ -745,8 +787,16 @@ class XHTMLProcessor
                             while (attributes.hasNext() == true)
                             {  
                                 Attribute attribute = attributes.next();
+                                QName attributeName = attribute.getName();
+                                
+                                writer.write(" ");
+                                
+                                if (attributeName.getPrefix().length() > 0)
+                                {
+                                    writer.write(attributeName.getPrefix() + ":");
+                                }
 
-                                writer.write(" " + attribute.getName() + "=\"" + attribute.getValue() + "\"");
+                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
                             }
                             
                             writer.write(">");

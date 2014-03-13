@@ -99,7 +99,7 @@ public class html2epub1_config_metadata_editor
         }
         else
         {
-            final JFileChooser chooser = new JFileChooser("Select html2epub2 configuration file");
+            final JFileChooser chooser = new JFileChooser("Select html2epub1 configuration file");
             chooser.setDialogType(JFileChooser.OPEN_DIALOG);
             chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
 
