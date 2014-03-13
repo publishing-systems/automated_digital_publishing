@@ -65,7 +65,7 @@ public class html2epub1_config_metadata_editor
 {
     public static void main(String[] args)
     {
-        System.out.print("html2epub1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1_config_metadata_editor  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -142,6 +142,8 @@ public class html2epub1_config_metadata_editor
     public html2epub1_config_metadata_editor(File configFile)
     {
         super("Metadata Editor for a Configuration File of html2epub1");
+        
+        this.programPath = html2epub1_config_metadata_editor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         
         this.configFile = configFile;
         this.metaData = new HashMap<String, String>();
@@ -270,12 +272,12 @@ public class html2epub1_config_metadata_editor
         
         if (fileValid == true)
         {
-            ImageIcon iconCorrect = new ImageIcon("correct.png");
+            ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
 	          this.labelFile.setIcon(iconCorrect);
         }
         else
         {
-            ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+            ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
 	          this.labelFile.setIcon(iconIncorrect);
         }
         
@@ -400,8 +402,8 @@ public class html2epub1_config_metadata_editor
     {
         boolean valid = true;
     
-        ImageIcon iconCorrect = new ImageIcon("correct.png");
-        ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+        ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
+        ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
         
         if (this.textFieldTitle.getText().length() > 0)
         {
@@ -513,7 +515,7 @@ public class html2epub1_config_metadata_editor
 	          
 	          if (metaDataNodeList.getLength() <= 0)
 	          {
-	              ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+	              ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
 	              this.labelFile.setIcon(iconIncorrect);
 	              return false;
 	          }
@@ -609,7 +611,7 @@ public class html2epub1_config_metadata_editor
             StreamResult streamResult =  new StreamResult(this.configFile);
             transformer.transform(source, streamResult);
             
-            ImageIcon iconCorrect = new ImageIcon("correct.png");
+            ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
 	          this.labelFile.setIcon(iconCorrect);
         }
         catch (ParserConfigurationException ex)
@@ -680,4 +682,6 @@ public class html2epub1_config_metadata_editor
         
     private JLabel labelRights;
     private JTextField textFieldRights;
+    
+    protected String programPath;
 }

@@ -23,47 +23,24 @@
 
 
 
-import javax.swing.*;
-import java.awt.event.*;
 import java.io.File;
-import java.util.ArrayList;
+import javax.swing.*;
 import java.beans.PropertyChangeListener;
-import java.beans.PropertyChangeEvent; 
+import java.beans.PropertyChangeEvent;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
-import java.util.Iterator;
-import java.util.Collections;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.DocumentBuilder;
-import org.w3c.dom.Document;
-import org.w3c.dom.NodeList;
-import org.w3c.dom.Node;
-import org.w3c.dom.NamedNodeMap;
-import javax.xml.parsers.ParserConfigurationException;
-import org.xml.sax.SAXException;
-import java.io.IOException;
-import org.w3c.dom.Element;
-import org.w3c.dom.Text;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
-import javax.xml.transform.TransformerConfigurationException;
-import javax.xml.transform.TransformerException;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
+import java.io.IOException;
 
 
 
 public class html2epub1_config_create_new
-  //extends JFrame
-  //implements ActionListener
 {
     public static void main(String[] args)
     {
-        System.out.print("html2epub1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1_config_create_new  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -196,6 +173,8 @@ public class html2epub1_config_create_new
             System.exit(-4);
         }
         
+        System.out.println("html2epub1_config_create_new: '" + configFile.getAbsolutePath() + "' created.");
+
         System.exit(0);
     }
 }

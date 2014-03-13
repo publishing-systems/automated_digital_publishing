@@ -61,7 +61,7 @@ public class html2epub1_config_file_setup
 {
     public static void main(String[] args)
     {
-        System.out.print("html2epub1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1_config_file_setup  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -135,6 +135,8 @@ public class html2epub1_config_file_setup
     public html2epub1_config_file_setup(File configFile)
     {
         super("File Setup for a Configuration File of html2epub1");
+        
+        this.programPath = html2epub1_config_file_setup.class.getProtectionDomain().getCodeSource().getLocation().getFile();
         
         this.configFile = configFile;
         
@@ -222,12 +224,12 @@ public class html2epub1_config_file_setup
         
         if (readConfigurationFile() == true)
         {
-            ImageIcon iconCorrect = new ImageIcon("correct.png");
+            ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
             this.labelConfigurationFile.setIcon(iconCorrect);
         }
         else
         {
-            ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+            ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
             this.labelConfigurationFile.setIcon(iconIncorrect);
         }
         
@@ -285,9 +287,9 @@ public class html2epub1_config_file_setup
         this.panelMain.setLayout(gridbag);
            
         { 
-            ImageIcon iconUp = new ImageIcon("up.png");
-            ImageIcon iconDown = new ImageIcon("down.png");
-            ImageIcon iconRemove = new ImageIcon("remove.png");
+            ImageIcon iconUp = new ImageIcon(this.programPath + "up.png");
+            ImageIcon iconDown = new ImageIcon(this.programPath + "down.png");
+            ImageIcon iconRemove = new ImageIcon(this.programPath + "remove.png");
         
             GridBagConstraints gridbagConstraints = new GridBagConstraints();
         
@@ -479,12 +481,12 @@ public class html2epub1_config_file_setup
                 {
                     if (writeConfigurationFile() == true)
                     {
-                        ImageIcon iconCorrect = new ImageIcon("correct.png");
+                        ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
                         this.labelConfigurationFile.setIcon(iconCorrect);
                     }
                     else
                     {
-                        ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+                        ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
                         this.labelConfigurationFile.setIcon(iconIncorrect);
                     }
                 }
@@ -607,8 +609,8 @@ public class html2epub1_config_file_setup
     {
         boolean valid = true;
     
-        ImageIcon iconCorrect = new ImageIcon("correct.png");
-        ImageIcon iconIncorrect = new ImageIcon("incorrect.png");
+        ImageIcon iconCorrect = new ImageIcon(this.programPath + "correct.png");
+        ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
 
         boolean outDirectoryValid = true;
         String outDirectoryText = this.textFieldOutDirectory.getText();
@@ -1000,4 +1002,6 @@ public class html2epub1_config_file_setup
     private ArrayList<JButton> buttonUpList;
     private ArrayList<JButton> buttonDownList;
     private ArrayList<JButton> buttonRemoveList;
+    
+    private String programPath;
 }
