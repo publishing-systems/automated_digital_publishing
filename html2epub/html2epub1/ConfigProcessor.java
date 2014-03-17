@@ -98,9 +98,14 @@ class ConfigProcessor
                         
                         if (event.isCharacters() == true)
                         {
-                            File inFile = new File(this.configFile.getAbsoluteFile().getParent() +
-                                                   System.getProperty("file.separator") +
-                                                   event.asCharacters().getData());
+                            File inFile = new File(event.asCharacters().getData());
+                            
+                            if (inFile.isAbsolute() != true)
+                            {
+                                inFile = new File(this.configFile.getAbsoluteFile().getParent() +
+                                                  System.getProperty("file.separator") +
+                                                  event.asCharacters().getData());
+                            }
 
                             if (inFile.exists() != true)
                             {
@@ -141,9 +146,14 @@ class ConfigProcessor
                                 System.out.print("html2epub1: Multiple out directories defined. Last one will win.\n");
                             }
 
-                            this.outDirectory = new File(this.configFile.getAbsoluteFile().getParent() +
-                                                         System.getProperty("file.separator") +
-                                                         event.asCharacters().getData());
+                            this.outDirectory = new File(event.asCharacters().getData());
+                            
+                            if (this.outDirectory.isAbsolute() != true)
+                            {
+                                this.outDirectory = new File(this.configFile.getAbsoluteFile().getParent() +
+                                                             System.getProperty("file.separator") +
+                                                             event.asCharacters().getData());
+                            }
 
                             if (outDirectory.exists() != true)
                             {

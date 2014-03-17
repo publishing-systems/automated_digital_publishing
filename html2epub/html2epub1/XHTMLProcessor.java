@@ -161,13 +161,12 @@ class XHTMLProcessor
 
                                     if (href.contains("://") == false)
                                     {
-                                        /**
-                                         * @todo There's no OS independent mechanism in Java present to
-                                         *     check if a path is absolute. So this code is only capable
-                                         *     of relative file references.
-                                         */
-
-                                        File cssFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                                        File cssFile = new File(href);
+                                        
+                                        if (cssFile.isAbsolute() != true)
+                                        {
+                                            cssFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                                        }
 
                                         if (referencedFiles.ContainsCSSFile(cssFile.getAbsolutePath()) != true)
                                         {
@@ -214,13 +213,12 @@ class XHTMLProcessor
 
                             if (src.contains("://") == false)
                             {
-                                /**
-                                 * @todo There's no OS independent mechanism in Java present to
-                                 *     check if a path is absolute. So this code is only capable
-                                 *     of relative file references.
-                                 */
-
-                                File srcFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+                                File srcFile = new File(src);
+                                
+                                if (srcFile.isAbsolute() != true)
+                                {
+                                    srcFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+                                }
 
                                 if (referencedFiles.ContainsImageFile(srcFile.getAbsolutePath()) != true)
                                 {
@@ -264,12 +262,6 @@ class XHTMLProcessor
                                 }
                                 else if (href.getValue().contains("://") == false)
                                 {
-                                    /**
-                                     * @todo There's no OS independent mechanism in Java present to
-                                     *     check if a path is absolute. So this code is only capable
-                                     *     of handling relative file references.
-                                     */
-
                                     String hrefFilePart = href.getValue();
                                     //String hrefAnchor = new String();
                                     
@@ -285,7 +277,12 @@ class XHTMLProcessor
                                     }
 
 
-                                    File hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                    File hrefFile = new File(hrefFilePart);
+                                    
+                                    if (hrefFile.isAbsolute() != true)
+                                    {
+                                        hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                    }
                                     
                                     if (referencedFiles.ContainsXHTMLFile(hrefFile.getAbsolutePath()) != true)
                                     {
@@ -523,13 +520,12 @@ class XHTMLProcessor
 
                                     if (href.contains("://") == false)
                                     {
-                                        /**
-                                         * @todo There's no OS independent mechanism in Java present to
-                                         *     check if a path is absolute. So this code is only capable
-                                         *     of relative file references.
-                                         */
-
-                                        File cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                                        File cssFile = new File(href);
+                                        
+                                        if (cssFile.isAbsolute() != true)
+                                        {
+                                            cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                                        }
 
                                         boolean found = false;
                                         
@@ -574,13 +570,12 @@ class XHTMLProcessor
 
                             if (src.contains("://") == false)
                             {
-                                /**
-                                 * @todo There's no OS independent mechanism in Java present to
-                                 *     check if a path is absolute. So this code is only capable
-                                 *     of relative file references.
-                                 */
-
-                                File srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+                                File srcFile = new File(src);
+                                
+                                if (srcFile.isAbsolute() != true)
+                                {
+                                    srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+                                }
 
                                 boolean found = false;
                                 
@@ -703,12 +698,6 @@ class XHTMLProcessor
                             }
                             else if (href.contains("://") == false)
                             {
-                                /**
-                                 * @todo There's no OS independent mechanism in Java present to
-                                 *     check if a path is absolute. So this code is only capable
-                                 *     of handling relative file references.
-                                 */
-
                                 String hrefFilePart = href;
                                 String hrefAnchor = new String();
                                 
@@ -724,7 +713,12 @@ class XHTMLProcessor
                                 }
 
 
-                                File hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                File hrefFile = new File(hrefFilePart);
+                                
+                                if (hrefFile.isAbsolute() != true)
+                                {
+                                    hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                }
                                 
                                 boolean found = false;
                                 
