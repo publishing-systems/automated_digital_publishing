@@ -28,21 +28,14 @@ Requirements
 A proper Java SDK must be installed to produce the *.class files. The source code is at least compatible with Java 1.6 (OpenJDK).
 
 
-Installation
-------------
+Build
+-----
 
 Type
 
     make
-    make install
 
-in the directory containing the package's source code. By default, 'make install' installs the html2epub1 program files in '/usr/local/bin/html2epub1/'. You may specify an installation prefix other than '/usr/local/' by giving 'make' the option 'PREFIX'. Example:
-
-    make install PREFIX=~/
-
-You may also set the /bin directory manually:
-
-    make install BINDIR=~/my_bin/  <-- custom /bin
+in the directory containing the package's source code.
 
 
 Execution
@@ -52,7 +45,7 @@ Type
 
     java html2epub1 config-file
 
-Either your working directory has to be 'BINDIR/html2epub1/', or the CLASSPATH environment variable must contain it.
+in the html2epub1 directory, or anywhere on the shell if the path to the html2epub1 directory is appended to the CLASSPATH environment variable.
 
 
 Usage
@@ -61,11 +54,22 @@ Usage
 The transformation process is driven by the XML-based configuration file, which needs to be passed as argument for the program call. The html2epub1 software package contains an example 'config.xml', where two input files are specified by <inFile>. Since every input file will reflect a "part" in the resulting EPUB file, the 'title' attribute specifies the name of the part for the table of contents. <xhtmlSchemaValidation> should be always set to 'true', for which to take effect
 
     http://www.w3.org/2002/08/xhtml/xhtml1-strict.xsd
+    http://www.w3.org/2001/xml.xsd
+    http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
+    http://www.w3.org/TR/xhtml1/DTD/xhtml-lat1.ent
+    http://www.w3.org/TR/xhtml1/DTD/xhtml-symbol.ent
+    http://www.w3.org/TR/xhtml1/DTD/xhtml-special.ent
 
-should be downloaded and saved in the html2epub1 installation directory. It might only be set to 'false', if the input XHTML files got already validated and weren't changed since. <outDirectory> specifies where html2epub1 will place the temporary output files. Those files can also be packed to EPUB manually by
+should be downloaded and saved in the html2epub1 directory. Some of those files lack the legal permission to be redistributable by anyone, so those files need to be obtained directly from the W3C. Please note that the W3C artificially slows down the access to those files, blocks certain IPs, blocks certain browsers/user agents from accessing those files. If you view those files with a browser, an associated stylesheet may render the files into HTML output, so you need to view the source code of the page presented by the browser in order to successfully download the original resource. See
+
+    http://www.w3.org/blog/systeam/2008/02/08/w3c_s_excessive_dtd_traffic/
+    
+for more details on this issue. <xhtmlSchemaValidation> might only be set to 'false', if the input XHTML files got already validated and weren't changed since. <outDirectory> specifies where html2epub1 will place the temporary output files. Those files can also be packed to EPUB manually by
 
     zip -X0 "out.epub" "mimetype"
     zip -Xr "out.epub" "META-INF" "content.opf" "toc.ncx" "page_1.xhtml" "page_2.xhtml" "image_1.png" "image_2.png"
+
+German speakers might look at this short demonstration video: http://vimeo.com/89003773.
 
 
 Missing features

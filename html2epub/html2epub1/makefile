@@ -16,9 +16,7 @@
 
 
 
-PREFIX ?= /usr/local
-BINDIR ?= ${PREFIX}/bin
-.PHONY: html2epub1 install clean
+.PHONY: html2epub1 clean
 
 
 
@@ -28,6 +26,12 @@ ConfigProcessor.class: ConfigProcessor.java
 	javac ConfigProcessor.java
 	
 XHTMLValidator.class: XHTMLValidator.java
+	javac XHTMLValidator.java
+
+EntityResolverLocal.class: XHTMLValidator.java
+	javac XHTMLValidator.java
+	
+LocalEntityInput.class: XHTMLValidator.java
 	javac XHTMLValidator.java
 
 XHTMLProcessor.class: XHTMLProcessor.java
@@ -42,21 +46,8 @@ ReferencedFiles.class: EPUBSetup.java
 ZipProcessor.class: ZipProcessor.java
 	javac ZipProcessor.java
 
-html2epub1.class: html2epub1.java ConfigProcessor.class XHTMLValidator.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
+html2epub1.class: html2epub1.java ConfigProcessor.class LocalEntityInput.class EntityResolverLocal.class XHTMLValidator.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
 	javac html2epub1.java
-
-${BINDIR}:
-	mkdir -p ${BINDIR}
-
-install: html2epub1 ${BINDIR}
-	mkdir -p ${BINDIR}/html2epub1
-	cp ConfigProcessor.class ${BINDIR}/html2epub1
-	cp XHTMLValidator.class ${BINDIR}/html2epub1
-	cp XHTMLProcessor.class ${BINDIR}/html2epub1
-	cp ReferencedFiles.class ${BINDIR}/html2epub1
-	cp EPUBSetup.class ${BINDIR}/html2epub1
-	cp ZipProcessor.class ${BINDIR}/html2epub1
-	cp html2epub1.class ${BINDIR}/html2epub1
 
 clean:
 	rm -f html2epub1.class
@@ -64,5 +55,7 @@ clean:
 	rm -f ZipProcessor.class
 	rm -f XHTMLProcessor.class
 	rm -f XHTMLValidator.class
+	rm -f EntityResolverLocal.class
+	rm -f LocalEntityInput.class
 	rm -f ConfigProcessor.class
 	rm -f ReferencedFiles.class
