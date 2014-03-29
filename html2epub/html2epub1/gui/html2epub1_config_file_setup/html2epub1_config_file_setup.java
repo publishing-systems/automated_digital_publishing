@@ -15,7 +15,7 @@
  * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html2epub1_config_file_setup.java
+ * @file $/gui/html2epub1_config_file_setup/html2epub1_config_file_setup.java
  * @brief Editor for configuring the input and output files of a html2epub1
  *     configuration files.
  * @author Stephan Kreutzer

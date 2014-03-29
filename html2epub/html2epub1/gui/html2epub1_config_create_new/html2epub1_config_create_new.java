@@ -15,7 +15,7 @@
  * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html2epub1_config_create_new.java
+ * @file $/gui/html2epub1_config_create_new/html2epub1_config_create_new.java
  * @brief Creates a new configuration file for html2epub1.
  * @author Stephan Kreutzer
  * @since 2014-03-12

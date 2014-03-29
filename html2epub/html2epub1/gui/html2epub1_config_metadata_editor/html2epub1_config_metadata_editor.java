@@ -15,7 +15,7 @@
  * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html2epub1_config_metadata_editor.java
+ * @file $/gui/html2epub1_config_metadata_editor/html2epub1_config_metadata_editor.java
  * @brief Editor for the metadata of html2epub1 configuration files.
  * @author Stephan Kreutzer
  * @since 2014-02-02
