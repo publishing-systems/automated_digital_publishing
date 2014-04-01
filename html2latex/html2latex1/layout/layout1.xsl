@@ -56,18 +56,26 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
     \vfill
     \null
   \endgroup%
+  \pagebreak{}
+  \newpage{}
+  \thispagestyle{empty}
+  \mbox{}
+  \pagebreak{}
 }
     </xsl:text>
     <xsl:text>&#xA;</xsl:text>
     <xsl:text>\begin{document}&#xA;</xsl:text>
+    <xsl:text>\frontmatter&#xA;</xsl:text>
     <xsl:text>\maketitle&#xA;</xsl:text>
+    <xsl:text>\tableofcontents&#xA;</xsl:text>
+    <xsl:text>\mainmatter&#xA;</xsl:text>
     <xsl:apply-templates select="xhtml:body"/>
     <xsl:text>\end{document}&#xA;</xsl:text>
   </xsl:template>
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div">
     <xsl:if test="xhtml:h1">
-      <xsl:text>\book{</xsl:text>
+      <xsl:text>\part{</xsl:text>
       <xsl:value-of select="xhtml:h1"/>
       <xsl:text>}&#xA;</xsl:text>
     </xsl:if>
@@ -76,11 +84,18 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div">
     <xsl:if test="xhtml:h2">
-      <xsl:text>\part{</xsl:text>
+      <xsl:text>\chapter{</xsl:text>
       <xsl:value-of select="xhtml:h2"/>
       <xsl:text>}&#xA;</xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
+    <xsl:apply-templates/>
+    <xsl:text>&#xA;</xsl:text>
+  </xsl:template>
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
+    <xsl:value-of select="."/>
   </xsl:template>
   
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div">
@@ -90,6 +105,10 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
       <xsl:text>}&#xA;</xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
+    <xsl:apply-templates/>
+    <xsl:text>&#xA;</xsl:text>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>
@@ -102,6 +121,10 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
       <xsl:text>}&#xA;</xsl:text>
     </xsl:if>
     <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
+    <xsl:apply-templates/>
+    <xsl:text>&#xA;</xsl:text>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>
