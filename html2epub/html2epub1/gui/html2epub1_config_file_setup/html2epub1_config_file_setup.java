@@ -803,12 +803,12 @@ public class html2epub1_config_file_setup
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(this.configFile);
-	          document.getDocumentElement().normalize();
-             
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(this.configFile);
+            document.getDocumentElement().normalize();
+
             NodeList outDirectoryNodeList = document.getElementsByTagName("outDirectory");
-            
+
             if (outDirectoryNodeList.getLength() >= 1)
             {
                 this.textFieldOutDirectory.setText(outDirectoryNodeList.item(0).getTextContent());
@@ -817,22 +817,22 @@ public class html2epub1_config_file_setup
             {
                 return false;
             }
-             
-	          NodeList inNodeList = document.getElementsByTagName("in");
 
-	          if (inNodeList.getLength() <= 0)
-	          {
-	              return false;
-	          }
+            NodeList inNodeList = document.getElementsByTagName("in");
 
-	          NodeList inSubNodeList = inNodeList.item(0).getChildNodes();
-	          
-	          for (int i = 0; i < inSubNodeList.getLength(); i++)
-	          {
-	              Node inNode = inSubNodeList.item(i);
+            if (inNodeList.getLength() <= 0)
+            {
+                return false;
+            }
+
+            NodeList inSubNodeList = inNodeList.item(0).getChildNodes();
+
+            for (int i = 0; i < inSubNodeList.getLength(); i++)
+            {
+                Node inNode = inSubNodeList.item(i);
 
                 if (inNode.getNodeName().equalsIgnoreCase("inFile") == true)
-	              {
+                {
                     JTextField textField = new JTextField(30);
                     textField.setText(inNode.getTextContent());
                     this.xhtmlFileList.add(textField);
@@ -852,7 +852,7 @@ public class html2epub1_config_file_setup
                     
                     this.titleList.add(title);
                 }
-	          }
+            }
         }
         catch (ParserConfigurationException ex)
         {
@@ -869,7 +869,7 @@ public class html2epub1_config_file_setup
             ex.printStackTrace();
             System.exit(-6);
         }
-    
+
         return true;
     }
     
@@ -878,56 +878,56 @@ public class html2epub1_config_file_setup
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(this.configFile);
-	          document.getDocumentElement().normalize();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(this.configFile);
+            document.getDocumentElement().normalize();
 
 
-	          NodeList outNodeList = document.getElementsByTagName("out");
+            NodeList outNodeList = document.getElementsByTagName("out");
 
-	          if (outNodeList.getLength() <= 0)
-	          {
-	              return false;
-	          }
+            if (outNodeList.getLength() <= 0)
+            {
+                return false;
+            }
 
-	          NodeList outSubNodeList = outNodeList.item(0).getChildNodes();
+            NodeList outSubNodeList = outNodeList.item(0).getChildNodes();
+
+            for (int i = outSubNodeList.getLength() - 1; i >= 0; i--)
+            {
+                Node outNode = outSubNodeList.item(i);
+
+                if (outNode.getNodeName().equalsIgnoreCase("outDirectory") == true)
+                {
+                    outNodeList.item(0).removeChild(outNode);
+                }
+            }
 	          
-	          for (int i = outSubNodeList.getLength() - 1; i >= 0; i--)
-	          {
-	              Node outNode = outSubNodeList.item(i);
-
-	              if (outNode.getNodeName().equalsIgnoreCase("outDirectory") == true)
-	              {
-	                  outNodeList.item(0).removeChild(outNode);
-	              }
-	          }
-	          
-	          Element outDirectoryNode = document.createElement("outDirectory");
+            Element outDirectoryNode = document.createElement("outDirectory");
             Text outDirectoryNodeText = document.createTextNode(this.textFieldOutDirectory.getText());
             outDirectoryNode.appendChild(outDirectoryNodeText);
             outNodeList.item(0).appendChild(outDirectoryNode);
 
 
-	          NodeList inNodeList = document.getElementsByTagName("in");
+            NodeList inNodeList = document.getElementsByTagName("in");
 
-	          if (inNodeList.getLength() <= 0)
-	          {
-	              return false;
-	          }
+            if (inNodeList.getLength() <= 0)
+            {
+                return false;
+            }
 
-	          NodeList inSubNodeList = inNodeList.item(0).getChildNodes();
-	          
-	          for (int i = inSubNodeList.getLength() - 1; i >= 0; i--)
-	          {
-	              Node inNode = inSubNodeList.item(i);
+            NodeList inSubNodeList = inNodeList.item(0).getChildNodes();
 
-	              if (inNode.getNodeName().equalsIgnoreCase("inFile") == true)
-	              {
-	                  inNodeList.item(0).removeChild(inNode);
-	              }
-	          }
-	          
-	          
+            for (int i = inSubNodeList.getLength() - 1; i >= 0; i--)
+            {
+                Node inNode = inSubNodeList.item(i);
+
+                if (inNode.getNodeName().equalsIgnoreCase("inFile") == true)
+                {
+                    inNodeList.item(0).removeChild(inNode);
+                }
+            }
+
+
             Iterator<JTextField> iter = this.xhtmlFileList.iterator();
             int i = 0;
 
