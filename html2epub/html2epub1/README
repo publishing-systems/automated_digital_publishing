@@ -25,7 +25,7 @@ html2epub1 is a tool to convert valid XHTML 1.0 Strict files to EPUB2. It is pro
 Requirements
 ------------
 
-A proper Java SDK must be installed to produce the *.class files. The source code is at least compatible with Java 1.6 (OpenJDK).
+A proper Java SDK must be installed to produce the *.class files. The source code is at least compatible with Java 1.6 and 1.7 (OpenJDK).
 
 
 Build

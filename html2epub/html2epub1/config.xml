@@ -24,7 +24,7 @@ along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
     <inFile title="title 2">./in_2.html</inFile>
     <xhtmlSchemaValidation>true</xhtmlSchemaValidation>
     <!-- javax.xml.stream.isValidating: Turns on/off implementation specific DTD validation. -->
-    <xhtmlReaderDTDValidation>true</xhtmlReaderDTDValidation>
+    <xhtmlReaderDTDValidation>false</xhtmlReaderDTDValidation>
     <!-- javax.xml.stream.isNamespaceAware: Turns on/off namespace processing for XML 1.0 support. -->
     <xhtmlReaderNamespaceProcessing>true</xhtmlReaderNamespaceProcessing>
     <!-- javax.xml.stream.isCoalescing: Requires the processor to coalesce adjacent character data. -->

@@ -1,0 +1,71 @@
+Copyright (C) 2014  Stephan Kreutzer
+
+This file is part of xsltransformator1.
+
+xsltransformator1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any
+later version, as published by the Free Software Foundation.
+
+xsltransformator1 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with xsltransformator1. If not, see <http://www.gnu.org/licenses/>.
+
+
+
+Description
+-----------
+
+xsltransformator1 is a Java wrapper for XSLT processing (XML transformation by a stylesheet). It is provided by https://github.com/skreutzer/automated_digital_publishing/.
+
+
+Requirements
+------------
+
+A proper Java SDK must be installed to produce the *.class files. The source code is at least compatible with Java 1.6 and 1.7 (OpenJDK).
+
+
+Build
+-----
+
+Type
+
+    make
+
+in the directory containing the package's source code.
+
+
+Execution
+---------
+
+Type
+
+    java xsltransformator1 in-file stylesheet-file out-file
+
+in the xsltransformator1 directory, or anywhere on the shell if the path to the xsltransformator1 directory is appended to the CLASSPATH environment variable.
+
+
+Usage
+-----
+
+If external entities are referenced in the XML input file, you have to obtain the external entity file and configure it in $/entities/config.xml of the xsltransformator1 installation directory. The structure of the configuration file is
+
+    <?xml version="1.0" encoding="UTF-8"?>
+    <xsltransformator1-config>
+      <entity>
+        <resolve identifier="-//W3C//DTD XHTML 1.0 Strict//EN" reference="xhtml1-strict.dtd"/>
+        <resolve identifier="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" reference="xhtml1-strict.dtd"/>
+      </entity>
+    </xsltransformator1-config>
+    
+Each <resolve> element defines the expected public or system identifier and resolves it with the "reference" attribute to a local file. The path to the local file might be absolute or relative to the $/entities/ directory of the xsltransformator1 installation directory. $/entities/config_xhtml1-strict.xml is an example for XHTML 1.0 Strict, which would need to be renamed to config.xml, while xhtml1-strict.dtd, xhtml-lat1.ent, xhtml-symbol.ent and xhtml-special.ent would need to be placed in the $/entities/ directory.
+
+
+Contact
+-------
+
+See https://github.com/skreutzer/automated_digital_publishing/ or the contact form at the bottom of the page http://www.skreutzer.de/about.html.
+

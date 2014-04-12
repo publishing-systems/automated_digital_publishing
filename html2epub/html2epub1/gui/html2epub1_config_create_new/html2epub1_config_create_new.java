@@ -134,7 +134,7 @@ public class html2epub1_config_create_new
             writer.write("  <in>\n");
             writer.write("    <xhtmlSchemaValidation>true</xhtmlSchemaValidation>\n");
             writer.write("    <!-- javax.xml.stream.isValidating: Turns on/off implementation specific DTD validation. -->\n");
-            writer.write("    <xhtmlReaderDTDValidation>true</xhtmlReaderDTDValidation>\n");
+            writer.write("    <xhtmlReaderDTDValidation>false</xhtmlReaderDTDValidation>\n");
             writer.write("    <!-- javax.xml.stream.isNamespaceAware: Turns on/off namespace processing for XML 1.0 support. -->\n");
             writer.write("    <xhtmlReaderNamespaceProcessing>true</xhtmlReaderNamespaceProcessing>\n");
             writer.write("    <!-- javax.xml.stream.isCoalescing: Requires the processor to coalesce adjacent character data. -->\n");
