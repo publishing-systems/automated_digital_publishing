@@ -125,7 +125,7 @@ public class html2epub1_config_create_new
             
             BufferedWriter writer = new BufferedWriter(
                                     new OutputStreamWriter(
-                                    new FileOutputStream(configFile.getAbsolutePath()),
+                                    new FileOutputStream(configFile),
                                     "UTF8"));
             
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
