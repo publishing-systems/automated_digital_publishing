@@ -393,7 +393,7 @@ class XHTMLProcessor
             
             BufferedWriter writer = new BufferedWriter(
                                     new OutputStreamWriter(
-                                    new FileOutputStream(xhtmlOutFile.getAbsolutePath()),
+                                    new FileOutputStream(xhtmlOutFile),
                                     "UTF8"));
 
             
