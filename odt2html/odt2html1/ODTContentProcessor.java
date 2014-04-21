@@ -140,6 +140,7 @@ class ODTContentProcessor
             boolean body = false;
             boolean text = false;
             boolean paragraph = false;
+            boolean span = false;
             
 
             while (eventReader.hasNext() == true)
@@ -166,7 +167,38 @@ class ODTContentProcessor
                     {
                         paragraph = true;
                         
-                        writer.write("<p>");
+                        writer.write("<p");
+                        
+                        Attribute attributeStyleName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "style-name", "text"));
+                                
+                        if (attributeStyleName != null)
+                        {
+                            String styleName = attributeStyleName.getValue();
+                            
+                            writer.write(" class=\"" + styleName + "\"");
+                        }
+                        
+                        writer.write(">");
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:span") == true &&
+                             body == true &&
+                             text == true &&
+                             paragraph == true)
+                    {
+                        span = true;
+                        
+                        writer.write("<span");
+                        
+                        Attribute attributeStyleName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "style-name", "text"));
+                                
+                        if (attributeStyleName != null)
+                        {
+                            String styleName = attributeStyleName.getValue();
+                            
+                            writer.write(" class=\"" + styleName + "\"");
+                        }
+                        
+                        writer.write(">");
                     }
                 }
                 else if (event.isEndElement() == true)
@@ -176,6 +208,7 @@ class ODTContentProcessor
                     
                     if (fullElementName.equalsIgnoreCase("office:body") == true)
                     {
+                        span = false;
                         paragraph = false;
                         text = false;
                         body = false;
@@ -183,6 +216,7 @@ class ODTContentProcessor
                     else if (fullElementName.equalsIgnoreCase("office:text") == true &&
                              body == true)
                     {
+                        span = false;
                         paragraph = false;
                         text = false;
                     }
@@ -192,12 +226,23 @@ class ODTContentProcessor
                     {
                         writer.write("</p>");
                     
+                        span = false;
                         paragraph = false;
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:span") == true &&
+                             body == true &&
+                             text == true &&
+                             paragraph == true)
+                    {
+                        writer.write("</span>");
+                        
+                        span = false;
                     }
                 }
                 else if (event.isCharacters() == true)
                 {
-                    if (paragraph == true)
+                    if (paragraph == true ||
+                        span == true)
                     {
                         event.writeAsEncodedUnicode(writer);
                     }
@@ -236,6 +281,7 @@ class ODTContentProcessor
     }
 
     static final String ODT_CONTENT_OFFICE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
+    static final String ODT_CONTENT_TEXT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
 
     private File contentFile;
     private Map<String, String> contentInfo;
