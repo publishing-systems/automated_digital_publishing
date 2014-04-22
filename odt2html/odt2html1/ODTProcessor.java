@@ -127,6 +127,53 @@ class ODTProcessor
             }
         }
         
+        Map<String, String> styleMappings = null;
+        
+        {
+            File stylesFile = this.odtFiles.get("styles.xml");
+            
+            if (stylesFile == null)
+            {
+                System.out.println("odt2html1: 'styles.xml' file of the ODT file is missing.");
+                return -15;
+            }
+            
+            ODTStylesProcessor stylesProcessor = new ODTStylesProcessor(stylesFile);
+            
+            int result = stylesProcessor.Analyze();
+            
+            if (result != 0)
+            {
+                return -16;
+            }
+            
+            Map<String, String> stylesInfo = stylesProcessor.GetStylesInfo();
+            
+            if (stylesInfo.containsKey("stylesVersion") == true)
+            {
+                String stylesVersion = stylesInfo.get("stylesVersion");
+                
+                if (stylesVersion.equalsIgnoreCase("1.2") != true)
+                {
+                    System.out.println("odt2html1: Found unsupported styles version '" + stylesVersion + "' in 'styles.xml'.");
+                    return -17;
+                }
+            }
+            else
+            {
+                System.out.println("odt2html1: No styles version found in 'styles.xml'.");
+                return -18;
+            }
+            
+            styleMappings = stylesProcessor.GetStyleMappings();
+        }
+        
+        if (styleMappings == null)
+        {
+            System.out.println("odt2html1: Style mapping wasn't constructed.");
+            return -19;
+        }
+        
         {
             File contentFile = this.odtFiles.get("content.xml");
         
@@ -136,7 +183,7 @@ class ODTProcessor
                 return -10;
             }
             
-            ODTContentProcessor contentProcessor = new ODTContentProcessor(contentFile);
+            ODTContentProcessor contentProcessor = new ODTContentProcessor(contentFile, styleMappings);
             
             int result = contentProcessor.Analyze();
             
@@ -170,22 +217,7 @@ class ODTProcessor
                 return -14;
             }
         }
-        
 
-        
-
-
-        
-        /*
-        for (Map.Entry<String, File> mapEntry : this.odtFiles.entrySet())
-        {
-            String fileName = mapEntry.getKey();
-            File file = mapEntry.getValue();
-
-            System.out.println(fileName);
-        }
-        */
-        
         return 0;
     }
     

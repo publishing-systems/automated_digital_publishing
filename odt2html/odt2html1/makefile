@@ -28,19 +28,23 @@ ZipProcessor.class: ZipProcessor.java
 ODTManifestProcessor.class: ODTManifestProcessor.java
 	javac ODTManifestProcessor.java
 
-ODTContentProcessor.class: ODTContentProcessor.java
+ODTStylesProcessor.class: ODTStylesProcessor.java
+	javac ODTStylesProcessor.java
+
+ODTContentProcessor.class: ODTContentProcessor.java ODTStylesProcessor.class
 	javac ODTContentProcessor.java
 
 ODTProcessor.class: ODTProcessor.java ODTManifestProcessor.class ODTContentProcessor.class
 	javac ODTProcessor.java
 
-odt2html1.class: odt2html1.java ZipProcessor.class ODTProcessor.class ODTManifestProcessor.class ODTContentProcessor.class
+odt2html1.class: odt2html1.java ZipProcessor.class ODTProcessor.class ODTManifestProcessor.class ODTStylesProcessor.class ODTContentProcessor.class
 	javac odt2html1.java
 
 clean:
 	rm -f odt2html1.class
 	rm -f ODTProcessor.class
 	rm -f ODTContentProcessor.class
+	rm -f ODTStylesProcessor.class
 	rm -f ODTManifestProcessor.class
 	rm -f ZipProcessor.class
 

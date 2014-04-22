@@ -45,15 +45,19 @@ import java.io.IOException;
 
 class ODTContentProcessor
 {
-    public ODTContentProcessor(File contentFile)
+    public ODTContentProcessor(File contentFile, Map<String, String> styleMappings)
     {
         this.contentFile = contentFile;
+        this.styleMappings = styleMappings;
+        
         this.contentInfo = new HashMap<String, String>();
+        this.automaticStyles = new HashMap<String, String>();
     }
     
     public int Analyze()
     {
         this.contentInfo.clear();
+        this.automaticStyles.clear();
     
         try
         {
@@ -62,6 +66,8 @@ class ODTContentProcessor
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
 
             XMLEvent event = null;
+            
+            boolean automaticStyles = false;
 
             while (eventReader.hasNext() == true)
             {
@@ -90,6 +96,49 @@ class ODTContentProcessor
                             }
                         }
                     }
+                    else if (fullElementName.equalsIgnoreCase("office:automatic-styles") == true)
+                    {
+                        automaticStyles = true;
+                    }
+                    else if (fullElementName.equalsIgnoreCase("style:style") == true &&
+                             automaticStyles == true)
+                    {
+                        Attribute attributeName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_STYLE_NAMESPACE_URI, "name", "style"));
+                        Attribute attributeParentStyleName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_STYLE_NAMESPACE_URI, "parent-style-name", "style"));
+                                
+                        if (attributeName != null &&
+                            attributeParentStyleName != null)
+                        {
+                            String name = attributeName.getValue();
+                            String parentStyleName = attributeParentStyleName.getValue();
+                            
+                            if (this.automaticStyles.containsKey(name) != true)
+                            {
+                                if (this.styleMappings.containsKey(parentStyleName) == true)
+                                {
+                                    this.automaticStyles.put(name, parentStyleName);
+                                }
+                                else
+                                {
+                                    System.out.println("odt2html1: Automatic style '" + name + "' relies on internal style '" + parentStyleName + "', which isn't specified in the ODT style file.");
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: Automatic style '" + name + "' in ODT content file specified more than once.");
+                            }
+                        }
+                    }
+                }
+                else if (event.isEndElement() == true)
+                {
+                    QName elementName = event.asEndElement().getName();
+                    String fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                    
+                    if (fullElementName.equalsIgnoreCase("office:automatic-styles") == true)
+                    {
+                        automaticStyles = false;
+                    }
                 }
             }
         }
@@ -104,13 +153,13 @@ class ODTContentProcessor
             return -2;
         }
         
+        
+        
         return 0;
     }
     
     public int Run(File xhtmlOutFile)
     {
-        this.contentInfo.clear();
-    
         try
         {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -175,7 +224,23 @@ class ODTContentProcessor
                         {
                             String styleName = attributeStyleName.getValue();
                             
-                            writer.write(" class=\"" + styleName + "\"");
+                            if (this.automaticStyles.containsKey(styleName) == true)
+                            {
+                                String internalStyle = this.automaticStyles.get(styleName);
+                                String displayStyle = this.styleMappings.get(internalStyle);
+
+                                writer.write(" class=\"" + displayStyle + "\"");
+                            }
+                            else if (this.styleMappings.containsKey(styleName) == true)
+                            {
+                                String displayStyle = this.styleMappings.get(styleName);
+
+                                writer.write(" class=\"" + displayStyle + "\"");
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: Automatic style '" + styleName + "' is used in the ODT content file, but isn't specified or mapped to the internal style name.");
+                            }
                         }
                         
                         writer.write(">");
@@ -195,7 +260,23 @@ class ODTContentProcessor
                         {
                             String styleName = attributeStyleName.getValue();
                             
-                            writer.write(" class=\"" + styleName + "\"");
+                            if (this.automaticStyles.containsKey(styleName) == true)
+                            {
+                                String internalStyle = this.automaticStyles.get(styleName);
+                                String displayStyle = this.styleMappings.get(internalStyle);
+
+                                writer.write(" class=\"" + displayStyle + "\"");
+                            }
+                            else if (this.styleMappings.containsKey(styleName) == true)
+                            {
+                                String displayStyle = this.styleMappings.get(styleName);
+
+                                writer.write(" class=\"" + displayStyle + "\"");
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: Automatic style '" + styleName + "' is used in the ODT content file, but isn't specified or mapped to the internal style name.");
+                            }
                         }
                         
                         writer.write(">");
@@ -281,8 +362,11 @@ class ODTContentProcessor
     }
 
     static final String ODT_CONTENT_OFFICE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
+    static final String ODT_CONTENT_STYLE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:style:1.0";
     static final String ODT_CONTENT_TEXT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
 
     private File contentFile;
     private Map<String, String> contentInfo;
+    private Map<String, String> styleMappings;
+    private Map<String, String> automaticStyles;
 }
