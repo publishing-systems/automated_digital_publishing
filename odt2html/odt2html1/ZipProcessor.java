@@ -101,9 +101,16 @@ class ZipProcessor
                     
                     if (parentDirectory.exists() != true)
                     {
-                        if (fileName.lastIndexOf(File.separator) > 0)
+                        int separatorPosition = fileName.lastIndexOf("/");
+                        
+                        if (separatorPosition < 0)
                         {
-                            String parentDirectoryName = fileName.substring(0, fileName.lastIndexOf(File.separator) + File.separator.length());
+                            separatorPosition = fileName.lastIndexOf("\\");
+                        }
+                    
+                        if (separatorPosition > 0)
+                        {
+                            String parentDirectoryName = fileName.substring(0, separatorPosition + new String("/").length());
                             CreateTempDirectories(parentDirectoryName);
                         }
                     }
@@ -175,7 +182,12 @@ class ZipProcessor
         String directoryName = "";
         String directoryPath = this.tempDirectory.getAbsolutePath();
         int start = 0;
-        int end = fileName.indexOf(File.separatorChar);
+        int end = fileName.indexOf("/");
+        
+        if (end < 0)
+        {
+            end = fileName.indexOf("\\");
+        }
         
         while (end > 0)
         {   
@@ -217,8 +229,38 @@ class ZipProcessor
             }
             
             start = end + File.separator.length();
-            end = fileName.indexOf(File.separatorChar, start);
             
+            {
+                int separatorPositionSlash = fileName.indexOf('/', start);
+                int separatorPositionBackslash = fileName.indexOf('\\', end);
+                
+                if (separatorPositionSlash > 0 &&
+                    separatorPositionBackslash > 0)
+                {
+                    end = Math.min(separatorPositionSlash, separatorPositionBackslash);
+                }
+                else
+                {
+                    if (separatorPositionSlash <= 0 &&
+                        separatorPositionBackslash <= 0)
+                    {
+                        end = separatorPositionSlash;
+                    }
+                    else
+                    {
+                        if (separatorPositionSlash > 0)
+                        {
+                            end = separatorPositionSlash;
+                        }
+                        else
+                        {
+                            end = separatorPositionBackslash;
+                        }
+                    }
+                }
+            }
+
+
             if (end <= 0 &&
                 start < (fileName.length() - 1))
             {
