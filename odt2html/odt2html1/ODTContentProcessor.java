@@ -229,13 +229,15 @@ class ODTContentProcessor
                                 String internalStyle = this.automaticStyles.get(styleName);
                                 String displayStyle = this.styleMappings.get(internalStyle);
 
-                                writer.write(" class=\"" + displayStyle + "\"");
+                                writer.write(" class=\"" + internalStyle + "\"");
+                                //writer.write(" class=\"" + displayStyle + "\"");
                             }
                             else if (this.styleMappings.containsKey(styleName) == true)
                             {
                                 String displayStyle = this.styleMappings.get(styleName);
 
-                                writer.write(" class=\"" + displayStyle + "\"");
+                                writer.write(" class=\"" + styleName + "\"");
+                                //writer.write(" class=\"" + displayStyle + "\"");
                             }
                             else
                             {
@@ -265,13 +267,15 @@ class ODTContentProcessor
                                 String internalStyle = this.automaticStyles.get(styleName);
                                 String displayStyle = this.styleMappings.get(internalStyle);
 
-                                writer.write(" class=\"" + displayStyle + "\"");
+                                writer.write(" class=\"" + internalStyle + "\"");
+                                //writer.write(" class=\"" + displayStyle + "\"");
                             }
                             else if (this.styleMappings.containsKey(styleName) == true)
                             {
                                 String displayStyle = this.styleMappings.get(styleName);
 
-                                writer.write(" class=\"" + displayStyle + "\"");
+                                writer.write(" class=\"" + styleName + "\"");
+                                //writer.write(" class=\"" + displayStyle + "\"");
                             }
                             else
                             {

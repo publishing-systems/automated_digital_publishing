@@ -115,8 +115,8 @@ class ODTStylesProcessor
                             String internalName = attributeInternalName.getValue();
                             String displayName = attributeDisplayName.getValue();
                             
-                            displayName = displayName.replaceAll(" ", "_");
-//System.out.println("-> " + internalName + " to " + displayName);
+                            //displayName = displayName.replaceAll(" ", "_");
+
                             if (this.styleMappings.containsKey(internalName) != true)
                             {
                                 this.styleMappings.put(internalName, displayName);
