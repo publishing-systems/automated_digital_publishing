@@ -74,41 +74,70 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
   </xsl:template>
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div">
-    <xsl:if test="xhtml:h1">
-      <xsl:text>\part{</xsl:text>
-      <xsl:value-of select="xhtml:h1"/>
-      <xsl:text>}&#xA;</xsl:text>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="xhtml:h1">
+        <xsl:text>\part{</xsl:text>
+        <xsl:value-of select="xhtml:h1"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+      <xsl:when test="xhtml:h2">
+        <xsl:text>\chapter{</xsl:text>
+        <xsl:value-of select="xhtml:h2"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+    </xsl:choose>
     <xsl:apply-templates/>
+  </xsl:template>
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:p[@class='paragraph_default']">
+    <xsl:if test="../xhtml:h2">
+      <xsl:for-each select="text()">
+        <xsl:value-of select="."/>
+      </xsl:for-each>
+      <xsl:text>&#xA;&#xA;</xsl:text>
+    </xsl:if>
   </xsl:template>
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div">
-    <xsl:if test="xhtml:h2">
-      <xsl:text>\chapter{</xsl:text>
-      <xsl:value-of select="xhtml:h2"/>
-      <xsl:text>}&#xA;</xsl:text>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="xhtml:h2">
+        <xsl:text>\chapter{</xsl:text>
+        <xsl:value-of select="xhtml:h2"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+      <xsl:when test="xhtml:h3">
+        <xsl:text>\section{</xsl:text>
+        <xsl:value-of select="xhtml:h3"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+    </xsl:choose>
     <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
     <xsl:apply-templates/>
-    <xsl:text>&#xA;</xsl:text>
+    <xsl:text>&#xA;&#xA;</xsl:text>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>
   </xsl:template>
   
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div">
-    <xsl:if test="xhtml:h3">
-      <xsl:text>\section{</xsl:text>
-      <xsl:value-of select="xhtml:h3"/>
-      <xsl:text>}&#xA;</xsl:text>
-    </xsl:if>
+    <xsl:choose>
+      <xsl:when test="xhtml:h3">
+        <xsl:text>\section{</xsl:text>
+        <xsl:value-of select="xhtml:h3"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+      <xsl:when test="xhtml:h4">
+        <xsl:text>\subsection{</xsl:text>
+        <xsl:value-of select="xhtml:h4"/>
+        <xsl:text>}&#xA;</xsl:text>
+      </xsl:when>
+    </xsl:choose>
     <xsl:apply-templates/>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
     <xsl:apply-templates/>
-    <xsl:text>&#xA;</xsl:text>
+    <xsl:text>&#xA;&#xA;</xsl:text>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>
@@ -124,7 +153,7 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']">
     <xsl:apply-templates/>
-    <xsl:text>&#xA;</xsl:text>
+    <xsl:text>&#xA;&#xA;</xsl:text>
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>

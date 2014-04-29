@@ -19,9 +19,8 @@ along with html_flat2hierarchical1. If not, see <http://www.gnu.org/licenses/>.
 <html-flat2hierarchical1-config>
   <hierarchy level="1" element="html"/>
   <hierarchy level="2" element="body"/>
-  <hierarchy level="3" element="div" attribute="class" value="title"/> 
-  <hierarchy level="4" element="div" attribute="class" value="part"/> 
-  <hierarchy level="5" element="div" attribute="class" value="chapter"/>
-  <hierarchy level="6" element="div" attribute="class" value="section"/>
-  <hierarchy level="7" element="div" attribute="class" value="subsection"/>
+  <hierarchy level="3" element="div" attribute="class" value="part"/> 
+  <hierarchy level="4" element="div" attribute="class" value="chapter"/>
+  <hierarchy level="5" element="div" attribute="class" value="section"/>
+  <hierarchy level="6" element="div" attribute="class" value="subsection"/>
 </html-flat2hierarchical1-config>
