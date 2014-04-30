@@ -227,11 +227,6 @@ public class html_flat2hierarchical1
         catch (XMLStreamException ex)
         {
             ex.printStackTrace();
-            System.exit(-10);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
             System.exit(-11);
         }
 
