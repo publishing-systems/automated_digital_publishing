@@ -64,17 +64,7 @@ cp ../xsltransformator/xsltransformator1/entities/config_xhtml1-strict.xml ../xs
 
 java -classpath ../xsltransformator/xsltransformator1 xsltransformator1 ./temp/output_1.html ../odt2html/templates/template1/prepare4hierarchical.xsl ./temp/output_2.html
 
-printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" > ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "<!-- This file was created by odt2pdf_template1_layout1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "<html-flat2hierarchical1-config>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"1\" element=\"html\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"2\" element=\"body\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"3\" element=\"div\" attribute=\"class\" value=\"part\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"4\" element=\"div\" attribute=\"class\" value=\"chapter\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"5\" element=\"div\" attribute=\"class\" value=\"section\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "  <hierarchy level=\"6\" element=\"div\" attribute=\"class\" value=\"subsection\"/>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-printf "</html-flat2hierarchical1-config>\n" >> ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
-
+cp ../odt2html/templates/template1/html_flat2hierarchical1_config.xml ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
 cp ../html_flat2hierarchical/html_flat2hierarchical1/entities/config_xhtml1-strict.xml ../html_flat2hierarchical/html_flat2hierarchical1/entities/config.xml 
 
 java -classpath ../html_flat2hierarchical/html_flat2hierarchical1 html_flat2hierarchical1 ./temp/output_2.html ../html_flat2hierarchical/html_flat2hierarchical1/config.xml ./temp/output_3.html
