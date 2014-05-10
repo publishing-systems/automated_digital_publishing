@@ -15,7 +15,7 @@
 # You should have received a copy of the GNU Affero General Public License 3
 # along with automated_digital_publishing. If not, see <http://www.gnu.org/licenses/>.
 
-echo "odt2pdf_template1_layout1  Copyright (C) 2014  Stephan Kreutzer"
+echo "odt2pdf1  Copyright (C) 2014  Stephan Kreutzer"
 echo "This program comes with ABSOLUTELY NO WARRANTY."
 echo "This is free software, and you are welcome to redistribute it"
 echo "under certain conditions. See the GNU Affero General Public"
@@ -24,7 +24,7 @@ echo "code repository: https://github.com/skreutzer/automated_digital_publishing
 
 
 printf "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n" > ../gui/file_picker/file_picker1/config.xml
-printf "<!-- This file was created by odt2pdf_template1_layout1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n" >> ../gui/file_picker/file_picker1/config.xml
+printf "<!-- This file was created by odt2pdf1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n" >> ../gui/file_picker/file_picker1/config.xml
 printf "<file-picker1-config>\n" >> ../gui/file_picker/file_picker1/config.xml
 printf "  <extension extension=\"odt\">ODF Text Document (.odt)</extension>\n" >> ../gui/file_picker/file_picker1/config.xml
 printf "</file-picker1-config>\n" >> ../gui/file_picker/file_picker1/config.xml
@@ -51,7 +51,7 @@ done
 IFS=$OIFS
 
 if [ "${#path}" -le 0 ]; then
-    echo "odt2pdf_template1_layout1.sh: Path of input ODT file wasn't obtained."
+    echo "odt2pdf1: Path of input ODT file wasn't obtained."
     exit 1
 fi
 
@@ -64,10 +64,9 @@ cp ../xsltransformator/xsltransformator1/entities/config_xhtml1-strict.xml ../xs
 
 java -classpath ../xsltransformator/xsltransformator1 xsltransformator1 ./temp/output_1.html ../odt2html/templates/template1/prepare4hierarchical.xsl ./temp/output_2.html
 
-cp ../odt2html/templates/template1/html_flat2hierarchical1_config.xml ../html_flat2hierarchical/html_flat2hierarchical1/config.xml
 cp ../html_flat2hierarchical/html_flat2hierarchical1/entities/config_xhtml1-strict.xml ../html_flat2hierarchical/html_flat2hierarchical1/entities/config.xml 
 
-java -classpath ../html_flat2hierarchical/html_flat2hierarchical1 html_flat2hierarchical1 ./temp/output_2.html ../html_flat2hierarchical/html_flat2hierarchical1/config.xml ./temp/output_3.html
+java -classpath ../html_flat2hierarchical/html_flat2hierarchical1 html_flat2hierarchical1 ./temp/output_2.html ../odt2html/templates/template1/html_flat2hierarchical1_config.xml ./temp/output_3.html
 
 rm -Rf ./temp/latex
 mkdir -p ./temp/latex

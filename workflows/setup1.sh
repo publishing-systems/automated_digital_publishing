@@ -53,3 +53,15 @@ cp ./temp/xhtml-lat1.ent ../html_flat2hierarchical/html_flat2hierarchical1/entit
 cp ./temp/xhtml-symbol.ent ../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml-symbol.ent
 cp ./temp/xhtml-special.ent ../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml-special.ent
 
+cp ./temp/xhtml1-strict.dtd ../html_split/html_split1/entities/xhtml1-strict.dtd
+cp ./temp/xhtml-lat1.ent ../html_split/html_split1/entities/xhtml-lat1.ent
+cp ./temp/xhtml-symbol.ent ../html_split/html_split1/entities/xhtml-symbol.ent
+cp ./temp/xhtml-special.ent ../html_split/html_split1/entities/xhtml-special.ent
+
+cp ./temp/xhtml1-strict.xsd ../html2epub/html2epub1/xhtml1-strict.xsd
+cp ./temp/xml.xsd ../html2epub/html2epub1/xml.xsd
+cp ./temp/xhtml1-strict.dtd ../html2epub/html2epub1/xhtml1-strict.dtd
+cp ./temp/xhtml-lat1.ent ../html2epub/html2epub1/xhtml-lat1.ent
+cp ./temp/xhtml-symbol.ent ../html2epub/html2epub1/xhtml-symbol.ent
+cp ./temp/xhtml-special.ent ../html2epub/html2epub1/xhtml-special.ent
+
