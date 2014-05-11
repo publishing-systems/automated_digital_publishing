@@ -26,7 +26,9 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
         <title>
           <xsl:for-each select="xhtml:body/xhtml:p">
             <xsl:if test="@class='title'">
-              <xsl:value-of select="."/>
+              <xsl:for-each select="text()|*/text()">
+                <xsl:value-of select="."/>
+              </xsl:for-each>
             </xsl:if>
           </xsl:for-each>
         </title>
@@ -40,7 +42,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='part_5f_heading']">
     <div class="part">
       <h1>
-        <xsl:for-each select="text()">
+        <xsl:for-each select="text()|*/text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h1>
@@ -50,7 +52,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='chapter_5f_heading']">
     <div class="chapter">
       <h2>
-        <xsl:for-each select="text()">
+        <xsl:for-each select="text()|*/text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h2>
@@ -60,7 +62,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='section_5f_heading']">
     <div class="section">
       <h3>
-        <xsl:for-each select="text()">
+        <xsl:for-each select="text()|*/text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h3>
@@ -70,7 +72,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='subsection_5f_heading']">
     <div class="subsection">
       <h4>
-        <xsl:for-each select="text()">
+        <xsl:for-each select="text()|*/text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h4>
@@ -79,7 +81,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']">
     <p class="paragraph_default">
-      <xsl:for-each select="text()">
+      <xsl:for-each select="text()|*/text()">
         <xsl:value-of select="."/>
       </xsl:for-each>
     </p>
