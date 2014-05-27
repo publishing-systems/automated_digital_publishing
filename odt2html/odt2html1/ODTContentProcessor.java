@@ -190,6 +190,7 @@ class ODTContentProcessor
             boolean text = false;
             boolean paragraph = false;
             boolean span = false;
+            boolean link = false;
             
 
             while (eventReader.hasNext() == true)
@@ -285,6 +286,27 @@ class ODTContentProcessor
                         
                         writer.write(">");
                     }
+                    else if (fullElementName.equalsIgnoreCase("text:a") == true &&
+                             body == true &&
+                             text == true)
+                    {
+                        Attribute attributeType = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "type", "xlink"));
+                        
+                        if (attributeType != null)
+                        {
+                            if (attributeType.getValue().equalsIgnoreCase("simple") == true)
+                            {
+                                Attribute attributeHref = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "href", "xlink"));
+                                
+                                if (attributeHref != null)
+                                {
+                                    link = true;
+                                    
+                                    writer.write("<a href=\"" + attributeHref.getValue() + "\">");
+                                }
+                            }
+                        }
+                    }
                 }
                 else if (event.isEndElement() == true)
                 {
@@ -322,6 +344,15 @@ class ODTContentProcessor
                         writer.write("</span>");
                         
                         span = false;
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:a") == true &&
+                             body == true &&
+                             text == true &&
+                             link == true)
+                    {
+                        writer.write("</a>");
+                        
+                        link = false;
                     }
                 }
                 else if (event.isCharacters() == true)
@@ -368,6 +399,7 @@ class ODTContentProcessor
     static final String ODT_CONTENT_OFFICE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
     static final String ODT_CONTENT_STYLE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:style:1.0";
     static final String ODT_CONTENT_TEXT_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:text:1.0";
+    static final String ODT_CONTENT_XLINK_NAMESPACE_URL = "http://www.w3.org/1999/xlink";
 
     private File contentFile;
     private Map<String, String> contentInfo;

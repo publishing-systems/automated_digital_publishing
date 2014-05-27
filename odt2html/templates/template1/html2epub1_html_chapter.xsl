@@ -70,10 +70,26 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
 
   <xsl:template match="p[@class='paragraph_default']">
     <p class="paragraph_default">
-      <xsl:for-each select="text()">
-        <xsl:value-of select="."/>
-      </xsl:for-each>
+      <xsl:apply-templates/>
     </p>
+  </xsl:template>
+
+  <xsl:template match="p[@class='paragraph_default']//text()">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="a">
+    <a>
+      <!--
+        Regarding the filtering of the 'shape' attribute:
+        The XHTML 1.0 Strict DTD defines default values for several attributes.
+        If those attributes aren't present at the input, they automatically
+        get added to the output with their corresponding default value. See
+        http://www.xmlplease.com/xhtml/shaperect
+      -->
+      <xsl:copy-of select="@*[name()!='shape']"/>
+      <xsl:apply-templates/>
+    </a>
   </xsl:template>
 
   <xsl:template match="text()|@*"/>

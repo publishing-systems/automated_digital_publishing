@@ -238,6 +238,28 @@ public class odt2epub1
         }
 
 
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_clean.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_4.html");
+        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+            
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-33);
+        }
+
+
         File outputDirectory = new File(tempDirectory + File.separator + "epub");
         
         if (outputDirectory.exists() == true)
@@ -269,7 +291,7 @@ public class odt2epub1
 
         List<File> splittedParts = new ArrayList<File>();
 
-        builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_split1_config_part.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
+        builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_part.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
         builder.directory(new File(programPath + "../html_split/html_split1"));
 
         try
@@ -453,7 +475,7 @@ public class odt2epub1
 		    }
 		    else
 		    {
-            builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
+            builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
             builder.directory(new File(programPath + "../html_split/html_split1"));
 
             try
@@ -531,7 +553,7 @@ public class odt2epub1
 		    }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
 
         try

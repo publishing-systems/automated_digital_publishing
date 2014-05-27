@@ -81,10 +81,19 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
 
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']">
     <p class="paragraph_default">
-      <xsl:for-each select="text()|*/text()">
-        <xsl:value-of select="."/>
-      </xsl:for-each>
+      <xsl:apply-templates/>
     </p>
+  </xsl:template>
+
+  <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']//text()">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="*/xhtml:a">
+    <a>
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates/>
+    </a>
   </xsl:template>
 
   <xsl:template match="text()|@*"/>
