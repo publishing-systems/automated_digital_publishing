@@ -29,6 +29,9 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
         <xhtmlReaderCoalesceAdjacentCharacterData>true</xhtmlReaderCoalesceAdjacentCharacterData>
         <xhtmlReaderResolveExternalParsedEntities>true</xhtmlReaderResolveExternalParsedEntities>
         <xhtmlReaderUseDTDNotDTDFallback>false</xhtmlReaderUseDTDNotDTDFallback>
+        <xsl:if test="xhtml:head/xhtml:title//text()">
+          <inFile title="Title">./title.html</inFile>
+        </xsl:if>
         <xsl:choose>
           <xsl:when test="xhtml:body/xhtml:div[@class='part']">
             <xsl:for-each select="xhtml:body/xhtml:div[@class='part']">

@@ -277,7 +277,7 @@ public class odt2epub1
             System.exit(-14);
         }
         
-        
+
         {
             File from = new File(programPath + "../html_split/html_split1/entities/config_xhtml1-strict.xml");
             File to = new File(programPath + "../html_split/html_split1/entities/config.xml");
@@ -551,6 +551,28 @@ public class odt2epub1
                 }
             }
 		    }
+
+
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_html_title.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + "title.html");
+        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+            
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-34);
+        }
 
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
