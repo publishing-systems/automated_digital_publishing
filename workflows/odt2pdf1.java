@@ -15,7 +15,7 @@
  * along replacement odt2pdf1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/odt2pdf1.java
+ * @file $/workflows/odt2pdf1.java
  * @brief Workflow to automatically process a semantic ODT input file based on
  *     template1 of odt2html to a PDF.
  * @author Stephan Kreutzer

@@ -15,7 +15,7 @@
  * along replacement odt2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/odt2epub1.java
+ * @file $/workflows/odt2epub1.java
  * @brief Workflow to automatically process a semantic ODT input file based on
  *     template1 of odt2html to an EPUB2.
  * @author Stephan Kreutzer
