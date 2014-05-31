@@ -25,6 +25,7 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>&#xA;</xsl:text>
     <xsl:text>\usepackage[utf8]{inputenc}&#xA;</xsl:text>
     <xsl:text>\usepackage{ngerman}&#xA;</xsl:text>
+    <xsl:text>\usepackage{url}&#xA;</xsl:text>
     <xsl:text>&#xA;</xsl:text>
     <xsl:text>\setlength{\parskip}{0pt}&#xA;</xsl:text>
     <xsl:text>
@@ -157,6 +158,13 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
   </xsl:template>
   <xsl:template match="xhtml:html/xhtml:body/xhtml:div/xhtml:div/xhtml:div/xhtml:div/xhtml:p[@class='paragraph_default']//text()">
     <xsl:value-of select="."/>
+  </xsl:template>
+  
+  <xsl:template match="xhtml:a">
+    <xsl:for-each select="text()|*/text()">
+      <xsl:value-of select="."/>
+    </xsl:for-each>
+    <xsl:text>\footnote{\url{</xsl:text><xsl:value-of select="@href"/><xsl:text>}}</xsl:text>
   </xsl:template>
 
   <xsl:template match="text()|@*"/>

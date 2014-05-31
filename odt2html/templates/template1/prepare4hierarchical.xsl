@@ -32,6 +32,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
             </xsl:if>
           </xsl:for-each>
         </title>
+        <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
       </head>
       <body>
         <xsl:apply-templates select="xhtml:body/xhtml:p"/>

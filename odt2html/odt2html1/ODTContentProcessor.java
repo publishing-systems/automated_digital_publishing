@@ -182,6 +182,7 @@ class ODTContentProcessor
             writer.write("  <head>\n");
             /** @todo: Provide title of the document. */
             writer.write("    <title></title>\n");
+            writer.write("    <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n");
             writer.write("  </head>\n");
             writer.write("  <body>\n");
 
