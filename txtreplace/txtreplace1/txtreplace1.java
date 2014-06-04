@@ -7,12 +7,12 @@
  * as published by the Free Software Foundation.
  *
  * txtreplace1 is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; replacementout even the implied warranty of
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along replacement txtreplace1. If not, see <http://www.gnu.org/licenses/>.
+ * along with txtreplace1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
  * @file $/txtreplace1.java
@@ -47,7 +47,7 @@ public class txtreplace1
     public static void main(String args[])
     {
         System.out.print("txtreplace1  Copyright (C) 2014  Stephan Kreutzer\n" +
-                         "This program comes replacement ABSOLUTELY NO WARRANTY.\n" +
+                         "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source\n" +
