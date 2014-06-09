@@ -115,10 +115,12 @@ public class html2epub1_config_merge
 
         File configFileOut = new File(args[2]);
 
-
-        if (html2epub1_config_merge.CopyFile(configFileLhs, configFileOut) != 0)
+        if (configFileLhs.getAbsolutePath().equalsIgnoreCase(configFileOut.getAbsolutePath()) != true)
         {
-            System.exit(-7);
+            if (html2epub1_config_merge.CopyFile(configFileLhs, configFileOut) != 0)
+            {
+                System.exit(-7);
+            }
         }
 
 
