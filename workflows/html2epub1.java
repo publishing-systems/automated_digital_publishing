@@ -55,10 +55,10 @@ public class html2epub1
         String programPath = html2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
 
-        if (args.length != 3)
+        if (args.length != 2)
         {
             System.out.print("Usage:\n" +
-                             "\thtml2epub1 input-html-file input-config-file output-epub-file\n\n");
+                             "\thtml2epub1 input-html-file input-config-file\n\n");
 
             System.exit(1);
         }
@@ -102,8 +102,6 @@ public class html2epub1
             System.out.print("html2epub1 workflow: '" + inputConfigFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-6);
         }
-
-        File outputEPUBFile = new File(args[2]);
 
 
         File tempDirectory = new File(programPath + "temp");
@@ -567,16 +565,6 @@ public class html2epub1
         {
             ex.printStackTrace();
             System.exit(-25);
-        }
-
-
-        {
-            File from = new File(outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-            
-            if (html2epub1.CopyFile(from, outputEPUBFile) != 0)
-            {
-                System.exit(-26);
-            }
         }
 
         System.exit(0);
