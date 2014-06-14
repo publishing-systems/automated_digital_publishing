@@ -70,6 +70,11 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml1-strict.dtd")) != 0)
             {
                 System.exit(-4);
+            }
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml1-strict.dtd")) != 0)
+            {
+                System.exit(-22);
             }    
         }
         
@@ -94,7 +99,12 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-lat1.ent")) != 0)
             {
                 System.exit(-8);
-            }    
+            }
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-lat1.ent")) != 0)
+            {
+                System.exit(-23);
+            } 
         }
         
         {
@@ -118,7 +128,12 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-symbol.ent")) != 0)
             {
                 System.exit(-12);
-            }    
+            }
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-symbol.ent")) != 0)
+            {
+                System.exit(-24);
+            }
         }
         
         {
@@ -142,7 +157,12 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-special.ent")) != 0)
             {
                 System.exit(-16);
-            }    
+            }
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-special.ent")) != 0)
+            {
+                System.exit(-25);
+            }
         }
         
         {

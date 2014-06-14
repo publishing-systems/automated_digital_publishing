@@ -89,14 +89,14 @@ public class odt2pdf1
         if (tempDirectory.exists() != true)
         {
             System.out.print("odt2pdf1 workflow: Temp directory '" + tempDirectory.getAbsolutePath() + "' doesn't exist.\n");
-            System.exit(-6);
+            System.exit(-2);
         }
         else
         {
             if (tempDirectory.isDirectory() != true)
             {
                 System.out.print("odt2pdf1 workflow: Temp directory path '" + tempDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
-                System.exit(-7);
+                System.exit(-3);
             }
         }
 
@@ -108,14 +108,25 @@ public class odt2pdf1
             if (odt2pdf1.DeleteFileRecursively(outputDirectory) != 0)
             {
                 System.out.println("odt2pdf1 workflow: Can't clean '" + outputDirectory.getAbsolutePath() + "'.");
-                System.exit(-13);
+                System.exit(-4);
             }
         }
         
         if (outputDirectory.mkdirs() != true)
         {
             System.out.print("odt2pdf1 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
-            System.exit(-14);
+            System.exit(-5);
+        }
+
+
+        {
+            File from = new File(programPath + "../html2latex/html_prepare4latex1/entities/config_xhtml1-strict.xml");
+            File to = new File(programPath + "../html2latex/html_prepare4latex1/entities/config.xml");
+            
+            if (odt2pdf1.CopyFile(from, to) != 0)
+            {
+                System.exit(-6);
+            }
         }
 
 
@@ -137,7 +148,7 @@ public class odt2pdf1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-2);
+            System.exit(-7);
         }
 
 
@@ -159,7 +170,7 @@ public class odt2pdf1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-15);
+            System.exit(-8);
         }
 
 
@@ -183,7 +194,7 @@ public class odt2pdf1
             catch (IOException ex)
             {
                 ex.printStackTrace();
-                System.exit(-16);
+                System.exit(-9);
             }
         }
 
@@ -209,6 +220,71 @@ public class odt2pdf1
             return -1;
         }
     
+        return 0;
+    }
+
+    public static int CopyFile (File from, File to)
+    {
+        if (from.exists() != true)
+        {
+            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            return -1;
+        }
+        
+        if (from.isFile() != true)
+        {
+            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            return -2;
+        }
+        
+        if (from.canRead() != true)
+        {
+            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            return -3;
+        }
+    
+    
+        char[] buffer = new char[1024];
+
+        try
+        {
+            to.createNewFile();
+        
+            BufferedReader reader = new BufferedReader(
+                                    new InputStreamReader(
+                                    new FileInputStream(from),
+                                    "UTF8"));
+            BufferedWriter writer = new BufferedWriter(
+                                    new OutputStreamWriter(
+                                    new FileOutputStream(to),
+                                    "UTF8"));
+            int charactersRead = reader.read(buffer, 0, buffer.length);
+
+            while (charactersRead > 0)
+            {
+                writer.write(buffer, 0, charactersRead);
+                charactersRead = reader.read(buffer, 0, buffer.length);
+            }
+            
+            writer.close();
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-10);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-11);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-12);
+        }
+
         return 0;
     }
 }

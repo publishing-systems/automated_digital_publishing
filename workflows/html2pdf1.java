@@ -33,6 +33,9 @@ import java.io.UnsupportedEncodingException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.FileInputStream;
 
 
 
@@ -174,14 +177,25 @@ public class html2pdf1
             if (html2pdf1.DeleteFileRecursively(outputDirectory) != 0)
             {
                 System.out.println("html2pdf1 workflow: Can't clean '" + outputDirectory.getAbsolutePath() + "'.");
-                System.exit(-13);
+                System.exit(-11);
             }
         }
         
         if (outputDirectory.mkdirs() != true)
         {
             System.out.print("html2pdf1 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
-            System.exit(-14);
+            System.exit(-12);
+        }
+
+
+        {
+            File from = new File(programPath + "../html2latex/html_prepare4latex1/entities/config_xhtml1-strict.xml");
+            File to = new File(programPath + "../html2latex/html_prepare4latex1/entities/config.xml");
+            
+            if (html2pdf1.CopyFile(from, to) != 0)
+            {
+                System.exit(-13);
+            }
         }
 
 
@@ -203,7 +217,7 @@ public class html2pdf1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-11);
+            System.exit(-14);
         }
 
 
@@ -275,6 +289,71 @@ public class html2pdf1
             return -1;
         }
     
+        return 0;
+    }
+
+    public static int CopyFile (File from, File to)
+    {
+        if (from.exists() != true)
+        {
+            System.out.println("html2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            return -1;
+        }
+        
+        if (from.isFile() != true)
+        {
+            System.out.println("html2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            return -2;
+        }
+        
+        if (from.canRead() != true)
+        {
+            System.out.println("html2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            return -3;
+        }
+    
+    
+        char[] buffer = new char[1024];
+
+        try
+        {
+            to.createNewFile();
+        
+            BufferedReader reader = new BufferedReader(
+                                    new InputStreamReader(
+                                    new FileInputStream(from),
+                                    "UTF8"));
+            BufferedWriter writer = new BufferedWriter(
+                                    new OutputStreamWriter(
+                                    new FileOutputStream(to),
+                                    "UTF8"));
+            int charactersRead = reader.read(buffer, 0, buffer.length);
+
+            while (charactersRead > 0)
+            {
+                writer.write(buffer, 0, charactersRead);
+                charactersRead = reader.read(buffer, 0, buffer.length);
+            }
+            
+            writer.close();
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-17);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-18);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-19);
+        }
+
         return 0;
     }
 }
