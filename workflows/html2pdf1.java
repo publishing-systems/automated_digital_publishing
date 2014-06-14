@@ -33,14 +33,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.IOException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-/*
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-
-
-*/
 
 
 public class html2pdf1
@@ -93,7 +86,7 @@ public class html2pdf1
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
                 writer.write("<!-- This file was created by html2pdf1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
                 writer.write("<file-picker1-config>\n");
-                writer.write("  <extension extension=\"html\">HTML input file (.html)</extension>\n");
+                writer.write("  <extension extension=\"html\">HTML file (.html)</extension>\n");
                 writer.write("</file-picker1-config>\n");
                 
                 writer.close();
@@ -192,7 +185,29 @@ public class html2pdf1
         }
 
 
-        ProcessBuilder builder = new ProcessBuilder("java", "xsltransformator1", inputHTMLFile.getAbsolutePath(), programPath + "../html2latex/html2latex1/layout/layout1.xsl", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
+        ProcessBuilder builder = new ProcessBuilder("java", "html_prepare4latex1", inputHTMLFile.getAbsolutePath(), outputDirectory.getAbsolutePath() + File.separator + "input.html");
+        builder.directory(new File(programPath + "../html2latex/html_prepare4latex1"));
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+            
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-11);
+        }
+
+
+        builder = new ProcessBuilder("java", "xsltransformator1", outputDirectory.getAbsolutePath() + File.separator + "input.html", programPath + "../html2latex/html2latex1/layout/layout1.xsl", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
 
         try

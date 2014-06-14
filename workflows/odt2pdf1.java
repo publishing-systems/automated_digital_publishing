@@ -119,7 +119,29 @@ public class odt2pdf1
         }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../html2latex/html2latex1/layout/layout1.xsl", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
+        builder = new ProcessBuilder("java", "html_prepare4latex1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", outputDirectory.getAbsolutePath() + File.separator + "input.html");
+        builder.directory(new File(programPath + "../html2latex/html_prepare4latex1"));
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+            
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-2);
+        }
+
+
+        builder = new ProcessBuilder("java", "xsltransformator1", outputDirectory.getAbsolutePath() + File.separator + "input.html", programPath + "../html2latex/html2latex1/layout/layout1.xsl", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
 
         try
@@ -139,11 +161,11 @@ public class odt2pdf1
             ex.printStackTrace();
             System.exit(-15);
         }
-        
-        
+
+
         for (int i = 0; i < 4; i++)
         {
-            builder = new ProcessBuilder("pdflatex", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
+            builder = new ProcessBuilder("pdflatex", "-halt-on-error", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
             builder.directory(new File(outputDirectory.getAbsolutePath()));
 
             try
@@ -166,71 +188,6 @@ public class odt2pdf1
         }
 
         return;
-    }
-    
-    public static int CopyFile (File from, File to)
-    {
-        if (from.exists() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
-            return -1;
-        }
-        
-        if (from.isFile() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
-            return -2;
-        }
-        
-        if (from.canRead() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
-            return -3;
-        }
-    
-    
-        char[] buffer = new char[1024];
-
-        try
-        {
-            to.createNewFile();
-        
-            BufferedReader reader = new BufferedReader(
-                                    new InputStreamReader(
-                                    new FileInputStream(from),
-                                    "UTF8"));
-            BufferedWriter writer = new BufferedWriter(
-                                    new OutputStreamWriter(
-                                    new FileOutputStream(to),
-                                    "UTF8"));
-            int charactersRead = reader.read(buffer, 0, buffer.length);
-
-            while (charactersRead > 0)
-            {
-                writer.write(buffer, 0, charactersRead);
-                charactersRead = reader.read(buffer, 0, buffer.length);
-            }
-            
-            writer.close();
-            reader.close();
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-30);
-        }
-        catch (UnsupportedEncodingException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-31);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-32);
-        }
-    
-        return 0;
     }
 
     public static int DeleteFileRecursively(File file)
