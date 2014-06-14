@@ -23,6 +23,7 @@
  */
 
 
+
 import javax.xml.stream.XMLResolver;
 import java.io.File;
 import java.util.Map;
@@ -50,28 +51,6 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import javax.xml.stream.events.Namespace;
-/*
-import org.xml.sax.EntityResolver;
-
-import org.xml.sax.InputSource;
-
-
-
-
-
-
-
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-
-
-
-import java.util.Stack;
-
-import java.util.List;
-import java.util.ArrayList;
-*/
 
 
 
