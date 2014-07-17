@@ -93,6 +93,7 @@ class XHTMLProcessor
                     String tagName = event.asStartElement().getName().getLocalPart();
 
                     if (head == false &&
+                        body == false &&
                         tagName.equalsIgnoreCase("head") == true)
                     {
                         head = true;
@@ -100,6 +101,7 @@ class XHTMLProcessor
                     }
 
                     if (body == false &&
+                        head == false &&
                         tagName.equalsIgnoreCase("body") == true)
                     {
                         body = true;
@@ -320,26 +322,34 @@ class XHTMLProcessor
                 }
                 else if (event.isEndElement() == true)
                 {
-                    if (head == true)
+                    String tagName = event.asEndElement().getName().getLocalPart();
+                
+                    if (tagName.equalsIgnoreCase("head") == true)
                     {
-                        String tagName = event.asEndElement().getName().getLocalPart();
-
-                        if (tagName.equalsIgnoreCase("head") == true)
+                        if (head == true)
                         {
                             head = false;
                             continue;
                         }
+                        else
+                        {
+                            System.out.println("html2epub1: Misplaced </head> found.");
+                            System.exit(-1);
+                        }
                     }
-                    else if (body == true)
+                    else if (tagName.equalsIgnoreCase("body") == true)
                     {
-                        String tagName = event.asEndElement().getName().getLocalPart();
-
-                        if (tagName.equalsIgnoreCase("body") == true)
+                        if (body == true)
                         {
                             body = false;
                             continue;
                         }
-                    }
+                        else
+                        {
+                            System.out.println("html2epub1: Misplaced </body> found.");
+                            System.exit(-1);
+                        }
+                    }    
                 }
             }
         }
@@ -424,6 +434,7 @@ class XHTMLProcessor
                     String tagName = event.asStartElement().getName().getLocalPart();
 
                     if (head == false &&
+                        body == false &&
                         tagName.equalsIgnoreCase("head") == true)
                     {
                         head = true;
@@ -431,6 +442,7 @@ class XHTMLProcessor
                     }
 
                     if (body == false &&
+                        head == false &&
                         tagName.equalsIgnoreCase("body") == true)
                     {
                         body = true;
@@ -799,34 +811,58 @@ class XHTMLProcessor
                 }
                 else if (event.isEndElement() == true)
                 {
-                    if (head == true)
+                    String tagName = event.asEndElement().getName().getLocalPart();
+                
+                    if (tagName.equalsIgnoreCase("head") == true)
                     {
-                        String tagName = event.asEndElement().getName().getLocalPart();
-
-                        if (tagName.equalsIgnoreCase("head") == true)
+                        if (head == true)
                         {
                             head = false;
                             writer.write("\n</head>\n");
                             continue;
                         }
-                        
-                        if (tagName.equalsIgnoreCase("style") == true)
+                        else
                         {
-                            style = false;
-                            writer.write("</" + tagName + ">");
+                            System.out.println("html2epub1: Misplaced </head> found.");
+                            System.exit(-1);
+                        }
+                    }  
+                    else if (tagName.equalsIgnoreCase("style") == true)
+                    {
+                        if (head == true)
+                        {
+                            if (style == true)
+                            {
+                                style = false;
+                                writer.write("</" + tagName + ">");
+                                continue;
+                            }
+                            else
+                            {
+                                System.out.println("html2epub1: Misplaced </style> found.");
+                                System.exit(-1);
+                            }
                         }
                     }
-                    else if (body == true)
+                    else if (tagName.equalsIgnoreCase("body") == true)
                     {
-                        String tagName = event.asEndElement().getName().getLocalPart();
-
-                        if (tagName.equalsIgnoreCase("body") == true)
+                        if (body == true)
                         {
                             body = false;
                             continue;
                         }
-                        
-                        writer.write("</" + tagName + ">");
+                        else
+                        {
+                            System.out.println("html2epub1: Misplaced </body> found.");
+                            System.exit(-1);
+                        }
+                    }
+                    else
+                    {
+                        if (body == true)
+                        {
+                            writer.write("</" + tagName + ">");
+                        }
                     }
                 }
                 else if (event.isCharacters() == true)
@@ -916,7 +952,7 @@ class ReferencedFiles
         for (int i = 0; i < this.xhtmlFiles.size(); i++)
         {
             if (this.xhtmlFiles.get(i).getAbsolutePath().equalsIgnoreCase(absolutePath) == true)
-            {System.out.println(absolutePath + "x2!");
+            {
                 return true;
             }
         }

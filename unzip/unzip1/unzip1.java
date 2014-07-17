@@ -88,7 +88,7 @@ public class unzip1
             }
             else
             {
-                System.out.println("unzip11: '" + outDirectory.getAbsolutePath() + "' isn't a directory.");
+                System.out.println("unzip11: Out path '" + outDirectory.getAbsolutePath() + "' isn't a directory.");
                 System.exit(-5);
             }
         }
