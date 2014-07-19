@@ -104,7 +104,12 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-lat1.ent")) != 0)
             {
                 System.exit(-23);
-            } 
+            }
+            
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-lat1.ent")) != 0)
+            {
+                System.exit(-1);
+            }
         }
         
         {
@@ -133,6 +138,11 @@ public class setup1
             if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-symbol.ent")) != 0)
             {
                 System.exit(-24);
+            }
+            
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-symbol.ent")) != 0)
+            {
+                System.exit(-1);
             }
         }
         
@@ -163,6 +173,11 @@ public class setup1
             {
                 System.exit(-25);
             }
+            
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-special.ent")) != 0)
+            {
+                System.exit(-1);
+            }
         }
         
         {
@@ -183,10 +198,334 @@ public class setup1
             }    
         }
 
+        {
+            File from = new File(programPath + "../w3c/xhtml11.dtd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml11.dtd")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlstyle-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlstyle-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+        
+        {
+            File from = new File(programPath + "../w3c/xhtml-datatypes-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-datatypes-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-framework-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-framework-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-qname-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-qname-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-events-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-events-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-attribs-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-attribs-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml11-model-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml11-model-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-charent-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-charent-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }   
+        }
+        
+        {
+            File from = new File(programPath + "../w3c/xhtml-charent-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-charent-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-text-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-text-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlstruct-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlstruct-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlphras-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlphras-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkstruct-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkstruct-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkphras-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkphras-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-hypertext-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-hypertext-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-list-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-list-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-edit-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-edit-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-bdo-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-bdo-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-ruby-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-ruby-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-pres-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-pres-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlpres-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlpres-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkpres-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkpres-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-link-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-link-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-meta-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-meta-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-base-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-base-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-script-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-script-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-style-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-style-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-image-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-image-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-csismap-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-csismap-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-ssismap-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-ssismap-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-param-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-param-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-object-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-object-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-table-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-table-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-form-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-form-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-struct-1.mod");
+
+            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-struct-1.mod")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
         return;
     }
     
-    public static int CopyFile (File from, File to)
+    public static int CopyFile(File from, File to)
     {
         if (from.exists() != true)
         {
