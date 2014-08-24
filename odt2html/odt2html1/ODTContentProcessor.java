@@ -40,6 +40,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 
@@ -52,12 +53,14 @@ class ODTContentProcessor
         
         this.contentInfo = new HashMap<String, String>();
         this.automaticStyles = new HashMap<String, String>();
+        this.listStyles = new HashMap<String, ArrayList<Integer>>();
     }
     
     public int Analyze()
     {
         this.contentInfo.clear();
         this.automaticStyles.clear();
+        this.listStyles.clear();
     
         try
         {
@@ -129,6 +132,130 @@ class ODTContentProcessor
                             }
                         }
                     }
+                    else if (fullElementName.equalsIgnoreCase("text:list-style") == true &&
+                             automaticStyles == true)
+                    {
+                        Attribute attributeName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_STYLE_NAMESPACE_URI, "name", "style"));
+                                
+                        if (attributeName != null)
+                        {
+                            String name = attributeName.getValue();
+
+                            if (this.listStyles.containsKey(name) != true)
+                            {
+                                ArrayList<Integer> listLevelTypes = new ArrayList<Integer>(10);
+                                
+                                for (int i = 0; i < 10; i++)
+                                {
+                                    listLevelTypes.add(new Integer(0));
+                                }
+
+                                while (eventReader.hasNext() == true)
+                                {
+                                    event = eventReader.nextEvent();
+
+                                    if (event.isStartElement() == true)
+                                    {
+                                        elementName = event.asStartElement().getName();
+                                        fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                        
+                                        if (fullElementName.equalsIgnoreCase("text:list-level-style-bullet") == true)
+                                        {
+                                            Attribute attributeLevel = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "level", "text"));
+                                                    
+                                            if (attributeLevel != null)
+                                            {
+                                                Integer level = Integer.valueOf(attributeLevel.getValue());
+                                                
+                                                if (level >= 1 && level <= 10)
+                                                {
+                                                    if (listLevelTypes.get(level - 1) == 0)
+                                                    {
+                                                        // 1: Bulleted list.
+                                                        listLevelTypes.set(level - 1, 1);
+                                                    }
+                                                    else
+                                                    {
+                                                        System.out.println("odt2html1: List style '" + name + "' specifies level '" + level + "' more than once.");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    System.out.println("odt2html1: List style '" + name + "' specifies an invalid level '" + level + "'.");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                System.out.println("odt2html1: List style '" + name + "' level definition is missing its level number.");
+                                            }
+                                        }
+                                        else if (fullElementName.equalsIgnoreCase("text:list-level-style-number") == true)
+                                        {
+                                            Attribute attributeLevel = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "level", "text"));
+                                                    
+                                            if (attributeLevel != null)
+                                            {
+                                                int level = Integer.parseInt(attributeLevel.getValue());
+                                                
+                                                if (level >= 1 && level <= 10)
+                                                {
+                                                    if (listLevelTypes.get(level - 1) == 0)
+                                                    {
+                                                        // 2: Numbered list.
+                                                        listLevelTypes.set(level - 1, 2);
+                                                    }
+                                                    else
+                                                    {
+                                                        System.out.println("odt2html1: List style '" + name + "' specifies level '" + level + "' more than once.");
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    System.out.println("odt2html1: List style '" + name + "' specifies an invalid level '" + level + "'.");
+                                                }
+                                            }
+                                            else
+                                            {
+                                                System.out.println("odt2html1: List style '" + name + "' level definition is missing its level number.");
+                                            }
+                                        }
+                                    }
+                                    else if (event.isEndElement() == true)
+                                    {
+                                        elementName = event.asEndElement().getName();
+                                        fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                        
+                                        if (fullElementName.equalsIgnoreCase("text:list-style") == true)
+                                        {
+                                            for (int i = 0; i < 10; i++)
+                                            {
+                                                if (listLevelTypes.get(i) == 0)
+                                                {
+                                                    System.out.println("odt2html1: List style '" + name + "' is missing a definition for level " + i + ".");
+                                                    return -1;
+                                                }
+                                            }
+                                            
+                                            if (this.listStyles.containsKey(name) != true)
+                                            {
+                                                this.listStyles.put(name, listLevelTypes);
+                                            }
+                                            else
+                                            {
+                                                System.out.println("odt2html1: List style '" + name + "' specified more than once.");
+                                            }
+             
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: List style '" + name + "' in ODT content file specified more than once.");
+                            }
+                        }
+                    }
                 }
                 else if (event.isEndElement() == true)
                 {
@@ -190,6 +317,9 @@ class ODTContentProcessor
             boolean body = false;
             boolean text = false;
             boolean paragraph = false;
+            boolean list = false;
+            Integer listLevel = 0;
+            String listStyle = "";
             boolean span = false;
             boolean link = false;
             
@@ -249,6 +379,58 @@ class ODTContentProcessor
                         
                         writer.write(">");
                     }
+                    else if (fullElementName.equalsIgnoreCase("text:list") == true &&
+                             body == true &&
+                             text == true)
+                    {
+                        list = true;
+                        
+                        listLevel += 1;
+                        
+                        if (listLevel == 1)
+                        {
+                            Attribute attributeListStyleName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "style-name", "text"));
+                                    
+                            if (attributeListStyleName != null)
+                            {
+                                String listStyleName = attributeListStyleName.getValue();
+                                
+                                if (this.listStyles.containsKey(listStyleName) == true)
+                                {
+                                    listStyle = listStyleName;
+                                }
+                                else
+                                {
+                                    System.out.println("odt2html1: List style '" + listStyleName + "' is used in the ODT content file, but list style isn't defined.");
+                                    listStyle = "";
+                                }
+                            }
+                        }
+                        
+                        if (listLevel >= 1 &&
+                            listStyle.isEmpty() != true)
+                        {
+                            if (this.listStyles.get(listStyle).get(listLevel - 1) == 1)
+                            {
+                                writer.write("<ul>");
+                            }
+                            else if (this.listStyles.get(listStyle).get(listLevel - 1) == 2)
+                            {
+                                writer.write("<ol>");
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: List style '" + listStyle + "' is missing list type information for level " + listLevel + ".");
+                            }
+                        }
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:list-item") == true &&
+                             body == true &&
+                             text == true &&
+                             list == true)
+                    {
+                        writer.write("<li>");
+                    }
                     else if (fullElementName.equalsIgnoreCase("text:span") == true &&
                              body == true &&
                              text == true &&
@@ -289,7 +471,8 @@ class ODTContentProcessor
                     }
                     else if (fullElementName.equalsIgnoreCase("text:a") == true &&
                              body == true &&
-                             text == true)
+                             text == true &&
+                             paragraph == true)
                     {
                         Attribute attributeType = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "type", "xlink"));
                         
@@ -318,6 +501,9 @@ class ODTContentProcessor
                     {
                         span = false;
                         paragraph = false;
+                        list = false;
+                        listLevel = 0;
+                        listStyle = "";
                         text = false;
                         body = false;
                     }
@@ -326,6 +512,9 @@ class ODTContentProcessor
                     {
                         span = false;
                         paragraph = false;
+                        listLevel = 0;
+                        listStyle = "";
+                        list = false;
                         text = false;
                     }
                     else if (fullElementName.equalsIgnoreCase("text:p") == true &&
@@ -333,14 +522,59 @@ class ODTContentProcessor
                              text == true)
                     {
                         writer.write("</p>");
-                    
+
+                        link = false;
                         span = false;
                         paragraph = false;
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:list") == true &&
+                             body == true &&
+                             text == true)
+                    {
+                        if (listLevel >= 1 &&
+                            listStyle.isEmpty() != true)
+                        {
+                            if (this.listStyles.get(listStyle).get(listLevel - 1) == 1)
+                            {
+                                writer.write("</ul>");
+                            }
+                            else if (this.listStyles.get(listStyle).get(listLevel - 1) == 2)
+                            {
+                                writer.write("</ol>");
+                            }
+                            else
+                            {
+                                System.out.println("odt2html1: List style '" + listStyle + "' is missing list type information for level " + listLevel + ".");
+                            }
+                        }
+
+                        link = false;
+                        span = false;
+                        
+                        listLevel -= 1;
+                        
+                        if (listLevel <= 0)
+                        {
+                            listLevel = 0;
+                            listStyle = "";
+                            list = false;
+                        }
+                    }
+                    else if (fullElementName.equalsIgnoreCase("text:list-item") == true &&
+                             body == true &&
+                             text == true &&
+                             list == true)
+                    {
+                        writer.write("</li>");
+                        
+                        link = false;
+                        span = false;
                     }
                     else if (fullElementName.equalsIgnoreCase("text:span") == true &&
                              body == true &&
                              text == true &&
-                             paragraph == true)
+                             (paragraph == true) &&
+                              span == true)
                     {
                         writer.write("</span>");
                         
@@ -349,6 +583,7 @@ class ODTContentProcessor
                     else if (fullElementName.equalsIgnoreCase("text:a") == true &&
                              body == true &&
                              text == true &&
+                             (paragraph == true) &&
                              link == true)
                     {
                         writer.write("</a>");
@@ -406,4 +641,5 @@ class ODTContentProcessor
     private Map<String, String> contentInfo;
     private Map<String, String> styleMappings;
     private Map<String, String> automaticStyles;
+    private Map<String, ArrayList<Integer>> listStyles;
 }
