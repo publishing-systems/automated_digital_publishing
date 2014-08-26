@@ -86,7 +86,26 @@ class XHTMLValidator implements ErrorHandler
                 System.exit(-1);
             }
         }
-    
+
+        File schemataDirectory = new File(programPath + "schemata");
+
+        if (schemataDirectory.exists() != true)
+        {
+            if (schemataDirectory.mkdir() != true)
+            {
+                System.out.print("html2wordpress1: Can't create schemata directory '" + schemataDirectory.getAbsolutePath() + "'.\n");
+                System.exit(-1);
+            }
+        }
+        else
+        {
+            if (schemataDirectory.isDirectory() != true)
+            {
+                System.out.print("html2wordpress1: Schemata path '" + schemataDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.exit(-1);
+            }
+        }
+
         String doctypeDeclaration = new String("<!DOCTYPE");
         int doctypePosMatching = 0;
         String doctype = new String();
@@ -149,7 +168,7 @@ class XHTMLValidator implements ErrorHandler
 
         if (doctype.contains("\"-//W3C//DTD XHTML 1.0 Strict//EN\"") == true)
         {
-            File schemaFile = new File(programPath + "xhtml1-strict.xsd");
+            File schemaFile = new File(schemataDirectory.getAbsolutePath() + "/xhtml1-strict.xsd");
 
             if (schemaFile.exists() != true)
             {
@@ -178,35 +197,65 @@ class XHTMLValidator implements ErrorHandler
                 System.exit(-1);
             }
             
-            File configFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
+            File entitiesConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
             
-            if (configFile.exists() != true)
+            if (entitiesConfigFile.exists() != true)
             {
-                configFile = null;
+                entitiesConfigFile = null;
             }
 
-            if (configFile != null)
+            if (entitiesConfigFile != null)
             {
-                if (configFile.isFile() != true)
+                if (entitiesConfigFile.isFile() != true)
                 {
-                    configFile = null;
+                    entitiesConfigFile = null;
                 }
             }
 
-            if (configFile != null)
+            if (entitiesConfigFile != null)
             {
-                if (configFile.canRead() != true)
+                if (entitiesConfigFile.canRead() != true)
                 {
-                    configFile = null;
+                    entitiesConfigFile = null;
                 }
             }
             
-            if (configFile == null)
+            if (entitiesConfigFile == null)
             {
                 System.out.print("html2wordpress1: Can't validate XHTML 1.0 Strict file - entity resolver configuration file is missing.\n");
                 System.exit(-1);
             }
             
+            File schemataConfigFile = new File(schemataDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
+            
+            if (schemataConfigFile.exists() != true)
+            {
+                schemataConfigFile = null;
+            }
+
+            if (schemataConfigFile != null)
+            {
+                if (schemataConfigFile.isFile() != true)
+                {
+                    schemataConfigFile = null;
+                }
+            }
+
+            if (schemataConfigFile != null)
+            {
+                if (schemataConfigFile.canRead() != true)
+                {
+                    schemataConfigFile = null;
+                }
+            }
+            
+            if (schemataConfigFile == null)
+            {
+                System.out.print("html2wordpress1: Can't validate XHTML 1.0 Strict file - schema resolver configuration file is missing.\n");
+                System.exit(-1);
+            }
+
+
             try
             {
                 SAXParserFactory parserFactory = SAXParserFactory.newInstance();
@@ -214,7 +263,7 @@ class XHTMLValidator implements ErrorHandler
                 parserFactory.setValidating(false); 
                 parserFactory.setNamespaceAware(true);
 
-                SchemaEntityResolverLocal localResolver = new SchemaEntityResolverLocal(programPath, configFile, entitiesDirectory);
+                SchemaEntityResolverLocal localResolver = new SchemaEntityResolverLocal(programPath, entitiesConfigFile, entitiesDirectory, schemataConfigFile, schemataDirectory);
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 schemaFactory.setResourceResolver(localResolver);
@@ -390,40 +439,43 @@ class XHTMLValidator implements ErrorHandler
 
 class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
 {
-    public SchemaEntityResolverLocal(String localPath, File configFile, File entitiesDirectory)
+    public SchemaEntityResolverLocal(String localPath, File entitiesConfigFile, File entitiesDirectory, File schemataConfigFile, File schemataDirectory)
     {
-        this.configFile = configFile;
         this.localPath = localPath;
+        this.entitiesConfigFile = entitiesConfigFile;
         this.entitiesDirectory = entitiesDirectory;
+        this.schemataConfigFile = schemataConfigFile;
+        this.schemataDirectory = schemataDirectory;
         this.localEntities = new HashMap<String, File>();
+        this.localSchemata = new HashMap<String, File>();
         
         boolean success = true;
 
         if (success == true)
         {
-            success = this.configFile.exists();
+            success = this.entitiesConfigFile.exists();
         }
 
         if (success == true)
         {
-            success = this.configFile.isFile();
+            success = this.entitiesConfigFile.isFile();
         }
 
         if (success == true)
         {
-            success = this.configFile.canRead();
+            success = this.entitiesConfigFile.canRead();
         }
 
         if (success == true)
         {
             success = this.entitiesDirectory.exists();
         }
-        
+
         if (success == true)
         {
             success = this.entitiesDirectory.isDirectory();
         }
-        
+
         if (success != true)
         {
             this.entitiesDirectory = null;
@@ -431,13 +483,28 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
 
         if (success == true)
         {
+            success = this.schemataDirectory.exists();
+        }
+
+        if (success == true)
+        {
+            success = this.schemataDirectory.isDirectory();
+        }
+
+        if (success != true)
+        {
+            this.schemataDirectory = null;
+        }
+
+        if (success == true)
+        {
             Document document = null;
-        
+
             try
             {
                 DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-                document = documentBuilder.parse(this.configFile);
+                document = documentBuilder.parse(this.entitiesConfigFile);
                 document.getDocumentElement().normalize();
             }
             catch (ParserConfigurationException ex)
@@ -479,7 +546,7 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
                         
                         if (identifier.length() <= 0)
                         {
-                            System.out.print("html2wordpress1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
+                            System.out.print("html2wordpress1: '" + this.entitiesConfigFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
                             System.exit(-1);
                         }
                         
@@ -504,19 +571,19 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
                         
                         if (referencedFile.exists() != true)
                         {
-                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', doesn't exist.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.isFile() != true)
                         {
-                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', isn't a file.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.canRead() != true)
                         {
-                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', isn't readable.\n");
                             System.exit(-1);
                         }
                         
@@ -526,7 +593,110 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
                         }
                         else
                         {
-                            System.out.print("html2wordpress1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
+                            System.out.print("html2wordpress1: Identifier '" + identifier + "' configured twice in '" + this.entitiesConfigFile.getAbsolutePath() + "'.\n");
+                            System.exit(-1);
+                        }
+                    }
+                }
+            }
+
+
+            document = null;
+        
+            try
+            {
+                DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+                document = documentBuilder.parse(this.schemataConfigFile);
+                document.getDocumentElement().normalize();
+            }
+            catch (ParserConfigurationException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+            catch (SAXException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
+
+
+            NodeList schemaNodeList = document.getElementsByTagName("schema");
+            int schemaNodeListCount = schemaNodeList.getLength();
+
+            for (int i = 0; i < schemaNodeListCount; i++)
+            {
+                Node schemaNode = schemaNodeList.item(i);
+                NodeList schemaChildNodeList = schemaNode.getChildNodes();
+                int schemaChildNodeListCount = schemaChildNodeList.getLength();
+
+                for (int j = 0; j < schemaChildNodeListCount; j++)
+                {
+                    Node schemaChildNode = schemaChildNodeList.item(j);
+
+                    if (schemaChildNode.getNodeName().equalsIgnoreCase("resolve") == true)
+                    {
+                        Element element = (Element) schemaChildNode;
+                        String identifier = element.getAttribute("identifier");
+                        String reference = element.getAttribute("reference");
+                        File referencedFile = new File(reference);
+
+                        if (identifier.length() <= 0)
+                        {
+                            System.out.print("html2wordpress1: '" + this.schemataConfigFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
+                            System.exit(-1);
+                        }
+                        
+                        if (referencedFile.isAbsolute() != true)
+                        {
+                            String relativePath = this.schemataDirectory.getAbsolutePath();
+                            
+                            if (relativePath.substring((relativePath.length() - File.separator.length()) - new String(".").length(), relativePath.length()).equalsIgnoreCase(File.separator + "."))
+                            {
+                                // Remove dot that references the local, current directory.
+                                relativePath = relativePath.substring(0, relativePath.length() - new String(".").length());
+                            }
+                            
+                            if (relativePath.substring(relativePath.length() - File.separator.length(), relativePath.length()).equalsIgnoreCase(File.separator) != true)
+                            {
+                                relativePath += File.separator;
+                            }
+                            
+                            relativePath += reference;
+                            referencedFile = new File(relativePath);
+                        }
+                        
+                        if (referencedFile.exists() != true)
+                        {
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', doesn't exist.\n");
+                            System.exit(-1);
+                        }
+                        
+                        if (referencedFile.isFile() != true)
+                        {
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', isn't a file.\n");
+                            System.exit(-1);
+                        }
+                        
+                        if (referencedFile.canRead() != true)
+                        {
+                            System.out.print("html2wordpress1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', isn't readable.\n");
+                            System.exit(-1);
+                        }
+                        
+                        if (this.localSchemata.containsKey(identifier) != true)
+                        {
+                            this.localSchemata.put(identifier, referencedFile);
+                        }
+                        else
+                        {
+                            System.out.print("html2wordpress1: Identifier '" + identifier + "' configured twice in '" + this.schemataConfigFile.getAbsolutePath() + "'.\n");
                             System.exit(-1);
                         }
                     }
@@ -541,6 +711,73 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
                                    String systemId,
                                    String baseURI)
     {
+        if (this.schemataDirectory == null)
+        {
+            System.out.print("html2wordpress1: Can't resolve schema, no local schemata directory.\n");
+            System.exit(-1);
+        }
+
+        if (this.schemataConfigFile == null)
+        {
+            System.out.print("html2wordpress1: Can't resolve schema, no schemata configured.\n");
+            System.exit(-1);
+        }
+
+        File localSchema = null;
+    
+        if (localSchema == null)
+        {
+            if (this.localSchemata.containsKey(publicId) == true)
+            {
+                localSchema = this.localSchemata.get(publicId);
+            }
+        }
+        
+        if (localSchema == null)
+        {
+            if (this.localSchemata.containsKey(systemId) == true)
+            {
+                localSchema = this.localSchemata.get(systemId);
+            }
+        }
+        
+        if (localSchema == null)
+        {
+            System.out.print("html2wordpress1: Can't resolve schema with type '" + type + "', namespace URI '" + namespaceURI + "', public ID '" + publicId + "', system ID '" + systemId + "', base URI '" + baseURI + "', no local copy configured in '" + this.schemataConfigFile.getAbsolutePath() + "'.\n");
+            System.exit(-1);
+        }
+    
+        if (localSchema.exists() != true)
+        {
+            System.out.print("html2wordpress1: '" + localSchema.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', doesn't exist.\n");
+            System.exit(-1);
+        }
+        
+        if (localSchema.isFile() != true)
+        {
+            System.out.print("html2wordpress1: '" + localSchema.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', isn't a file.\n");
+            System.exit(-1);
+        }
+        
+        if (localSchema.canRead() != true)
+        {
+            System.out.print("html2wordpress1: '" + localSchema.getAbsolutePath() + "', referenced in '" + this.schemataConfigFile.getAbsolutePath() + "', isn't readable.\n");
+            System.exit(-1);
+        }
+        
+        if (localSchema.exists() == true)
+        {
+            return new LocalSchemaInput(localSchema, publicId, true);
+        }
+        else
+        {
+            System.out.print("html2wordpress1: Can't validate - unknown resource with public ID '" + publicId + "', system ID '" + systemId + "', type '" + type + "', namespace URI '" + namespaceURI + "' and base URI '" + baseURI + "'.\n");
+            System.exit(-1);
+            return null;
+        }
+        
+    
+        /*
         // For XHTML 1.0 Strict (should go into a schema directory with its own schema config file).
     
         if (systemId.equalsIgnoreCase("http://www.w3.org/2001/xml.xsd") == true)
@@ -558,6 +795,7 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
                 return null;
             }
         }
+        */
         /*
         
         XHTML 1.1 (should go into a schema directory with its own schema config file).
@@ -608,10 +846,6 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
             }
         }
         */
-    
-        System.out.print("html2wordpress1: Can't validate - unknown resource with public ID '" + publicId + "', system ID '" + systemId + "', type '" + type + "', namespace URI '" + namespaceURI + "' and base URI '" + baseURI + "'.\n");
-        System.exit(-1);
-        return null;
     }
 
     public InputSource resolveEntity(String publicId, String systemId)
@@ -622,7 +856,7 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
             System.exit(-1);
         }
         
-        if (this.configFile == null)
+        if (this.entitiesConfigFile == null)
         {
             System.out.print("html2wordpress1: Can't resolve entity, no entities configured.\n");
             System.exit(-1);
@@ -648,25 +882,25 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
         
         if (localEntity == null)
         {
-            System.out.print("html2wordpress1: Can't resolve entity with public ID '" + publicId + "', system ID '" + systemId + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
+            System.out.print("html2wordpress1: Can't resolve entity with public ID '" + publicId + "', system ID '" + systemId + "', no local copy configured in '" + this.entitiesConfigFile.getAbsolutePath() + "'.\n");
             System.exit(-1);
         }
     
         if (localEntity.exists() != true)
         {
-            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', doesn't exist.\n");
             System.exit(-1);
         }
         
         if (localEntity.isFile() != true)
         {
-            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', isn't a file.\n");
             System.exit(-1);
         }
         
         if (localEntity.canRead() != true)
         {
-            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+            System.out.print("html2wordpress1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.entitiesConfigFile.getAbsolutePath() + "', isn't readable.\n");
             System.exit(-1);
         }
         
@@ -685,9 +919,12 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
     }
 
     protected String localPath;
-    protected File configFile;
+    protected File entitiesConfigFile;
     protected File entitiesDirectory;
+    protected File schemataConfigFile;
+    protected File schemataDirectory;
     protected Map<String, File> localEntities;
+    protected Map<String, File> localSchemata;
 }
 
 // This implementation provides access to files which are already
@@ -797,6 +1034,121 @@ class LocalEntityInput implements LSInput
     public void setSystemId(String systemId)
     {
         System.out.println("html2wordpress1: Calling LocalEntityInput.setSystemId() isn't allowed.");
+        System.exit(-1);
+    }
+
+    protected File localFile;
+    protected String publicId;
+    protected boolean certifiedText;
+}
+
+// This implementation provides access to files which are already
+// locally resolved, so setters are either ignored because the
+// corresponding getters are irrelevant or their call causes an
+// error, if it would change the reference to the locally resolved file.
+class LocalSchemaInput implements LSInput
+{
+    public LocalSchemaInput(File localFile, String publicId, boolean certifiedText)
+    {
+        this.localFile = localFile;
+        this.publicId = publicId;
+        this.certifiedText = certifiedText;
+    }
+
+    public String getBaseURI()
+    {
+        return null;
+    }
+    
+    public void setBaseURI(String baseURI)
+    {
+    
+    }
+    
+    public InputStream getByteStream()
+    {
+        return null;
+    }
+    
+    public void setByteStream(InputStream byteStream)
+    {
+        System.out.println("html2wordpress1: Calling LocalSchemaInput.setByteStream() isn't allowed.");
+        System.exit(-1);
+    }
+
+    public boolean getCertifiedText()
+    {
+        return this.certifiedText;
+    }
+    
+    public void setCertifiedText(boolean certifiedText)
+    {
+        this.certifiedText = certifiedText;
+    }
+    
+    public Reader getCharacterStream()
+    {
+        Reader reader = null;
+    
+        try
+        {
+            reader = new FileReader(this.localFile);
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        
+        return reader;
+    }
+    
+    public void setCharacterStream(Reader characterStream)
+    {
+        System.out.println("html2wordpress1: Calling LocalSchemaInput.setCharacterStream() isn't allowed.");
+        System.exit(-1);
+    }
+    
+    public String getEncoding()
+    {
+        return null;
+    }
+    
+    public void setEncoding(String encoding)
+    {
+    
+    }
+    
+    public String getPublicId()
+    {
+        return this.publicId;
+    }
+    
+    public void setPublicId(String publicId)
+    {
+        System.out.println("html2wordpress1: Calling LocalSchemaInput.setPublicId() isn't allowed.");
+        System.exit(-1);
+    }
+    
+    public String getStringData()
+    {
+        return null;
+    }
+    
+    public void setStringData(String stringData)
+    {
+        System.out.println("html2wordpress11: Calling LocalSchemaInput.setStringData() isn't allowed.");
+        System.exit(-1);
+    }
+    
+    public String getSystemId()
+    {
+        return this.localFile.getAbsolutePath();
+    }
+    
+    public void setSystemId(String systemId)
+    {
+        System.out.println("html2wordpress1: Calling LocalSchemaInput.setSystemId() isn't allowed.");
         System.exit(-1);
     }
 

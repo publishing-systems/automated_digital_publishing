@@ -222,7 +222,7 @@ public class setup1
                 System.exit(-18);
             }
 
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/xml.xsd")) != 0)
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xml.xsd")) != 0)
             {
                 System.exit(-1);
             }
@@ -235,7 +235,7 @@ public class setup1
         {
             File from = new File(programPath + "../w3c/xhtml11.xsd");
 
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/xhtml11.xsd")) != 0)
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml11.xsd")) != 0)
             {
                 System.exit(-11);
             }
@@ -244,7 +244,7 @@ public class setup1
         {
             File from = new File(programPath + "../w3c/xhtml11-model-1.xsd");
 
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/xhtml11-model-1.xsd")) != 0)
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml11-model-1.xsd")) != 0)
             {
                 System.exit(-1);
             }
@@ -253,7 +253,7 @@ public class setup1
         {
             File from = new File(programPath + "../w3c/xhtml-datatypes-1.xsd");
 
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/xhtml-datatypes-1.xsd")) != 0)
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-datatypes-1.xsd")) != 0)
             {
                 System.exit(-1);
             }
