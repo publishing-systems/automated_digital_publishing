@@ -302,8 +302,7 @@ class XHTMLValidator implements ErrorHandler
         }
         else if (doctype.contains("\"-//W3C//DTD XHTML 1.1//EN\"") == true)
         {
-            /*
-            File schemaFile = new File(programPath + "xhtml11.xsd");
+            File schemaFile = new File(schemataDirectory.getAbsolutePath() + "/xhtml11.xsd");
 
             if (schemaFile.exists() != true)
             {
@@ -331,36 +330,65 @@ class XHTMLValidator implements ErrorHandler
                 System.out.print("html2wordpress1: Can't validate XHTML 1.1 file - schema 'xhtml11.xsd' is missing.\n");
                 System.exit(-1);
             }
+
+            File entitiesConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
             
-            File configFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
-            
-            if (configFile.exists() != true)
+            if (entitiesConfigFile.exists() != true)
             {
-                configFile = null;
+                entitiesConfigFile = null;
             }
 
-            if (configFile != null)
+            if (entitiesConfigFile != null)
             {
-                if (configFile.isFile() != true)
+                if (entitiesConfigFile.isFile() != true)
                 {
-                    configFile = null;
+                    entitiesConfigFile = null;
                 }
             }
 
-            if (configFile != null)
+            if (entitiesConfigFile != null)
             {
-                if (configFile.canRead() != true)
+                if (entitiesConfigFile.canRead() != true)
                 {
-                    configFile = null;
+                    entitiesConfigFile = null;
                 }
             }
             
-            if (configFile == null)
+            if (entitiesConfigFile == null)
             {
                 System.out.print("html2wordpress1: Can't validate XHTML 1.1 file - entity resolver configuration file is missing.\n");
                 System.exit(-1);
             }
             
+            File schemataConfigFile = new File(schemataDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
+            
+            if (schemataConfigFile.exists() != true)
+            {
+                schemataConfigFile = null;
+            }
+
+            if (schemataConfigFile != null)
+            {
+                if (schemataConfigFile.isFile() != true)
+                {
+                    schemataConfigFile = null;
+                }
+            }
+
+            if (schemataConfigFile != null)
+            {
+                if (schemataConfigFile.canRead() != true)
+                {
+                    schemataConfigFile = null;
+                }
+            }
+            
+            if (schemataConfigFile == null)
+            {
+                System.out.print("html2wordpress1: Can't validate XHTML 1.1 file - schema resolver configuration file is missing.\n");
+                System.exit(-1);
+            }
+
             try
             {
                 SAXParserFactory parserFactory = SAXParserFactory.newInstance();
@@ -368,7 +396,7 @@ class XHTMLValidator implements ErrorHandler
                 parserFactory.setValidating(false); 
                 parserFactory.setNamespaceAware(true);
 
-                SchemaEntityResolverLocal localResolver = new SchemaEntityResolverLocal(programPath, configFile, entitiesDirectory);
+                SchemaEntityResolverLocal localResolver = new SchemaEntityResolverLocal(programPath, entitiesConfigFile, entitiesDirectory, schemataConfigFile, schemataDirectory);
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 schemaFactory.setResourceResolver(localResolver);
@@ -404,10 +432,6 @@ class XHTMLValidator implements ErrorHandler
                 ex.printStackTrace();
                 System.exit(-1);
             }
-            */
-
-            System.out.print("html2epub1: Can't validate XHTML 1.1 file - XHTML 1.1 validation not supported yet.\n");
-            System.exit(-1);
         }
         else
         {
@@ -775,77 +799,6 @@ class SchemaEntityResolverLocal implements EntityResolver, LSResourceResolver
             System.exit(-1);
             return null;
         }
-        
-    
-        /*
-        // For XHTML 1.0 Strict (should go into a schema directory with its own schema config file).
-    
-        if (systemId.equalsIgnoreCase("http://www.w3.org/2001/xml.xsd") == true)
-        {
-            File xml = new File(this.localPath + "xml.xsd");
-            
-            if (xml.exists() == true)
-            {
-                return new LocalEntityInput(xml, publicId, true);
-            }
-            else
-            {
-                System.out.print("html2wordpress1: Can't validate - schema 'xml.xsd' is missing.\n");
-                System.exit(-1);
-                return null;
-            }
-        }
-        */
-        /*
-        
-        XHTML 1.1 (should go into a schema directory with its own schema config file).
-        
-        else if (systemId.equalsIgnoreCase("xhtml11-model-1.xsd") == true)
-        {
-            File xhtml11Model = new File(this.localPath + "xhtml11-model-1.xsd");
-            
-            if (xhtml11Model.exists() == true)
-            {
-                return new LocalEntityInput(xhtml11Model, publicId, true);
-            }
-            else
-            {
-                System.out.print("html2wordpress1: Can't validate - schema 'xhtml11-model-1.xsd' is missing.\n");
-                System.exit(-1);
-                return null;
-            }
-        }
-        else if (systemId.equalsIgnoreCase("http://www.w3.org/MarkUp/SCHEMA/xhtml-datatypes-1.xsd") == true)
-        {
-            File xhtmlDatatypes = new File(this.localPath + "xhtml-datatypes-1.xsd");
-            
-            if (xhtmlDatatypes.exists() == true)
-            {
-                return new LocalEntityInput(xhtmlDatatypes, publicId, true);
-            }
-            else
-            {
-                System.out.print("html2wordpress1: Can't validate - schema 'xhtml-datatypes-1.xsd' is missing.\n");
-                System.exit(-1);
-                return null;
-            }
-        }
-        else if (systemId.equalsIgnoreCase("xhtml11-modules-1.xsd") == true)
-        {
-            File xhtml11Modules = new File(this.localPath + "xhtml11-modules-1.xsd");
-            
-            if (xhtml11Modules.exists() == true)
-            {
-                return new LocalEntityInput(xhtml11Modules, publicId, true);
-            }
-            else
-            {
-                System.out.print("html2wordpress1: Can't validate - schema 'xhtml11-modules-1.xsd' is missing.\n");
-                System.exit(-1);
-                return null;
-            }
-        }
-        */
     }
 
     public InputSource resolveEntity(String publicId, String systemId)

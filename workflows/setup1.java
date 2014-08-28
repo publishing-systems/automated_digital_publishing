@@ -199,7 +199,7 @@ public class setup1
                 System.exit(-1);
             }
         }
-        
+
         {
             File from = new File(programPath + "../w3c/xhtml1-strict.xsd");
 
@@ -208,7 +208,7 @@ public class setup1
                 System.exit(-17);
             }
 
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/xhtml1-strict.xsd")) != 0)
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml1-strict.xsd")) != 0)
             {
                 System.exit(-1);
             }
@@ -227,10 +227,6 @@ public class setup1
                 System.exit(-1);
             }
         }
-
-        /*
-        
-        // For XHTML 1.1 (should go into schema subdirectories with their own schema config files).
 
         {
             File from = new File(programPath + "../w3c/xhtml11.xsd");
@@ -258,7 +254,294 @@ public class setup1
                 System.exit(-1);
             }
         }
-        */
+
+        {
+            File from = new File(programPath + "../w3c/xhtml11-modules-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml11-modules-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-framework-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-framework-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-attribs-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-attribs-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-text-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-text-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkphras-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-blkphras-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkstruct-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-blkstruct-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlphras-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-inlphras-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlstruct-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-inlstruct-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-hypertext-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-hypertext-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-list-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-list-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-struct-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-struct-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-edit-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-edit-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-bdo-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-bdo-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-pres-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-pres-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-blkpres-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-blkpres-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlpres-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-inlpres-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-link-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-link-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-meta-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-meta-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-base-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-base-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-script-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-script-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-style-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-style-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-inlstyle-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-inlstyle-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-image-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-image-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-csismap-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-csismap-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-ssismap-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-ssismap-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-object-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-object-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-param-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-param-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-table-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-table-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-form-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-form-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-ruby-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-ruby-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-events-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-events-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
+
+        {
+            File from = new File(programPath + "../w3c/xhtml-target-1.xsd");
+
+            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/schemata/xhtml-target-1.xsd")) != 0)
+            {
+                System.exit(-1);
+            }
+        }
 
         {
             File from = new File(programPath + "../w3c/xhtml11.dtd");
