@@ -650,7 +650,7 @@ public class html2wordpress1
 
         Map<String, ArrayList<String>> taxonomyTags = jobFileProcessor.GetTaxonomyTags();
         
-        if (taxonomyHierarchy.isEmpty() != true)
+        if (taxonomyTags.isEmpty() != true)
         {                         
             xmlrpc +=                   "<member>" +
                                           "<name>terms_names</name>" +
