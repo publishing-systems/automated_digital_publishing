@@ -31,7 +31,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -296,73 +299,138 @@ class EPUBProcessor
                 }
             }
 
-            for (int i = 0; i < order.size(); i++)
             {
-                OPFManifestEntry entry = manifest.get(order.get(i));
-                
-                if (entry == null)
+                ArrayList<File> outXHTMLFiles = new ArrayList<File>();
+            
+                for (int i = 0; i < order.size(); i++)
                 {
-                    System.out.println("epub2html1: ID not found in manifest.");
-                    return -14;
-                }
+                    OPFManifestEntry entry = manifest.get(order.get(i));
+                    
+                    if (entry == null)
+                    {
+                        System.out.println("epub2html1: ID not found in manifest.");
+                        return -14;
+                    }
 
-                if (entry.GetMediaType().equalsIgnoreCase("application/xhtml+xml") != true)
-                {
-                    System.out.println("epub2html1: Unexpected media type '" + entry.GetMediaType() + "'.");
-                    return -15;
-                }
+                    if (entry.GetMediaType().equalsIgnoreCase("application/xhtml+xml") != true)
+                    {
+                        System.out.println("epub2html1: Unexpected media type '" + entry.GetMediaType() + "'.");
+                        return -15;
+                    }
 
-                File xhtmlFile = entry.GetHRef();
+                    File xhtmlFile = entry.GetHRef();
+                    
+                    try
+                    {
+                        if (xhtmlFile.getCanonicalPath().substring(0, this.epubDirectory.getCanonicalPath().length()).equalsIgnoreCase(this.epubDirectory.getCanonicalPath()) != true)
+                        {
+                            System.out.println("epub2html1: XHTML file reference '" + xhtmlFile.getAbsolutePath() + " isn't relative to EPUB extraction directory '" + this.epubDirectory.getAbsolutePath() + "'.");
+                            return -1;
+                        }
+                    }
+                    catch (IOException ex)
+                    {
+                        ex.printStackTrace();
+                        System.exit(-1);
+                    }
+                    
+                    if (xhtmlFile.exists() != true)
+                    {
+                        System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', doesn't exist.");
+                        return -17;
+                    }
+
+                    if (xhtmlFile.isFile() != true)
+                    {
+                        System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', isn't a file.");
+                        return -18;
+                    }
+
+                    if (xhtmlFile.canRead() != true)
+                    {
+                        System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', isn't readable.");
+                        return -19;
+                    }
+
+                    File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "page_" + (i + 1) + ".html");
+
+                    System.out.println("epub2html1: Processing '" + xhtmlFile.getAbsolutePath() + "'.");
+
+                    EPUBXHTMLProcessor xhtmlProcessor = new EPUBXHTMLProcessor(xhtmlFile);
+
+                    if (xhtmlProcessor.ProcessFile(xhtmlFile,
+                                                   outFile,
+                                                   referencedFiles.GetXHTMLFiles(),
+                                                   referencedFiles.GetImageFiles(),
+                                                   referencedFiles.GetCSSFiles()) != true)
+                    {
+                        return -1;
+                    }
+                    else
+                    {
+                        if (outFile.exists() != true)
+                        {
+                            System.out.println("epub2html1: XHTML processing result file '" + outFile.getAbsolutePath() + "' doesn't exist.");
+                            return -1;
+                        }
+
+                        if (outFile.isFile() != true)
+                        {
+                            System.out.println("epub2html1: XHTML processing result path '" + outFile.getAbsolutePath() + "' isn't a file.");
+                            return -1;
+                        }
+
+                        if (outFile.canRead() != true)
+                        {
+                            System.out.println("epub2html1: XHTML processing result file '" + outFile.getAbsolutePath() + "' isn't readable.");
+                            return -1;
+                        }
+
+                        outXHTMLFiles.add(outFile);
+                    }
+                }
                 
                 try
                 {
-                    if (xhtmlFile.getCanonicalPath().substring(0, this.epubDirectory.getCanonicalPath().length()).equalsIgnoreCase(this.epubDirectory.getCanonicalPath()) != true)
+                    BufferedWriter writer = new BufferedWriter(
+                                            new OutputStreamWriter(
+                                            new FileOutputStream(new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "index.xml")),
+                                            "UTF8"));
+
+                    writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+                    writer.write("<!-- This file was created by epub2html1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/). -->\n");
+                    writer.write("<epub2html1-output-index>\n");
+
+                    for (int i = 1; i <= outXHTMLFiles.size(); i++)
                     {
-                        System.out.println("epub2html1: XHTML file reference '" + xhtmlFile.getAbsolutePath() + " isn't relative to EPUB extraction directory '" + this.epubDirectory.getAbsolutePath() + "'.");
-                        return -1;
+                        File outXHTMLFile = outXHTMLFiles.get(i - 1);
+                        String name = outXHTMLFile.getName();
+
+                        writer.write("  <file>" + name + "</file>\n");
                     }
+                    
+                    writer.write("</epub2html1-output-index>\n");
+                    
+                    writer.close();
+                }
+                catch (FileNotFoundException ex)
+                {
+                    ex.printStackTrace();
+                    System.exit(-1);
+                }
+                catch (UnsupportedEncodingException ex)
+                {
+                    ex.printStackTrace();
+                    System.exit(-1);
                 }
                 catch (IOException ex)
                 {
                     ex.printStackTrace();
                     System.exit(-1);
                 }
-                
-                if (xhtmlFile.exists() != true)
-                {
-                    System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', doesn't exist.");
-                    return -17;
-                }
-
-                if (xhtmlFile.isFile() != true)
-                {
-                    System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', isn't a file.");
-                    return -18;
-                }
-
-                if (xhtmlFile.canRead() != true)
-                {
-                    System.out.println("epub2html1: '" + xhtmlFile.getAbsolutePath() + "', referenced in OPF '" + opfFile.getAbsolutePath() + "', isn't readable.");
-                    return -19;
-                }
-
-                File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "page_" + (i + 1) + ".html");
-
-                System.out.println("epub2html1: Processing '" + xhtmlFile.getAbsolutePath() + "'.");
-
-                EPUBXHTMLProcessor xhtmlProcessor = new EPUBXHTMLProcessor(xhtmlFile);
-
-
-                if (xhtmlProcessor.ProcessFile(xhtmlFile,
-                                               outFile,
-                                               referencedFiles.GetXHTMLFiles(),
-                                               referencedFiles.GetImageFiles(),
-                                               referencedFiles.GetCSSFiles()) != true)
-                {
-                    return -1;
-                }
             }
-            
+
+
             System.out.println("epub2html1: Copying files to output directory '" + outDirectory.getAbsolutePath() + "'.");
             
             for (int i = 1; i <= referencedFiles.GetImageFiles().size(); i++)
