@@ -195,41 +195,41 @@ public class odt2html2
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(jobDescriptionFile);
-	          document.getDocumentElement().normalize();
-             
-	          NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
-	          int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
-	          
-	          if (inputODTFilesNodeListLength > 0)
-	          {
-	              for (int i = 0; i < inputODTFilesNodeListLength; i++)
-	              {
-	                  Node inputODTFileNode = inputODTFilesNodeList.item(i);
-	                  NamedNodeMap attributes = inputODTFileNode.getAttributes();
-	                  
-	                  if (attributes == null)
-	                  {
+	           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+	           Document document = documentBuilder.parse(jobDescriptionFile);
+	           document.getDocumentElement().normalize();
+              
+	           NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
+	           int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
+	           
+	           if (inputODTFilesNodeListLength > 0)
+	           {
+	               for (int i = 0; i < inputODTFilesNodeListLength; i++)
+	               {
+	                   Node inputODTFileNode = inputODTFilesNodeList.item(i);
+	                   NamedNodeMap attributes = inputODTFileNode.getAttributes();
+	                   
+	                   if (attributes == null)
+	                   {
                         System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                         System.exit(-8);
-	                  }
-	                  
-	                  Node inputODTFilePathNode = attributes.getNamedItem("path");
-	                  
-	                  if (inputODTFilePathNode == null)
-	                  {
+	                   }
+	                   
+	                   Node inputODTFilePathNode = attributes.getNamedItem("path");
+	                   
+	                   if (inputODTFilePathNode == null)
+	                   {
                         System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                         System.exit(-9);
-	                  }
-	                  
-	                  File inputODTFile = new File(inputODTFilePathNode.getTextContent());
-	                  
-	                  if (inputODTFile.isAbsolute() != true)
-	                  {
-	                      inputODTFile = new File(jobDescriptionFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + inputODTFilePathNode.getTextContent());
-	                  }
-	                  
+	                   }
+	                   
+	                   File inputODTFile = new File(inputODTFilePathNode.getTextContent());
+	                   
+	                   if (inputODTFile.isAbsolute() != true)
+	                   {
+	                       inputODTFile = new File(jobDescriptionFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + inputODTFilePathNode.getTextContent());
+	                   }
+	                   
                     if (inputODTFile.exists() != true)
                     {
                         System.out.print("odt2html2 workflow: '" + inputODTFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -257,19 +257,19 @@ public class odt2html2
                 System.exit(-13);
             }
             
-	          NodeList outputHTMLFileNodeList = document.getElementsByTagName("outFile");
-	          
-	          if (outputHTMLFileNodeList.getLength() > 0)
-	          {
-	              Node outputHTMLFileNode = outputHTMLFileNodeList.item(0);
-	              NamedNodeMap attributes = outputHTMLFileNode.getAttributes();
+            NodeList outputHTMLFileNodeList = document.getElementsByTagName("outFile");
+            
+            if (outputHTMLFileNodeList.getLength() > 0)
+            {
+                Node outputHTMLFileNode = outputHTMLFileNodeList.item(0);
+                NamedNodeMap attributes = outputHTMLFileNode.getAttributes();
 
                 if (attributes == null)
                 {
                     System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                     System.exit(-14);
                 }
-	                  
+                   
                 Node outputHTMLFilePathNode = attributes.getNamedItem("path");
                 
                 if (outputHTMLFilePathNode == null)
@@ -277,7 +277,7 @@ public class odt2html2
                     System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                     System.exit(-15);
                 }
-	                  
+                   
                 outputHTMLFile = new File(outputHTMLFilePathNode.getTextContent());
                 
                 if (outputHTMLFile.isAbsolute() != true)
