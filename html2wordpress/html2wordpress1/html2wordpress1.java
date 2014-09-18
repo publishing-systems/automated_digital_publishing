@@ -773,7 +773,7 @@ public class html2wordpress1
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
 
-            out.write(http.getBytes());
+            out.write(http.getBytes("UTF-8"));
 
             int length = 0;
             

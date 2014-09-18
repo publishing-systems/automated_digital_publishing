@@ -2,21 +2,21 @@
 <!--
 Copyright (C) 2014  Stephan Kreutzer
 
-This file is part of epub2html1.
+This file is part of xsltransformator1.
 
-epub2html1 is free software: you can redistribute it and/or modify
+xsltransformator1 is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License version 3 or any later version,
 as published by the Free Software Foundation.
 
-epub2html1 is distributed in the hope that it will be useful,
+xsltransformator1 is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License 3 for more details.
 
 You should have received a copy of the GNU Affero General Public License 3
-along with epub2html1. If not, see <http://www.gnu.org/licenses/>.
+along with xsltransformator1. If not, see <http://www.gnu.org/licenses/>.
 -->
-<epub2html1-entity-resolver-config>
+<xsltransformator1-entity-resolver-config>
   <entity>
     <resolve identifier="-//W3C//DTD XHTML 1.1//EN" reference="xhtml11.dtd"/>
     <resolve identifier="http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd" reference="xhtml11.dtd"/>
@@ -183,4 +183,4 @@ along with epub2html1. If not, see <http://www.gnu.org/licenses/>.
     <resolve identifier="-//W3C//ELEMENTS XHTML Document Structure 1.0//EN" reference="xhtml-struct-1.mod"/>
     <resolve identifier="http://www.w3.org/MarkUp/DTD/xhtml-struct-1.mod" reference="xhtml-struct-1.mod"/>
   </entity>
-</epub2html1-entity-resolver-config>
+</xsltransformator1-entity-resolver-config>
