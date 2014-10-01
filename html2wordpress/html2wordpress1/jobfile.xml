@@ -19,7 +19,7 @@ along with html2wordpress1. If not, see <http://www.gnu.org/licenses/>.
 <html2wordpress1-job>
   <input-html-file>input.html</input-html-file>
   <wordpress-xmlrpc-url>http://www.example.org/wordpress/xmlrpc.php</wordpress-xmlrpc-url>
-  <!-- User authentication equires the fixed version of the "Secure XML-RPC" WordPress plugin by Eric Mann from https://github.com/publishing-systems/secure-xmlrpc (original located here: https://wordpress.org/plugins/secure-xml-rpc/). -->
+  <!-- User authentication requires the fixed version of the "Secure XML-RPC" WordPress plugin by Eric Mann from https://github.com/publishing-systems/secure-xmlrpc (original located here: https://wordpress.org/plugins/secure-xml-rpc/). -->
   <wordpress-user-public-key>b730db0864b0d4453ba6a26ad6613cd4</wordpress-user-public-key>
   <wordpress-user-private-key>7647a19f5bf3e9fd001419900ad48a54</wordpress-user-private-key>
   <wordpress-post-user-id>1</wordpress-post-user-id>
