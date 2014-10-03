@@ -15,7 +15,7 @@
  * along with html2wordpress1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/workflows/html2wordpress1_jobfile_create_new1/html2wordpress1_config_create_new1.java
+ * @file $/workflows/html2wordpress1_jobfile_create_new1/html2wordpress1_jobfile_create_new1.java
  * @brief Creates a new job configuration file for html2wordpress1.
  * @author Stephan Kreutzer
  * @since 2014-10-01
