@@ -103,18 +103,18 @@ public class multitransform1
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	           Document document = documentBuilder.parse(inputListFile);
-	           document.getDocumentElement().normalize();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(inputListFile);
+            document.getDocumentElement().normalize();
               
-	           NodeList inputFilesNodeList = document.getElementsByTagName("input-file");
-	           int inputFilesNodeListLength = inputFilesNodeList.getLength();
+            NodeList inputFilesNodeList = document.getElementsByTagName("input-file");
+            int inputFilesNodeListLength = inputFilesNodeList.getLength();
 
-	           if (inputFilesNodeListLength > 0)
-	           {
-	               for (int i = 0; i < inputFilesNodeListLength; i++)
-	               {
-	                   Node inputFileNode = inputFilesNodeList.item(i);
+            if (inputFilesNodeListLength > 0)
+            {
+                for (int i = 0; i < inputFilesNodeListLength; i++)
+                {
+                    Node inputFileNode = inputFilesNodeList.item(i);
 
                     NamedNodeMap inputFileNodeAttributes = inputFileNode.getAttributes();
                     
@@ -142,11 +142,11 @@ public class multitransform1
 
                     File sourceFile = new File(sourceAttribute.getTextContent());
                     
-	                   if (sourceFile.isAbsolute() != true)
-	                   {
-	                       sourceFile = new File(inputListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + sourceAttribute.getTextContent());
-	                   }
-	                   
+                    if (sourceFile.isAbsolute() != true)
+                    {
+                        sourceFile = new File(inputListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + sourceAttribute.getTextContent());
+                    }
+                       
                     if (sourceFile.exists() != true)
                     {
                         System.out.print("multitransform1: Source file '" + sourceFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -167,10 +167,10 @@ public class multitransform1
 
                     File destinationFile = new File(destinationAttribute.getTextContent());
 
-	                   if (destinationFile.isAbsolute() != true)
-	                   {
-	                       destinationFile = new File(inputListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + destinationAttribute.getTextContent());
-	                   }
+                    if (destinationFile.isAbsolute() != true)
+                    {
+                        destinationFile = new File(inputListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + destinationAttribute.getTextContent());
+                    }
 
 
                     ProcessBuilder builder = new ProcessBuilder("java", "xsltransformator1", sourceFile.getAbsolutePath(), stylesheetFile.getAbsolutePath(), destinationFile.getAbsolutePath());

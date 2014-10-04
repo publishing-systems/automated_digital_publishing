@@ -31,6 +31,7 @@ along with epub2wordpress1 workflow. If not, see <http://www.gnu.org/licenses/>.
       <title>
         <xsl:value-of select="./xhtml:title"/>
       </title>
+      <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8"/>
     </head>
   </xsl:template>
 
