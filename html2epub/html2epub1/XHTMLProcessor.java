@@ -257,9 +257,9 @@ class XHTMLProcessor
 
                             if (href != null)
                             {
-                                if (href.getValue().startsWith("#") == true)
+                                if (href.getValue().startsWith("#") == true || href.getValue().startsWith("mailto:") == true)
                                 {
-                                    // Referencing an anchor or ID within the same file,
+                                    // Referencing an anchor or ID within the same file, or a mail to address
                                     // just ignore.
                                 }
                                 else if (href.getValue().contains("://") == false)
@@ -681,7 +681,7 @@ class XHTMLProcessor
                                 href = href.substring(new String("file://").length());
                             }
 
-                            if (href.startsWith("#") == true)
+                            if (href.startsWith("#") == true || href.startsWith("mailto:") == true)
                             {
                                 // Referencing an anchor or ID within the same file.
                                 
