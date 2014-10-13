@@ -524,7 +524,7 @@ public class html2epub1
         // Merge html2epub1 configuration file, which already contains the
         // list of HTML input files, with the metadata configuration file.
 
-        builder = new ProcessBuilder("java", "html2epub1_config_merge", outputDirectory.getAbsolutePath() + File.separator + "config.xml", inputConfigFile.getAbsolutePath(), outputDirectory.getAbsolutePath() + File.separator + "config.xml");
+        builder = new ProcessBuilder("java", "html2epub1_config_merge1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", inputConfigFile.getAbsolutePath(), outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1/workflows"));
 
         try

@@ -15,7 +15,7 @@
  * along with html2epub1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/workflows/html2epub1_config_merge.java
+ * @file $/workflows/html2epub1_config_merge1.java
  * @brief Merges file settings with metadata settings of two html2epub1
  *     configuration files.
  * @author Stephan Kreutzer
@@ -53,11 +53,11 @@ import javax.xml.transform.TransformerException;
 
 
 
-public class html2epub1_config_merge
+public class html2epub1_config_merge1
 {
     public static void main(String args[])
     {
-        System.out.print("html2epub1_config_merge  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1_config_merge1  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -67,7 +67,7 @@ public class html2epub1_config_merge
         if (args.length < 3)
         {
             System.out.print("Usage:\n" +
-                             "\thtml2epub1_config_merge file-config metadata-config merged-config\n\n");
+                             "\thtml2epub1_config_merge1 file-config metadata-config merged-config\n\n");
 
             System.exit(1);
         }
@@ -77,19 +77,19 @@ public class html2epub1_config_merge
         
         if (configFileLhs.exists() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileLhs.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileLhs.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-1);
         }
 
         if (configFileLhs.isFile() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileLhs.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileLhs.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-2);
         }
 
         if (configFileLhs.canRead() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileLhs.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileLhs.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-3);
         }
 
@@ -97,19 +97,19 @@ public class html2epub1_config_merge
         
         if (configFileRhs.exists() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileRhs.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileRhs.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-4);
         }
 
         if (configFileRhs.isFile() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileRhs.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileRhs.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-5);
         }
 
         if (configFileRhs.canRead() != true)
         {
-            System.out.print("html2epub1_config_merge: '" + configFileRhs.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("html2epub1_config_merge1: '" + configFileRhs.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-6);
         }
 
@@ -117,7 +117,7 @@ public class html2epub1_config_merge
 
         if (configFileLhs.getAbsolutePath().equalsIgnoreCase(configFileOut.getAbsolutePath()) != true)
         {
-            if (html2epub1_config_merge.CopyFile(configFileLhs, configFileOut) != 0)
+            if (html2epub1_config_merge1.CopyFile(configFileLhs, configFileOut) != 0)
             {
                 System.exit(-7);
             }
@@ -129,25 +129,25 @@ public class html2epub1_config_merge
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(configFileRhs);
-	          document.getDocumentElement().normalize();
+	        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+	        Document document = documentBuilder.parse(configFileRhs);
+	        document.getDocumentElement().normalize();
              
-	          NodeList metaDataNodeList = document.getElementsByTagName("metaData");
+	        NodeList metaDataNodeList = document.getElementsByTagName("metaData");
 	          
-	          if (metaDataNodeList.getLength() > 0)
-	          {
-	              NodeList metaDataSettings = metaDataNodeList.item(0).getChildNodes();
-	              int metaDataSettingsCount = metaDataSettings.getLength();
+	        if (metaDataNodeList.getLength() > 0)
+	        {
+	            NodeList metaDataSettings = metaDataNodeList.item(0).getChildNodes();
+	            int metaDataSettingsCount = metaDataSettings.getLength();
 	              
-	              for (int i = 0; i < metaDataSettingsCount; i++)
-	              {
-	                  if (metaDataSettings.item(i).getNodeType() != Node.ELEMENT_NODE)
-	                  {
-	                      continue;
-	                  }
-	              
-	                  Node metaDataNode = metaDataSettings.item(i);
+	            for (int i = 0; i < metaDataSettingsCount; i++)
+	            {
+	                if (metaDataSettings.item(i).getNodeType() != Node.ELEMENT_NODE)
+	                {
+	                    continue;
+	                }
+
+	                Node metaDataNode = metaDataSettings.item(i);
                     String tagName = metaDataNode.getNodeName();
 
                     if (metaData.containsKey(tagName) != true)
@@ -162,13 +162,13 @@ public class html2epub1_config_merge
                         }
                         else
                         {
-                            System.out.println("html2epub1_config_merge: '" + configFileRhs.getAbsolutePath() + "' contains meta data setting '" + tagName + "' twice.");
+                            System.out.println("html2epub1_config_merge1: '" + configFileRhs.getAbsolutePath() + "' contains meta data setting '" + tagName + "' twice.");
                             System.exit(-8);
                         }
                     }
-	              } 
-	          }
-	      }
+	            } 
+	        }
+	    }
         catch (ParserConfigurationException ex)
         {
             ex.printStackTrace();
@@ -189,14 +189,14 @@ public class html2epub1_config_merge
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(configFileLhs);
-	          document.getDocumentElement().normalize();
+	        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+	        Document document = documentBuilder.parse(configFileLhs);
+	        document.getDocumentElement().normalize();
              
-	          NodeList metaDataNodeList = document.getElementsByTagName("metaData");
-	          
-	          if (metaDataNodeList.getLength() > 0)
-	          {
+	        NodeList metaDataNodeList = document.getElementsByTagName("metaData");
+	         
+	        if (metaDataNodeList.getLength() > 0)
+	        {
                 Node metaDataNode = metaDataNodeList.item(0);
                 Node parentNode = metaDataNode.getParentNode();
                 parentNode.removeChild(metaDataNode);
@@ -280,19 +280,19 @@ public class html2epub1_config_merge
     {
         if (from.exists() != true)
         {
-            System.out.println("html2epub1_config_merge: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            System.out.println("html2epub1_config_merge1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
             return -1;
         }
         
         if (from.isFile() != true)
         {
-            System.out.println("html2epub1_config_merge: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            System.out.println("html2epub1_config_merge1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
             return -2;
         }
         
         if (from.canRead() != true)
         {
-            System.out.println("html2epub1_config_merge: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            System.out.println("html2epub1_config_merge1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
     
