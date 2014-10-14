@@ -102,7 +102,7 @@ public class html2wordpress1_jobfile_create_new1
             System.exit(1);
         }
         
-        File parent = jobFile.getParentFile();
+        File parent = jobFile.getAbsoluteFile().getParentFile();
         
         if (parent.exists() != true)
         {

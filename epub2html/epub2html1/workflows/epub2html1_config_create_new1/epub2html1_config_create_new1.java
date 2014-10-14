@@ -98,7 +98,7 @@ public class epub2html1_config_create_new1
             System.exit(1);
         }
         
-        File parent = configFile.getParentFile();
+        File parent = configFile.getAbsoluteFile().getParentFile();
         
         if (parent.exists() != true)
         {
