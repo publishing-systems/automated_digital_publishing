@@ -15,7 +15,7 @@
  * along with html_flat2hierarchical1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html_flat2hierarchical1.java
+ * @file $/html_flat2hierarchical/html_flat2hierarchical1.java
  * @brief Transforms a flat, sequencial HTML file to a hierarchical nested one.
  * @author Stephan Kreutzer
  * @since 2014-04-26
@@ -66,8 +66,8 @@ public class html_flat2hierarchical1
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository: https://github.com/publishing-systems/automated_digital_publishing/\n\n");
 
         if (args.length < 3)
         {

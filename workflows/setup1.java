@@ -49,156 +49,20 @@ public class setup1
     
         String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
     
-        {
-            File from = new File(programPath + "../w3c/xhtml1-strict.dtd");
+    
+        CopyXHTML_1_0_Strict(programPath, "../xsltransformator/xsltransformator1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html_flat2hierarchical/html_flat2hierarchical1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html_split/html_split1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html2epub/html2epub1/");
+        CopyXHTML_1_0_Strict(programPath, "../html2latex/html_prepare4latex1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html2wordpress/html2wordpress1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
+    
+        CopyXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
+        CopyXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");
+        CopyXHTML_1_1(programPath, "../xsltransformator/xsltransformator1/entities/");
+        CopyXHTML_1_1(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
 
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-1);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-2);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_split/html_split1/entities/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-3);
-            }       
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-4);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-22);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml1-strict.dtd")) != 0)
-            {
-                System.exit(-1);
-            }
-        }
-        
-        {
-            File from = new File(programPath + "../w3c/xhtml-lat1.ent");
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-5);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-6);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_split/html_split1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-7);
-            }       
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-8);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-23);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-lat1.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-        }
-        
-        {
-            File from = new File(programPath + "../w3c/xhtml-symbol.ent");
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-9);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-10);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_split/html_split1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-11);
-            }       
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-12);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-24);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-symbol.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-        }
-        
-        {
-            File from = new File(programPath + "../w3c/xhtml-special.ent");
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-13);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-14);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html_split/html_split1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-15);
-            }       
-            
-            if (setup1.CopyFile(from, new File(programPath + "../html2epub/html2epub1/xhtml-special.ent")) != 0)
-            {
-                System.exit(-16);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2latex/html_prepare4latex1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-25);
-            }
-            
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-special.ent")) != 0)
-            {
-                System.exit(-1);
-            }
-        }
 
         {
             File from = new File(programPath + "../w3c/xhtml1-strict.xsd");
@@ -543,672 +407,313 @@ public class setup1
             }
         }
 
+        return;
+    }
+
+    public static int CopyXHTML_1_0_Strict(String programPath, String to)
+    {
+        if (programPath.endsWith("/") != true &&
+            programPath.endsWith("\\") != true)
         {
-            File from = new File(programPath + "../w3c/xhtml11.dtd");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml11.dtd")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml11.dtd")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml11.dtd")) != 0)
-            {
-                System.exit(-1);
-            }
-        }
-
-        {
-            File from = new File(programPath + "../w3c/xhtml-inlstyle-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlstyle-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-inlstyle-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-inlstyle-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            programPath += "/";
         }
         
+        if (to.startsWith("/") == true)
         {
-            File from = new File(programPath + "../w3c/xhtml-datatypes-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-datatypes-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-datatypes-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-datatypes-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            to = to.substring(0, new String("/").length());
+        }
+        else if (to.startsWith("\\") == true)
+        {
+            to = to.substring(0, new String("\\").length());
+        }
+        
+        if (to.endsWith("/") != true &&
+            to.endsWith("\\") != true)
+        {
+            to += "/";
         }
 
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml1-strict.dtd"), 
+                            new File(programPath + to + "xhtml1-strict.dtd")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-framework-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-framework-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-framework-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-framework-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-lat1.ent"), 
+                            new File(programPath + to + "xhtml-lat1.ent")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-qname-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-qname-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-qname-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-qname-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-symbol.ent"), 
+                            new File(programPath + to + "xhtml-symbol.ent")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-events-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-events-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-events-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-events-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-special.ent"), 
+                            new File(programPath + to + "xhtml-special.ent")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-attribs-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-attribs-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-attribs-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-attribs-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        return 0;
+    }
+
+    public static int CopyXHTML_1_1(String programPath, String to)
+    {
+        if (programPath.endsWith("/") != true &&
+            programPath.endsWith("\\") != true)
         {
-            File from = new File(programPath + "../w3c/xhtml11-model-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml11-model-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml11-model-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml11-model-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            programPath += "/";
+        }
+        
+        if (to.startsWith("/") == true)
+        {
+            to = to.substring(0, new String("/").length());
+        }
+        else if (to.startsWith("\\") == true)
+        {
+            to = to.substring(0, new String("\\").length());
+        }
+        
+        if (to.endsWith("/") != true &&
+            to.endsWith("\\") != true)
+        {
+            to += "/";
         }
 
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml11.dtd"), 
+                            new File(programPath + to + "xhtml11.dtd")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-charent-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-charent-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-charent-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-charent-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-inlstyle-1.mod"),
+                            new File(programPath + to + "xhtml-inlstyle-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-text-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-text-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-text-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-text-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-datatypes-1.mod"),
+                            new File(programPath + to + "xhtml-datatypes-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-framework-1.mod"),
+                            new File(programPath + to + "xhtml-framework-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-qname-1.mod"),
+                            new File(programPath + to + "xhtml-qname-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-events-1.mod"),
+                            new File(programPath + to + "xhtml-events-1.mod")) != 0)
+        {
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-attribs-1.mod"),
+                            new File(programPath + to + "xhtml-attribs-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-inlstruct-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-inlstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-inlstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml11-model-1.mod"),
+                            new File(programPath + to + "xhtml11-model-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-inlphras-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-inlphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-inlphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-charent-1.mod"),
+                            new File(programPath + to + "xhtml-charent-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-blkstruct-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-blkstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-blkstruct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-lat1.ent"),
+                            new File(programPath + to + "xhtml-lat1.ent")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-blkphras-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-blkphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-blkphras-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-symbol.ent"),
+                            new File(programPath + to + "xhtml-symbol.ent")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-hypertext-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-hypertext-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-hypertext-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-hypertext-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-special.ent"),
+                            new File(programPath + to + "xhtml-special.ent")) != 0)
+        {
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-text-1.mod"),
+                            new File(programPath + to + "xhtml-text-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-list-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-list-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-list-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-list-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-inlstruct-1.mod"),
+                            new File(programPath + to + "xhtml-inlstruct-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-edit-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-edit-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-edit-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-edit-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-inlphras-1.mod"),
+                            new File(programPath + to + "xhtml-inlphras-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-bdo-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-bdo-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-bdo-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-bdo-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-blkstruct-1.mod"),
+                            new File(programPath + to + "xhtml-blkstruct-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-ruby-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-ruby-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-ruby-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-ruby-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-blkphras-1.mod"),
+                            new File(programPath + to + "xhtml-blkphras-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-pres-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-pres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-pres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-pres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
+        }
+        
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-hypertext-1.mod"),
+                            new File(programPath + to + "xhtml-hypertext-1.mod")) != 0)
+        {
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-list-1.mod"),
+                            new File(programPath + to + "xhtml-list-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-inlpres-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-inlpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-inlpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-inlpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-edit-1.mod"),
+                            new File(programPath + to + "xhtml-edit-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-blkpres-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-blkpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-blkpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-blkpres-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-bdo-1.mod"),
+                            new File(programPath + to + "xhtml-bdo-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-link-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-link-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-link-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-link-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-ruby-1.mod"),
+                            new File(programPath + to + "xhtml-ruby-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-meta-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-meta-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-meta-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-meta-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-pres-1.mod"),
+                            new File(programPath + to + "xhtml-pres-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-base-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-base-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-base-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-base-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-inlpres-1.mod"),
+                            new File(programPath + to + "xhtml-inlpres-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-script-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-script-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-script-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-script-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-blkpres-1.mod"),
+                            new File(programPath + to + "xhtml-blkpres-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-style-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-style-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-style-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-style-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-link-1.mod"),
+                            new File(programPath + to + "xhtml-link-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-image-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-image-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-image-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-image-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-meta-1.mod"),
+                            new File(programPath + to + "xhtml-meta-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-csismap-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-csismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-csismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-csismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-base-1.mod"),
+                            new File(programPath + to + "xhtml-base-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-ssismap-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-ssismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-ssismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-ssismap-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-script-1.mod"),
+                            new File(programPath + to + "xhtml-script-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-param-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-param-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-param-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-param-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-style-1.mod"),
+                            new File(programPath + to + "xhtml-style-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-object-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-object-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-object-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-object-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-image-1.mod"),
+                            new File(programPath + to + "xhtml-image-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-table-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-table-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-table-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-table-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-csismap-1.mod"),
+                            new File(programPath + to + "xhtml-csismap-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-form-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-form-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-form-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-form-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-ssismap-1.mod"),
+                            new File(programPath + to + "xhtml-ssismap-1.mod")) != 0)
         {
-            File from = new File(programPath + "../w3c/xhtml-struct-1.mod");
-
-            if (setup1.CopyFile(from, new File(programPath + "../epub2html/epub2html1/entities/xhtml-struct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../html2wordpress/html2wordpress1/entities/xhtml-struct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
-
-            if (setup1.CopyFile(from, new File(programPath + "../xsltransformator/xsltransformator1/entities/xhtml-struct-1.mod")) != 0)
-            {
-                System.exit(-1);
-            }
+            System.exit(-1);
         }
 
-        return;
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-param-1.mod"),
+                            new File(programPath + to + "xhtml-param-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-object-1.mod"),
+                            new File(programPath + to + "xhtml-object-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-table-1.mod"),
+                            new File(programPath + to + "xhtml-table-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-form-1.mod"),
+                            new File(programPath + to + "xhtml-form-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+
+        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-struct-1.mod"),
+                            new File(programPath + to + "xhtml-struct-1.mod")) != 0)
+        {
+            System.exit(-1);
+        }
+        
+        return 0;
     }
     
     public static int CopyFile(File from, File to)
@@ -1230,8 +735,8 @@ public class setup1
             System.out.println("setup1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
-    
-    
+
+
         char[] buffer = new char[1024];
 
         try
