@@ -1,47 +1,48 @@
 /* Copyright (C) 2014  Stephan Kreutzer
  *
- * This file is part of html_attributeanalyzer1.
+ * This file is part of html_attributereplace1.
  *
- * html_attributeanalyzer1 is free software: you can redistribute it and/or modify
+ * html_attributereplace1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html_attributeanalyzer1 is distributed in the hope that it will be useful,
+ * html_attributereplace1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html_attributeanalyzer1. If not, see <http://www.gnu.org/licenses/>.
+ * along with html_attributereplace1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html_attributeanalyzer/html_attributeanalyzer1.java
- * @brief Generates a list of the attributes used in a XML file, recognizing
- *     parent element, element, attribute name and attribute value.
+ * @file $/html_attributereplace/html_attributereplace1.java
+ * @brief Replaces the value of certain attributes of certain elements.
  * @author Stephan Kreutzer
- * @since 2014-10-25
+ * @since 2014-11-01
  */
 
 
 
 import java.io.File;
+import java.util.Map;
+import java.util.HashMap;
 import javax.xml.stream.XMLInputFactory;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.events.XMLEvent;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
-import javax.xml.namespace.QName;
 import javax.xml.stream.events.Attribute;
-import java.util.Stack;
+import javax.xml.namespace.QName;
 import java.io.FileNotFoundException;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLResolver;
 import java.io.IOException;
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
+import java.io.FileOutputStream;
+import java.util.Iterator;
+import javax.xml.stream.events.Namespace;
+import java.io.UnsupportedEncodingException;
 import org.w3c.dom.Document;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -50,28 +51,24 @@ import org.xml.sax.SAXException;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
-import java.io.UnsupportedEncodingException;
 
 
 
-public class html_attributeanalyzer1
+public class html_attributereplace1
 {
     public static void main(String args[])
     {
-        System.out.print("html_attributeanalyzer1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html_attributereplace1  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository: https://github.com/publishing-systems/automated_digital_publishing/\n\n");
 
-        if (args.length < 2)
+        if (args.length < 3)
         {
             System.out.print("Usage:\n" +
-                             "\thtml_attributeanalyzer1 in-file out-file\n\n");
+                             "\thtml_attributereplace1 in-file mapping-file out-file\n\n");
 
             System.exit(1);
         }
@@ -81,23 +78,43 @@ public class html_attributeanalyzer1
 
         if (inFile.exists() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
-            System.exit(-3);
+            System.out.print("html_attributereplace1: '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.exit(-1);
         }
 
         if (inFile.isFile() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + inFile.getAbsolutePath() + "' isn't a file.\n");
-            System.exit(-4);
+            System.out.print("html_attributereplace1: '" + inFile.getAbsolutePath() + "' isn't a file.\n");
+            System.exit(-1);
         }
 
         if (inFile.canRead() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
-            System.exit(-5);
+            System.out.print("html_attributereplace1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
+            System.exit(-1);
         }
 
-        String programPath = html_attributeanalyzer1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        File mappingFile = new File(args[1]);
+
+        if (mappingFile.exists() != true)
+        {
+            System.out.print("html_attributereplace1: '" + mappingFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.exit(-1);
+        }
+
+        if (mappingFile.isFile() != true)
+        {
+            System.out.print("html_attributereplace1: '" + mappingFile.getAbsolutePath() + "' isn't a file.\n");
+            System.exit(-1);
+        }
+
+        if (mappingFile.canRead() != true)
+        {
+            System.out.print("html_attributereplace1: '" + mappingFile.getAbsolutePath() + "' isn't readable.\n");
+            System.exit(-1);
+        }
+
+        String programPath = html_attributereplace1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
         File entitiesDirectory = new File(programPath + "entities");
         
@@ -105,7 +122,7 @@ public class html_attributeanalyzer1
         {
             if (entitiesDirectory.mkdir() != true)
             {
-                System.out.print("html_attributeanalyzer1: Can't create entities directory '" + entitiesDirectory.getAbsolutePath() + "'.\n");
+                System.out.print("html_attributereplace1: Can't create entities directory '" + entitiesDirectory.getAbsolutePath() + "'.\n");
                 System.exit(-1);
             }
         }
@@ -113,12 +130,102 @@ public class html_attributeanalyzer1
         {
             if (entitiesDirectory.isDirectory() != true)
             {
-                System.out.print("html_attributeanalyzer1: Entities path '" + entitiesDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.out.print("html_attributereplace1: Entities path '" + entitiesDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
                 System.exit(-1);
             }
         }
 
-        File outFile = new File(args[1]);
+        File outFile = new File(args[2]);
+
+
+        Map<String, String> mapping = new HashMap<String, String>();
+
+        try
+        {
+            XMLInputFactory inputFactory = XMLInputFactory.newInstance();
+            InputStream in = new FileInputStream(mappingFile);
+            XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
+
+            XMLEvent event = null;
+
+
+            while (eventReader.hasNext() == true)
+            {
+                event = eventReader.nextEvent();
+                
+                if (event.isStartElement() == true)
+                {
+                    QName elementName = event.asStartElement().getName();
+                    String elementNameString = elementName.getLocalPart();
+
+                    if (elementNameString.equalsIgnoreCase("mapping") == true)
+                    {
+                        Attribute attributeElement = event.asStartElement().getAttributeByName(new QName("element"));
+                        Attribute attributeAttribute = event.asStartElement().getAttributeByName(new QName("attribute"));
+                        Attribute attributeOldValue = event.asStartElement().getAttributeByName(new QName("old-value"));
+                        Attribute attributeNewValue = event.asStartElement().getAttributeByName(new QName("new-value"));
+                        
+                        if (attributeElement == null)
+                        {
+                            System.out.println("html_attributereplace1: Mapping is missing the 'element' attribute in " + mappingFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
+
+                        if (attributeAttribute == null)
+                        {
+                            System.out.println("html_attributereplace1: Mapping is missing the 'attribute' attribute in " + mappingFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
+
+                        if (attributeOldValue == null)
+                        {
+                            System.out.println("html_attributereplace1: Mapping is missing the 'old-value' attribute in " + mappingFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
+
+                        if (attributeNewValue == null)
+                        {
+                            System.out.println("html_attributereplace1: Mapping is missing the 'new-value' attribute in " + mappingFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
+
+                        String element = attributeElement.getValue();
+                        String attribute = attributeAttribute.getValue();
+                        String oldValue = attributeOldValue.getValue();
+                        String newValue = attributeNewValue.getValue();
+
+                        if (mapping.containsKey(element + "/" + attribute + "/" + oldValue) != true)
+                        {
+                            mapping.put(element + "/" + attribute + "/" + oldValue, newValue);
+                        }
+                        else
+                        {
+                            String existingNewValue = mapping.get(element + "/" + attribute + "/" + oldValue);
+                            
+                            if (existingNewValue.equals(newValue) == true)
+                            {
+                                System.out.println("html_attributereplace1: New value '" + newValue + "' in mapping for element '" + element + "', attribute '" + attribute + "', old value '" + oldValue + "' is configured more than once.");
+                            }
+                            else
+                            {
+                                System.out.println("html_attributereplace1: Mapping for element '" + element + "', attribute '" + attribute + "', old value '" + oldValue + "' is configured more than once, new value '" + newValue + "' differs from '" + existingNewValue + "'.");
+                                System.exit(-1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (XMLStreamException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
 
         String doctypeDeclaration = new String("<!DOCTYPE");
@@ -186,61 +293,35 @@ public class html_attributeanalyzer1
         if (doctype.contains("\"-//W3C//DTD XHTML 1.0 Strict//EN\"") == true)
         {
             resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
-            
-            if (resolverConfigFile.exists() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
-                System.exit(-1);
-            }
-
-            if (resolverConfigFile.isFile() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
-                System.exit(-1);
-            }
-
-            if (resolverConfigFile.canRead() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
-                System.exit(-1);
-            }
         }
         else if (doctype.contains("\"-//W3C//DTD XHTML 1.1//EN\"") == true)
         {
             resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
-            
-            if (resolverConfigFile.exists() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
-                System.exit(-1);
-            }
-
-            if (resolverConfigFile.isFile() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
-                System.exit(-1);
-            }
-
-            if (resolverConfigFile.canRead() != true)
-            {
-                System.out.print("html_attributeanalyzer1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
-                System.exit(-1);
-            }
         }
         else
         {
-            System.out.print("html_attributeanalyzer1: Unknown XHTML version.\n");
+            System.out.print("html_attributereplace1: Unknown XHTML version.\n");
             System.exit(-1);
         }
-
-        if (resolverConfigFile == null)
+        
+        if (resolverConfigFile.exists() != true)
         {
+            System.out.print("html_attributereplace1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-1);
         }
 
+        if (resolverConfigFile.isFile() != true)
+        {
+            System.out.print("html_attributereplace1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
+            System.exit(-1);
+        }
 
-        Map<String, List<AttributeInformation>> attributeInformationMap = new HashMap<String, List<AttributeInformation>>();
-        Stack<String> structureStack = new Stack<String>();
+        if (resolverConfigFile.canRead() != true)
+        {
+            System.out.print("html_attributereplace1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
+            System.exit(-1);
+        }
+
 
         try
         {
@@ -252,8 +333,17 @@ public class html_attributeanalyzer1
             XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
 
             XMLEvent event = null;
-            
+
             boolean body = false;
+
+            BufferedWriter writer = new BufferedWriter(
+                                    new OutputStreamWriter(
+                                    new FileOutputStream(outFile.getAbsolutePath()),
+                                    "UTF8"));
+
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<!-- This file was created by html_attributereplace1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+            writer.write(doctype + "\n");
 
             while (eventReader.hasNext() == true)
             {
@@ -261,13 +351,6 @@ public class html_attributeanalyzer1
 
                 if (event.isStartElement() == true)
                 {
-                    String parentElement = new String();
-                
-                    if (structureStack.empty() != true)
-                    {
-                        parentElement = structureStack.peek();
-                    }
-                
                     QName elementName = event.asStartElement().getName();
                     String fullElementName = elementName.getLocalPart();
                     
@@ -275,26 +358,21 @@ public class html_attributeanalyzer1
                     {
                         fullElementName = elementName.getPrefix() + ":" + fullElementName;
                     }
-                
+
                     if (body == false &&
                         fullElementName.equalsIgnoreCase("body") == true)
                     {
                         body = true;
                     }
-                    
-                    if (body == false)
-                    {
-                        continue;
-                    }
-                
-                    structureStack.push(fullElementName);
-                
+
+                    writer.write("<" + fullElementName);
+
                     // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                     @SuppressWarnings("unchecked")
                     Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-
+                    
                     while (attributes.hasNext() == true)
-                    {
+                    {  
                         Attribute attribute = attributes.next();
                         QName attributeName = attribute.getName();
                         String fullAttributeName = attributeName.getLocalPart();
@@ -304,60 +382,72 @@ public class html_attributeanalyzer1
                             fullAttributeName = attributeName.getPrefix() + ":" + fullAttributeName;
                         }
 
-                        if (attributeInformationMap.containsKey(fullAttributeName) != true)
+                        String attributeValue = attribute.getValue();
+                        String mappingKey = fullElementName + "/" + fullAttributeName + "/" + attributeValue;
+                        
+                        if (mapping.containsKey(mappingKey) == true &&
+                            body == true)
                         {
-                            attributeInformationMap.put(fullAttributeName, new ArrayList<AttributeInformation>());
+                            writer.write(" " + fullAttributeName + "=\"" + mapping.get(mappingKey) + "\"");
                         }
-
-                        Iterator<AttributeInformation> iterAttributeInformation = attributeInformationMap.get(fullAttributeName).iterator();
-                        boolean found = false;
-                         
-                        while (iterAttributeInformation.hasNext() == true)
+                        else
                         {
-                            AttributeInformation attributeInformation = iterAttributeInformation.next();
-                            
-                            if (attributeInformation.GetParent().equals(parentElement) &&
-                                attributeInformation.GetElement().equals(fullElementName) &&
-                                attributeInformation.GetAttribute().equals(fullAttributeName) &&
-                                attributeInformation.GetValue().equals(attribute.getValue()))
-                            {
-                                found = true;
-                                break;
-                            }
+                            writer.write(" " + fullAttributeName + "=\"" + attributeValue + "\"");
                         }
                         
-                        if (found == false)
+                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                        @SuppressWarnings("unchecked")
+                        Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
+                        
+                        if (namespaces.hasNext() == true)
                         {
-                            AttributeInformation newEntry = new AttributeInformation(parentElement,
-                                                                                     fullElementName,
-                                                                                     fullAttributeName,
-                                                                                     attribute.getValue());
-                            attributeInformationMap.get(fullAttributeName).add(newEntry);
+                            Namespace namespace = namespaces.next();
+                            
+                            if (namespace.isDefaultNamespaceDeclaration() == true &&
+                                namespace.getPrefix().length() <= 0)
+                            {
+                                writer.write(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
+                            }
+                            else
+                            {
+                                writer.write(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
+                            }
                         }
                     }
+
+                    writer.write(">");
                 }
                 else if (event.isEndElement() == true)
                 {
-                    if (body == true)
-                    {
-                        structureStack.pop();
-
-                        QName elementName = event.asEndElement().getName();
-                        String fullElementName = elementName.getLocalPart();
-
-                        if (elementName.getPrefix().isEmpty() != true)
-                        {
-                            fullElementName = elementName.getPrefix() + ":" + fullElementName;
-                        }
+                    QName elementName = event.asEndElement().getName();
+                    String fullElementName = elementName.getLocalPart();
                     
-                        if (structureStack.empty() == true &&
-                            fullElementName.equalsIgnoreCase("body") == true)
-                        {
-                            body = false;
-                        }
+                    if (elementName.getPrefix().isEmpty() != true)
+                    {
+                        fullElementName = elementName.getPrefix() + ":" + fullElementName;
                     }
+
+                    if (fullElementName.equalsIgnoreCase("body") == true)
+                    {
+                        if (body == false)
+                        {
+                            System.out.println("html_attributereplace1: 'body' end element found more than once.");
+                            System.exit(-1);
+                        }
+
+                        body = false;
+                    }
+
+                    writer.write("</" + fullElementName + ">");
+                }
+                else if (event.isCharacters() == true)
+                {
+                    event.writeAsEncodedUnicode(writer);
                 }
             }
+
+            writer.flush();
+            writer.close();
         }
         catch (FileNotFoundException ex)
         {
@@ -365,53 +455,6 @@ public class html_attributeanalyzer1
             System.exit(-1);
         }
         catch (XMLStreamException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-1);
-        }
-
-
-        try
-        {
-            BufferedWriter writer = new BufferedWriter(
-                                    new OutputStreamWriter(
-                                    new FileOutputStream(outFile),
-                                    "UTF8"));
-
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<!-- This file was created by html_attributeanalyzer1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
-            writer.write("<attribute-list>\n");
-
-            Iterator iterMap = attributeInformationMap.entrySet().iterator();
-
-            while (iterMap.hasNext() == true)
-            {
-                Map.Entry pair = (Map.Entry)iterMap.next();
-                
-                // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                @SuppressWarnings("unchecked")
-                List<AttributeInformation> attributeInformationList = (List<AttributeInformation>)pair.getValue();
-
-                Iterator<AttributeInformation> iterAttributeInformation = attributeInformationList.iterator();
-
-                while (iterAttributeInformation.hasNext() == true)
-                {
-                    AttributeInformation attributeInformation = iterAttributeInformation.next();
-                    
-                    writer.write("  <attribute ");
-                    writer.write("element=\"" + attributeInformation.GetElement() + "\" ");
-                    writer.write("attribute=\"" + attributeInformation.GetAttribute() + "\" ");
-                    writer.write("value=\"" + attributeInformation.GetValue() + "\" ");
-                    writer.write("parent=\"" + attributeInformation.GetParent() + "\"/>\n");
-                }
-            }
-            
-            writer.write("</attribute-list>\n");
-
-            writer.flush();
-            writer.close();
-        }
-        catch (FileNotFoundException ex)
         {
             ex.printStackTrace();
             System.exit(-1);
@@ -521,7 +564,7 @@ class EntityResolverLocal implements XMLResolver
                         
                         if (identifier.length() <= 0)
                         {
-                            System.out.print("html_attributeanalyzer1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
+                            System.out.print("html_attributereplace1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
                             System.exit(-1);
                         }
                         
@@ -546,19 +589,19 @@ class EntityResolverLocal implements XMLResolver
                         
                         if (referencedFile.exists() != true)
                         {
-                            System.out.print("html_attributeanalyzer1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+                            System.out.print("html_attributereplace1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.isFile() != true)
                         {
-                            System.out.print("html_attributeanalyzer1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+                            System.out.print("html_attributereplace1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.canRead() != true)
                         {
-                            System.out.print("html_attributeanalyzer1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+                            System.out.print("html_attributereplace1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
                             System.exit(-1);
                         }
                         
@@ -568,7 +611,7 @@ class EntityResolverLocal implements XMLResolver
                         }
                         else
                         {
-                            System.out.print("html_attributeanalyzer1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
+                            System.out.print("html_attributereplace1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
                             System.exit(-1);
                         }
                     }
@@ -584,13 +627,13 @@ class EntityResolverLocal implements XMLResolver
     {
         if (this.entitiesDirectory == null)
         {
-            System.out.print("html_attributeanalyzer1: Can't resolve entity, no local entities directory.\n");
+            System.out.print("html_attributereplace1: Can't resolve entity, no local entities directory.\n");
             System.exit(-1);
         }
         
         if (this.configFile == null)
         {
-            System.out.print("html_attributeanalyzer1: Can't resolve entity, no entities configured.\n");
+            System.out.print("html_attributereplace1: Can't resolve entity, no entities configured.\n");
             System.exit(-1);
         }
     
@@ -614,25 +657,25 @@ class EntityResolverLocal implements XMLResolver
         
         if (localEntity == null)
         {
-            System.out.print("html_attributeanalyzer1: Can't resolve entity with public ID '" + publicID + "', system ID '" + systemID + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
+            System.out.print("html_attributereplace1: Can't resolve entity with public ID '" + publicID + "', system ID '" + systemID + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
             System.exit(-1);
         }
     
         if (localEntity.exists() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+            System.out.print("html_attributereplace1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
             System.exit(-1);
         }
         
         if (localEntity.isFile() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+            System.out.print("html_attributereplace1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
             System.exit(-1);
         }
         
         if (localEntity.canRead() != true)
         {
-            System.out.print("html_attributeanalyzer1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+            System.out.print("html_attributereplace1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
             System.exit(-1);
         }
         
@@ -654,44 +697,5 @@ class EntityResolverLocal implements XMLResolver
     protected File configFile;
     protected File entitiesDirectory;
     protected Map<String, File> localEntities;
-}
-
-class AttributeInformation
-{
-    public AttributeInformation(String parent,
-                                String element,
-                                String attribute,
-                                String value)
-    {
-        this.parent = parent;
-        this.element = element;
-        this.attribute = attribute;
-        this.value = value;
-    }                           
-
-    public String GetParent()
-    {
-        return this.parent;
-    }
-    
-    public String GetElement()
-    {
-        return this.element;
-    }
-    
-    public String GetAttribute()
-    {
-        return this.attribute;
-    }
-    
-    public String GetValue()
-    {
-        return this.value;
-    }
-
-    protected String parent;
-    protected String element;
-    protected String attribute;
-    protected String value;
 }
 
