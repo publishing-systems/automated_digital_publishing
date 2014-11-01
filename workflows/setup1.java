@@ -58,12 +58,14 @@ public class setup1
         CopyXHTML_1_0_Strict(programPath, "../html2wordpress/html2wordpress1/entities/");
         CopyXHTML_1_0_Strict(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
         CopyXHTML_1_0_Strict(programPath, "../html_attributereplace/html_attributereplace1/entities/");
+        CopyXHTML_1_0_Strict(programPath, "../html_concatenate/html_concatenate1/entities/");
     
         CopyXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
         CopyXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");
         CopyXHTML_1_1(programPath, "../xsltransformator/xsltransformator1/entities/");
         CopyXHTML_1_1(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
         CopyXHTML_1_1(programPath, "../html_attributereplace/html_attributereplace1/entities/");
+        CopyXHTML_1_1(programPath, "../html_concatenate/html_concatenate1/entities/");
 
 
         {
