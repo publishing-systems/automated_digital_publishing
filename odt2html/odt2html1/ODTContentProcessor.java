@@ -80,7 +80,7 @@ class ODTContentProcessor
                 {
                     QName elementName = event.asStartElement().getName();
                     String fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
-                    
+
                     if (fullElementName.equalsIgnoreCase("office:document-content") == true)
                     {
                         Attribute attributeVersion = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_OFFICE_NAMESPACE_URI, "version", "office"));
@@ -303,7 +303,7 @@ class ODTContentProcessor
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
-            writer.write("<!-- This file was created by odt2html1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
+            writer.write("<!-- This file was created by odt2html1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
             /** @todo: Specify language of the content with lang-attribute. */
             writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
             writer.write("  <head>\n");
@@ -341,6 +341,46 @@ class ODTContentProcessor
                              body == true)
                     {
                         text = true;
+                    }
+                    else if (fullElementName.equalsIgnoreCase("draw:image") == true &&
+                             body == true)
+                    {
+                        Attribute attributeHref = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "href", "xlink"));
+
+                        if (attributeHref != null)
+                        {
+                            File imageFile = new File(this.contentFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + attributeHref.getValue());
+                            
+                            if (imageFile.exists() != true)
+                            {
+                                System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' doesn't exist.\n");
+                                return -1;
+                            }
+
+                            if (imageFile.isFile() != true)
+                            {
+                                System.out.print("odt2html1: Image path '" + imageFile.getAbsolutePath() + "' isn't a file.\n");
+                                return -1;
+                            }
+
+                            if (imageFile.canRead() != true)
+                            {
+                                System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' isn't readable.\n");
+                                return -1;
+                            }
+
+                            if (CopyFileBinary(imageFile, new File(xhtmlOutFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + imageFile.getName())) != 0)
+                            {
+                                return -1;
+                            }
+
+                            writer.write("<img src=\"" + imageFile.getName() + "\"/>");
+                        }
+                        else
+                        {
+                            System.out.println("odt2html1: Image is missing the 'href' reference.");
+                        }
+
                     }
                     else if (fullElementName.equalsIgnoreCase("text:p") == true &&
                              body == true &&
@@ -630,6 +670,61 @@ class ODTContentProcessor
     public Map<String, String> GetContentInfo()
     {
         return this.contentInfo;
+    }
+
+    public static int CopyFileBinary(File from, File to)
+    {
+        if (from.exists() != true)
+        {
+            System.out.println("odt2html1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            return -1;
+        }
+        
+        if (from.isFile() != true)
+        {
+            System.out.println("odt2html1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            return -2;
+        }
+        
+        if (from.canRead() != true)
+        {
+            System.out.println("odt2html1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            return -3;
+        }
+    
+    
+        byte[] buffer = new byte[1024];
+
+        try
+        {
+            to.createNewFile();
+
+            FileInputStream reader = new FileInputStream(from);
+            FileOutputStream writer = new FileOutputStream(to);
+            
+            int bytesRead = reader.read(buffer, 0, buffer.length);
+            
+            while (bytesRead > 0)
+            {
+                writer.write(buffer, 0, bytesRead);
+                bytesRead = reader.read(buffer, 0, buffer.length);
+            }
+            
+            writer.close();
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            return -4;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            return -5;
+        }
+    
+        return 0;
     }
 
     static final String ODT_CONTENT_OFFICE_NAMESPACE_URI = "urn:oasis:names:tc:opendocument:xmlns:office:1.0";
