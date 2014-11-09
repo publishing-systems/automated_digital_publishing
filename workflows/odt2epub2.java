@@ -1,25 +1,25 @@
 /* Copyright (C) 2014  Stephan Kreutzer
  *
- * This file is part of odt2epub1 workflow.
+ * This file is part of odt2epub2 workflow.
  *
- * odt2epub1 workflow is free software: you can redistribute it and/or modify
+ * odt2epub2 workflow is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * odt2epub1 workflow is distributed in the hope that it will be useful,
+ * odt2epub2 workflow is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with odt2epub1 workflow. If not, see <http://www.gnu.org/licenses/>.
+ * along with odt2epub2 workflow. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/workflows/odt2epub1.java
+ * @file $/workflows/odt2epub2.java
  * @brief Workflow to automatically process a semantic ODT input file based on
  *     template1 of odt2html to an EPUB2.
  * @author Stephan Kreutzer
- * @since 2014-05-17
+ * @since 2014-11-09
  */
 
 
@@ -41,32 +41,28 @@ import java.util.List;
 
 
 
-
-public class odt2epub1
+public class odt2epub2
 {
     public static void main(String args[])
     {
-        System.out.print("odt2epub1 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("odt2epub2 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
     
-        String programPath = odt2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = odt2epub2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
-        
-        ProcessBuilder builder = null;
-        
-        if (args.length > 0)
+        if (args.length < 3)
         {
-            builder = new ProcessBuilder("java", "odt2html1", args[0]);
+            System.out.print("Usage:\n" +
+                             "\todt2epub2 odt-in-file html2epub1-config-file epub-out-file\n\n");
+            System.exit(1);
         }
-        else
-        {
-            builder = new ProcessBuilder("java", "odt2html1");
-        }
-        
+
+        ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", args[0]);
         builder.directory(new File(programPath));
 
         try
@@ -92,14 +88,14 @@ public class odt2epub1
         
         if (tempDirectory.exists() != true)
         {
-            System.out.print("odt2epub1 workflow: Temp directory '" + tempDirectory.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("odt2epub2 workflow: Temp directory '" + tempDirectory.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-6);
         }
         else
         {
             if (tempDirectory.isDirectory() != true)
             {
-                System.out.print("odt2epub1 workflow: Temp directory path '" + tempDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.out.print("odt2epub2 workflow: Temp directory path '" + tempDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
                 System.exit(-7);
             }
         }
@@ -109,16 +105,16 @@ public class odt2epub1
         
         if (outputDirectory.exists() == true)
         {  
-            if (odt2epub1.DeleteFileRecursively(outputDirectory) != 0)
+            if (odt2epub2.DeleteFileRecursively(outputDirectory) != 0)
             {
-                System.out.println("odt2epub1 workflow: Can't clean '" + outputDirectory.getAbsolutePath() + "'.");
+                System.out.println("odt2epub2 workflow: Can't clean '" + outputDirectory.getAbsolutePath() + "'.");
                 System.exit(-13);
             }
         }
         
         if (outputDirectory.mkdirs() != true)
         {
-            System.out.print("odt2epub1 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
+            System.out.print("odt2epub2 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
             System.exit(-14);
         }
         
@@ -127,7 +123,7 @@ public class odt2epub1
             File from = new File(programPath + "../html_split/html_split1/entities/config_xhtml1-strict.xml");
             File to = new File(programPath + "../html_split/html_split1/entities/config.xml");
             
-            if (odt2epub1.CopyFile(from, to) != 0)
+            if (odt2epub2.CopyFile(from, to) != 0)
             {
                 System.exit(-15);
             }
@@ -179,19 +175,19 @@ public class odt2epub1
             {
                 if (splittedParts.get(i-1).exists() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
+                    System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
                     continue;
                 }
                 
                 if (splittedParts.get(i-1).isFile() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
+                    System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
                     continue;
                 }
                 
                 if (splittedParts.get(i-1).canRead() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
+                    System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
                     continue;
                 }
 
@@ -222,19 +218,19 @@ public class odt2epub1
             {
                 if (splittedParts.get(i-1).exists() != true)
                 {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
+                    //System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
                     continue;
                 }
                 
                 if (splittedParts.get(i-1).isFile() != true)
                 {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
+                    //System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
                     continue;
                 }
                 
                 if (splittedParts.get(i-1).canRead() != true)
                 {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
+                    //System.out.println("odt2epub2 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
                     continue;
                 }
             
@@ -271,19 +267,19 @@ public class odt2epub1
                     {
                         if (splittedChapters.get(j-1).exists() != true)
                         {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
+                            System.out.println("odt2epub2 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
                             continue;
                         }
                         
                         if (splittedChapters.get(j-1).isFile() != true)
                         {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should be a file, but isn't.");
+                            System.out.println("odt2epub2 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should be a file, but isn't.");
                             continue;
                         }
                         
                         if (splittedChapters.get(j-1).canRead() != true)
                         {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' isn't readable.");
+                            System.out.println("odt2epub2 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' isn't readable.");
                             continue;
                         }
                     
@@ -317,9 +313,9 @@ public class odt2epub1
                     System.exit(-19);
                 }
             }
-		    }
-		    else
-		    {
+	    }
+	    else
+	    {
             builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
             builder.directory(new File(programPath + "../html_split/html_split1"));
 
@@ -358,19 +354,19 @@ public class odt2epub1
             {
                 if (splittedChapters.get(i-1).exists() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
+                    System.out.println("odt2epub2 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
                     continue;
                 }
                 
                 if (splittedChapters.get(i-1).isFile() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
+                    System.out.println("odt2epub2 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
                     continue;
                 }
                 
                 if (splittedChapters.get(i-1).canRead() != true)
                 {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' isn't readable.");
+                    System.out.println("odt2epub2 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' isn't readable.");
                     continue;
                 }
             
@@ -395,7 +391,7 @@ public class odt2epub1
                     System.exit(-21);
                 }
             }
-		    }
+		}
 
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_html_title.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + "title.html");
@@ -450,7 +446,7 @@ public class odt2epub1
                                     "UTF8"));
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            writer.write("<!-- This file was created by odt2epub1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
+            writer.write("<!-- This file was created by odt2epub2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
             writer.write("<txtreplace1-replacement-dictionary>\n");
             writer.write("  <replace>\n");
             writer.write("    <pattern>./</pattern>\n");
@@ -497,10 +493,10 @@ public class odt2epub1
             ex.printStackTrace();
             System.exit(-26);
         }
-        
 
-        builder = new ProcessBuilder("java", "html2epub1_config_file_setup", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_file_setup"));
+
+        builder = new ProcessBuilder("java", "html2epub1_config_merge1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", programPath + File.separator + args[1], outputDirectory.getAbsolutePath() + File.separator + "config.xml");
+        builder.directory(new File(programPath + "../html2epub/html2epub1/workflows"));
 
         try
         {
@@ -518,28 +514,6 @@ public class odt2epub1
         {
             ex.printStackTrace();
             System.exit(-27);
-        }
-
-
-        builder = new ProcessBuilder("java", "html2epub1_config_metadata_editor", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_metadata_editor"));
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                System.out.println(scanner.next());
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-28);
         }
 
 
@@ -564,6 +538,16 @@ public class odt2epub1
             System.exit(-29);
         }
 
+        {
+            File from = new File(outputDirectory.getAbsolutePath() + File.separator + "out.epub");
+            File to = new File(programPath + File.separator + args[2]);
+            
+            if (odt2epub2.CopyFileBinary(from, to) != 0)
+            {
+                System.exit(-15);
+            }
+        }
+
         return;
     }
     
@@ -571,19 +555,19 @@ public class odt2epub1
     {
         if (from.exists() != true)
         {
-            System.out.println("odt2epub1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
             return -1;
         }
         
         if (from.isFile() != true)
         {
-            System.out.println("odt2epub1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
             return -2;
         }
         
         if (from.canRead() != true)
         {
-            System.out.println("odt2epub1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
     
@@ -631,6 +615,61 @@ public class odt2epub1
     
         return 0;
     }
+
+    public static int CopyFileBinary(File from, File to)
+    {
+        if (from.exists() != true)
+        {
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            return -1;
+        }
+        
+        if (from.isFile() != true)
+        {
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            return -2;
+        }
+        
+        if (from.canRead() != true)
+        {
+            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            return -3;
+        }
+    
+    
+        byte[] buffer = new byte[1024];
+
+        try
+        {
+            to.createNewFile();
+
+            FileInputStream reader = new FileInputStream(from);
+            FileOutputStream writer = new FileOutputStream(to);
+            
+            int bytesRead = reader.read(buffer, 0, buffer.length);
+            
+            while (bytesRead > 0)
+            {
+                writer.write(buffer, 0, bytesRead);
+                bytesRead = reader.read(buffer, 0, buffer.length);
+            }
+            
+            writer.close();
+            reader.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+    
+        return 0;
+    }
     
     public static int DeleteFileRecursively(File file)
     {
@@ -638,7 +677,7 @@ public class odt2epub1
         {
             for (File child : file.listFiles())
             {
-                if (odt2epub1.DeleteFileRecursively(child) != 0)
+                if (odt2epub2.DeleteFileRecursively(child) != 0)
                 {
                     return -1;
                 }
@@ -647,7 +686,7 @@ public class odt2epub1
         
         if (file.delete() != true)
         {
-            System.out.println("odt2epub1 workflow: Can't delete '" + file.getAbsolutePath() + "'.");
+            System.out.println("odt2epub2 workflow: Can't delete '" + file.getAbsolutePath() + "'.");
             return -1;
         }
     
