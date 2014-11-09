@@ -80,54 +80,10 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
     </div>
   </xsl:template>
 
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']">
-    <p class="paragraph_default">
-      <xsl:apply-templates/>
-    </p>
+  <xsl:template match="@*|node()|text()">
+    <xsl:copy>
+      <xsl:apply-templates select="@*|node()|text()"/>
+    </xsl:copy>
   </xsl:template>
-
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']//text()">
-    <xsl:value-of select="."/>
-  </xsl:template>
-
-  <xsl:template match="*/xhtml:a">
-    <a>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates/>
-    </a>
-  </xsl:template>
-
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:ul">
-    <ul>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates/>
-    </ul>
-  </xsl:template>
-
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:ol">
-    <ol>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates/>
-    </ol>
-  </xsl:template>
-
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:ul/xhtml:li|xhtml:html/xhtml:body/xhtml:ol/xhtml:li">
-    <li>
-      <xsl:copy-of select="@*"/>
-      <xsl:apply-templates/>
-    </li>
-  </xsl:template>
-  
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:ul/xhtml:li/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']|xhtml:html/xhtml:body/xhtml:ol/xhtml:li/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']">
-    <p class="paragraph_default">
-      <xsl:apply-templates/>
-    </p>
-  </xsl:template>
-
-  <xsl:template match="xhtml:html/xhtml:body/xhtml:ul/xhtml:li/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']//text()|xhtml:html/xhtml:body/xhtml:ol/xhtml:li/xhtml:p[@class='paragraph_5f_first' or @class='paragraph']//text()">
-    <xsl:value-of select="."/>
-  </xsl:template>
-
-  <xsl:template match="text()|@*"/>
 
 </xsl:stylesheet>

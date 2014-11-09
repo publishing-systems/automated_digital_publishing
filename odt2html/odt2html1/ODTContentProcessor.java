@@ -41,6 +41,7 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 
@@ -304,23 +305,28 @@ class ODTContentProcessor
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
             writer.write("<!-- This file was created by odt2html1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
-            /** @todo: Specify language of the content with lang-attribute. */
+            /** @todo Specify language of the content with lang-attribute. */
             writer.write("<html xmlns=\"http://www.w3.org/1999/xhtml\">\n");
             writer.write("  <head>\n");
-            /** @todo: Provide title of the document. */
+            /** @todo Provide title of the document. */
             writer.write("    <title></title>\n");
             writer.write("    <meta http-equiv=\"content-type\" content=\"application/xhtml+xml; charset=UTF-8\"/>\n");
             writer.write("  </head>\n");
             writer.write("  <body>\n");
 
 
+            Stack<String> structureStack = new Stack<String>();
+
+            /**
+             * @todo Flags don't allow any nesting and may lead to a non-well-formed result file,
+             *     structureStack is the safe alternative.
+             */
             boolean body = false;
             boolean text = false;
             boolean paragraph = false;
             boolean list = false;
             Integer listLevel = 0;
             String listStyle = "";
-            boolean span = false;
             boolean link = false;
             
 
@@ -332,6 +338,8 @@ class ODTContentProcessor
                 {
                     QName elementName = event.asStartElement().getName();
                     String fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                    
+                    structureStack.push(fullElementName);
                     
                     if (fullElementName.equalsIgnoreCase("office:body") == true)
                     {
@@ -350,7 +358,7 @@ class ODTContentProcessor
                         if (attributeHref != null)
                         {
                             File imageFile = new File(this.contentFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + attributeHref.getValue());
-                            
+
                             if (imageFile.exists() != true)
                             {
                                 System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -476,8 +484,6 @@ class ODTContentProcessor
                              text == true &&
                              paragraph == true)
                     {
-                        span = true;
-                        
                         writer.write("<span");
                         
                         Attribute attributeStyleName = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_TEXT_NAMESPACE_URI, "style-name", "text"));
@@ -537,9 +543,10 @@ class ODTContentProcessor
                     QName elementName = event.asEndElement().getName();
                     String fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
                     
+                    structureStack.pop();
+                    
                     if (fullElementName.equalsIgnoreCase("office:body") == true)
                     {
-                        span = false;
                         paragraph = false;
                         list = false;
                         listLevel = 0;
@@ -550,7 +557,6 @@ class ODTContentProcessor
                     else if (fullElementName.equalsIgnoreCase("office:text") == true &&
                              body == true)
                     {
-                        span = false;
                         paragraph = false;
                         listLevel = 0;
                         listStyle = "";
@@ -564,7 +570,6 @@ class ODTContentProcessor
                         writer.write("</p>");
 
                         link = false;
-                        span = false;
                         paragraph = false;
                     }
                     else if (fullElementName.equalsIgnoreCase("text:list") == true &&
@@ -589,7 +594,6 @@ class ODTContentProcessor
                         }
 
                         link = false;
-                        span = false;
                         
                         listLevel -= 1;
                         
@@ -608,17 +612,13 @@ class ODTContentProcessor
                         writer.write("</li>");
                         
                         link = false;
-                        span = false;
                     }
                     else if (fullElementName.equalsIgnoreCase("text:span") == true &&
                              body == true &&
                              text == true &&
-                             (paragraph == true) &&
-                              span == true)
+                             paragraph == true)
                     {
                         writer.write("</span>");
-                        
-                        span = false;
                     }
                     else if (fullElementName.equalsIgnoreCase("text:a") == true &&
                              body == true &&
@@ -634,7 +634,7 @@ class ODTContentProcessor
                 else if (event.isCharacters() == true)
                 {
                     if (paragraph == true ||
-                        span == true)
+                        structureStack.search("text:span") >= 1)
                     {
                         event.writeAsEncodedUnicode(writer);
                     }

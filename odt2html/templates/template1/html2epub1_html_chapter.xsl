@@ -30,6 +30,12 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
             </xsl:for-each>
           </xsl:if>
         </title>
+        <style type="text/css">
+          .keyword
+          {
+              font-weight:bold;
+          }
+        </style>
       </head>
       <body>
         <div class="chapter">
@@ -68,13 +74,13 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
     </div>
   </xsl:template>
 
-  <xsl:template match="p[@class='paragraph_default']">
+  <xsl:template match="p[@class='paragraph_5f_first' or @class='paragraph']">
     <p class="paragraph_default">
       <xsl:apply-templates/>
     </p>
   </xsl:template>
 
-  <xsl:template match="p[@class='paragraph_default']//text()">
+  <xsl:template match="p[@class='paragraph_5f_first' or @class='paragraph']//text()">
     <xsl:value-of select="."/>
   </xsl:template>
 
@@ -114,6 +120,16 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   </xsl:template>
 
   <xsl:template match="ul/li//text()|ol/li//text()">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="span[@class='keyword']">
+    <span class="keyword">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="span[@class='keyword']//text()">
     <xsl:value-of select="."/>
   </xsl:template>
 
