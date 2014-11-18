@@ -286,8 +286,10 @@ class ODTContentProcessor
         return 0;
     }
     
-    public int Run(File xhtmlOutFile)
+    public int Run(String outFileName, File outDirectory)
     {
+        File xhtmlOutFile = new File(outDirectory.getAbsolutePath() + File.separator + outFileName);
+    
         try
         {
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
@@ -377,7 +379,7 @@ class ODTContentProcessor
                                 return -1;
                             }
 
-                            if (CopyFileBinary(imageFile, new File(xhtmlOutFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + imageFile.getName())) != 0)
+                            if (CopyFileBinary(imageFile, new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + imageFile.getName())) != 0)
                             {
                                 return -1;
                             }

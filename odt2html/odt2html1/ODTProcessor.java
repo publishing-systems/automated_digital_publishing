@@ -40,7 +40,7 @@ class ODTProcessor
         this.odtFiles = odtFiles;
     }
 
-    public int Run(File outFile)
+    public int Run(String inFileName, File outDirectory)
     {
         {
             File mimetypeFile = this.odtFiles.get("mimetype");
@@ -210,7 +210,18 @@ class ODTProcessor
                 return -13;
             }
             
-            result = contentProcessor.Run(outFile);
+            String outFileName = inFileName;
+            int extensionPosition = outFileName.lastIndexOf(".");
+            
+            if (extensionPosition >= 0)
+            {
+                outFileName = outFileName.substring(0, extensionPosition); 
+            }
+            
+            outFileName += ".html";
+            
+            
+            result = contentProcessor.Run(outFileName, outDirectory);
             
             if (result != 0)
             {

@@ -45,7 +45,9 @@ public class odt2html1
         if (args.length != 2)
         {
             System.out.print("Usage:\n" +
-                             "\todt2html1 odt-in-file html-out-file\n\n");
+                             "\todt2html1 odt-in-file html-out-directory\n\n" +
+                             "Please note that odt2html1 will overwrite existing files in\n" +
+                             "html-out-directory.\n\n");
 
             System.exit(1);
         }
@@ -70,8 +72,34 @@ public class odt2html1
             System.out.print("odt2html1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-3);
         }
-        
-        File outFile = new File(args[1]);
+
+
+        File outDirectory = new File(args[1]);
+
+        if (outDirectory.exists() == true)
+        {
+            if (outDirectory.isDirectory() == true)
+            {
+                if (outDirectory.canWrite() != true)
+                {
+                    System.out.println("odt2html1: Can't write to directory '" + outDirectory.getAbsolutePath() + "'.");
+                    System.exit(-4);
+                }
+            }
+            else
+            {
+                System.out.println("odt2html1: Out path '" + outDirectory.getAbsolutePath() + "' isn't a directory.");
+                System.exit(-5);
+            }
+        }
+        else
+        {
+            if (outDirectory.mkdir() != true)
+            {
+                System.out.println("unzip1: Can't create out directory '" + outDirectory.getAbsolutePath() + "'.");
+                System.exit(-6);
+            }
+        }
 
 
         ZipProcessor zipProcessor = new ZipProcessor();
@@ -79,7 +107,7 @@ public class odt2html1
 
         ODTProcessor odtProcessor = new ODTProcessor(fileList);
 
-        int result = odtProcessor.Run(outFile);
+        int result = odtProcessor.Run(inFile.getName(), outDirectory);
 
         if (result != 0)
         {
