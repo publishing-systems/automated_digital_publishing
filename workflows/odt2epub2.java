@@ -579,7 +579,7 @@ public class odt2epub2
                                     new FileOutputStream(new File(tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml")),
                                     "UTF8"));
 
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!-- This file was created by odt2epub2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
             writer.write("<txtreplace1-replacement-dictionary>\n");
             writer.write("  <replace>\n");
@@ -769,13 +769,6 @@ public class odt2epub2
             System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
-        /*
-        if (to.canWrite() != true)
-        {
-            System.out.println("odt2epub2 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + to.getAbsolutePath() + "' isn't writable.");
-            return -4;
-        }
-        */
     
     
         byte[] buffer = new byte[1024];

@@ -50,8 +50,9 @@ public class odt2epub1
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
     
         String programPath = odt2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
@@ -67,7 +68,7 @@ public class odt2epub1
             builder = new ProcessBuilder("java", "odt2html1");
         }
         
-        builder.directory(new File("."));
+        builder.directory(new File(programPath));
 
         try
         {
@@ -449,8 +450,8 @@ public class odt2epub1
                                     new FileOutputStream(new File(tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml")),
                                     "UTF8"));
 
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            writer.write("<!-- This file was created by odt2epub1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<!-- This file was created by odt2epub1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
             writer.write("<txtreplace1-replacement-dictionary>\n");
             writer.write("  <replace>\n");
             writer.write("    <pattern>./</pattern>\n");
