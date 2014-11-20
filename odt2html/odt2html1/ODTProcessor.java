@@ -40,7 +40,7 @@ class ODTProcessor
         this.odtFiles = odtFiles;
     }
 
-    public int Run(String inFileName, File outDirectory)
+    public int Run(String outFileName, File outDirectory)
     {
         {
             File mimetypeFile = this.odtFiles.get("mimetype");
@@ -209,18 +209,8 @@ class ODTProcessor
                 System.out.println("odt2html1: No content version found in 'content.xml'.");
                 return -13;
             }
-            
-            String outFileName = inFileName;
-            int extensionPosition = outFileName.lastIndexOf(".");
-            
-            if (extensionPosition >= 0)
-            {
-                outFileName = outFileName.substring(0, extensionPosition); 
-            }
-            
-            outFileName += ".html";
-            
-            
+
+
             result = contentProcessor.Run(outFileName, outDirectory);
             
             if (result != 0)

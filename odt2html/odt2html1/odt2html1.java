@@ -42,10 +42,10 @@ public class odt2html1
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
 
-        if (args.length != 2)
+        if (args.length < 2)
         {
             System.out.print("Usage:\n" +
-                             "\todt2html1 odt-in-file html-out-directory\n\n" +
+                             "\todt2html1 odt-in-file html-out-directory [html-out-name]\n\n" +
                              "Please note that odt2html1 will overwrite existing files in\n" +
                              "html-out-directory.\n\n");
 
@@ -96,7 +96,7 @@ public class odt2html1
         {
             if (outDirectory.mkdir() != true)
             {
-                System.out.println("unzip1: Can't create out directory '" + outDirectory.getAbsolutePath() + "'.");
+                System.out.println("odt2html1: Can't create out directory '" + outDirectory.getAbsolutePath() + "'.");
                 System.exit(-6);
             }
         }
@@ -107,7 +107,43 @@ public class odt2html1
 
         ODTProcessor odtProcessor = new ODTProcessor(fileList);
 
-        int result = odtProcessor.Run(inFile.getName(), outDirectory);
+
+        String outFileName = null;
+        
+        if (args.length >= 3)
+        {
+            if (args[2].equalsIgnoreCase("info.xml") == true)
+            {
+                System.out.println("odt2html1: The output file name 'info.xml' is reserved.");
+                System.exit(-1);
+            }
+        
+            outFileName = args[2];
+            
+            File outFile = new File(outDirectory.getAbsolutePath() + File.separator + args[2]);
+
+            if (outFile.getAbsoluteFile().getParent().equalsIgnoreCase(outDirectory.getAbsolutePath()) != true)
+            {
+                System.out.println("odt2html1: The output file name '" + args[2] + "' would lead to the path '" + outFile.getAbsolutePath() + "', which isn't located in the output directory '" + outDirectory.getAbsolutePath() + "'.");
+                System.exit(-1);
+            }
+        }
+        else
+        {
+            outFileName = inFile.getName();
+        
+            int extensionPosition = outFileName.lastIndexOf(".");
+            
+            if (extensionPosition >= 0)
+            {
+                outFileName = outFileName.substring(0, extensionPosition); 
+            }
+            
+            outFileName += ".html";
+        }
+
+
+        int result = odtProcessor.Run(outFileName, outDirectory);
 
         if (result != 0)
         {

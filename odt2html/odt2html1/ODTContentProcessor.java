@@ -289,6 +289,7 @@ class ODTContentProcessor
     public int Run(String outFileName, File outDirectory)
     {
         File xhtmlOutFile = new File(outDirectory.getAbsolutePath() + File.separator + outFileName);
+        File xmlInfoFile = new File(outDirectory.getAbsolutePath() + File.separator + "info.xml");
     
         try
         {
@@ -303,6 +304,15 @@ class ODTContentProcessor
                                     new FileOutputStream(xhtmlOutFile.getAbsolutePath()),
                                     "UTF8"));
 
+            BufferedWriter infoWriter = new BufferedWriter(
+                                        new OutputStreamWriter(
+                                        new FileOutputStream(xmlInfoFile.getAbsolutePath()),
+                                        "UTF8"));
+
+            infoWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            infoWriter.write("<!-- This file was created by odt2html1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+            infoWriter.write("<odt2html1-out-meta-info>\n");
+            infoWriter.write("  <extracted-file type=\"html\" path=\"" + xhtmlOutFile.getName() + "\"/>\n");
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n");
@@ -383,6 +393,8 @@ class ODTContentProcessor
                             {
                                 return -1;
                             }
+
+                            infoWriter.write("  <extracted-file type=\"image\" path=\"" + imageFile.getName() + "\"/>\n");
 
                             writer.write("<img src=\"" + imageFile.getName() + "\"/>");
                         }
@@ -642,13 +654,18 @@ class ODTContentProcessor
                     }
                 } 
             }
-            
+
             writer.write("\n");
             writer.write("  </body>\n");
             writer.write("</html>\n");
-            
+
             writer.flush();
             writer.close();
+
+            infoWriter.write("</odt2html1-out-meta-info>\n");
+
+            infoWriter.flush();
+            infoWriter.close();
         }
         catch (FileNotFoundException ex)
         {

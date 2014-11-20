@@ -129,6 +129,13 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
     </span>
   </xsl:template>
 
+  <xsl:template match="img">
+    <img alt="">
+      <xsl:copy-of select="@*"/>
+      <xsl:apply-templates/>
+    </img>
+  </xsl:template>
+
   <xsl:template match="span[@class='keyword']//text()">
     <xsl:value-of select="."/>
   </xsl:template>

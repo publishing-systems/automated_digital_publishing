@@ -67,7 +67,7 @@ public class odt2epub1
             builder = new ProcessBuilder("java", "odt2html1");
         }
         
-        builder.directory(new File(programPath));
+        builder.directory(new File("."));
 
         try
         {
@@ -449,7 +449,7 @@ public class odt2epub1
                                     new FileOutputStream(new File(tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml")),
                                     "UTF8"));
 
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
             writer.write("<!-- This file was created by odt2epub1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
             writer.write("<txtreplace1-replacement-dictionary>\n");
             writer.write("  <replace>\n");

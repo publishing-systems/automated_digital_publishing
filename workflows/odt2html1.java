@@ -47,8 +47,9 @@ public class odt2html1
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
         String programPath = odt2html1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
@@ -93,7 +94,7 @@ public class odt2html1
                                         "UTF8"));
 
                 writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                writer.write("<!-- This file was created by odt2html1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
+                writer.write("<!-- This file was created by odt2html1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
                 writer.write("<file-picker1-config>\n");
                 writer.write("  <extension extension=\"odt\">ODF Text Document (.odt)</extension>\n");
                 writer.write("</file-picker1-config>\n");
@@ -179,7 +180,35 @@ public class odt2html1
         }
 
 
-        ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", inputFileODT.getAbsolutePath(), tempDirectory.getAbsolutePath() + File.separator + "output_1.html");
+        File outDirectory = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1");
+        
+        if (outDirectory.exists() != true)
+        {
+            if (outDirectory.mkdir() != true)
+            {
+                System.out.print("odt2html1 workflow: Can't create output directory '" + outDirectory.getAbsolutePath() + "'.\n");
+                System.exit(-6);
+            }
+        }
+        else
+        {
+            if (outDirectory.isDirectory() != true)
+            {
+                System.out.print("odt2html1 workflow: Output directory path '" + outDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.exit(-7);
+            }
+            else
+            {
+                if (outDirectory.canWrite() != true)
+                {
+                    System.out.println("odt2html1 workflow: Can't write to output directory '" + outDirectory.getAbsolutePath() + "'.");
+                    System.exit(-4);
+                }
+            }
+        }
+
+
+        ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", inputFileODT.getAbsolutePath(), outDirectory.getAbsolutePath(), "output_1.html");
         builder.directory(new File(programPath + "../odt2html/odt2html1"));
 
         try
@@ -212,7 +241,7 @@ public class odt2html1
         }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1.html", programPath + "../odt2html/templates/template1/prepare4hierarchical.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_2.html");
+        builder = new ProcessBuilder("java", "xsltransformator1", outDirectory.getAbsolutePath() + File.separator + "output_1.html", programPath + "../odt2html/templates/template1/prepare4hierarchical.xsl", outDirectory.getAbsolutePath() + File.separator + "output_2.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
 
         try
@@ -245,7 +274,7 @@ public class odt2html1
         }
 
 
-        builder = new ProcessBuilder("java", "html_flat2hierarchical1", tempDirectory.getAbsolutePath() + File.separator + "output_2.html", programPath + "../odt2html/templates/template1/html_flat2hierarchical1_config.xml", tempDirectory.getAbsolutePath() + File.separator + "output_3.html");
+        builder = new ProcessBuilder("java", "html_flat2hierarchical1", outDirectory.getAbsolutePath() + File.separator + "output_2.html", programPath + "../odt2html/templates/template1/html_flat2hierarchical1_config.xml", outDirectory.getAbsolutePath() + File.separator + "output_3.html");
         builder.directory(new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1"));
 
         try
@@ -267,7 +296,7 @@ public class odt2html1
         }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_clean.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_4.html");
+        builder = new ProcessBuilder("java", "xsltransformator1", outDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_clean.xsl", outDirectory.getAbsolutePath() + File.separator + "output_4.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
 
         try
@@ -291,7 +320,7 @@ public class odt2html1
         return;
     }
     
-    public static int CopyFile (File from, File to)
+    public static int CopyFile(File from, File to)
     {
         if (from.exists() != true)
         {
