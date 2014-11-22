@@ -35,6 +35,11 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
           {
               font-weight:bold;
           }
+
+          .emphasis
+          {
+              font-style:italic;
+          }
         </style>
       </head>
       <body>
@@ -123,12 +128,6 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
     <xsl:value-of select="."/>
   </xsl:template>
 
-  <xsl:template match="span[@class='keyword']">
-    <span class="keyword">
-      <xsl:apply-templates/>
-    </span>
-  </xsl:template>
-
   <xsl:template match="img">
     <img alt="">
       <xsl:copy-of select="@*"/>
@@ -136,7 +135,23 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
     </img>
   </xsl:template>
 
+  <xsl:template match="span[@class='keyword']">
+    <span class="keyword">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
   <xsl:template match="span[@class='keyword']//text()">
+    <xsl:value-of select="."/>
+  </xsl:template>
+
+  <xsl:template match="span[@class='emphasis']">
+    <span class="emphasis">
+      <xsl:apply-templates/>
+    </span>
+  </xsl:template>
+
+  <xsl:template match="span[@class='emphasis']//text()">
     <xsl:value-of select="."/>
   </xsl:template>
 
