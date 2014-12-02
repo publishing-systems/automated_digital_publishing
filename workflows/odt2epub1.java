@@ -69,6 +69,7 @@ public class odt2epub1
         }
         
         builder.directory(new File(programPath));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -139,6 +140,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_part.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
         builder.directory(new File(programPath + "../html_split/html_split1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -199,6 +201,7 @@ public class odt2epub1
             
                 builder = new ProcessBuilder("java", "xsltransformator1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_part.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
                 builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -242,6 +245,7 @@ public class odt2epub1
 
                 builder = new ProcessBuilder("java", "html_split1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i);
                 builder.directory(new File(programPath + "../html_split/html_split1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -290,6 +294,7 @@ public class odt2epub1
                     
                         builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(j-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + File.separator + j + ".html");
                         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                        builder.redirectErrorStream(true);
 
                         try
                         {
@@ -318,11 +323,12 @@ public class odt2epub1
                     System.exit(-19);
                 }
             }
-		    }
-		    else
-		    {
+	    }
+	    else
+	    {
             builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
             builder.directory(new File(programPath + "../html_split/html_split1"));
+            builder.redirectErrorStream(true);
 
             try
             {
@@ -377,6 +383,7 @@ public class odt2epub1
             
                 builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
                 builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -396,11 +403,12 @@ public class odt2epub1
                     System.exit(-21);
                 }
             }
-		    }
+	    }
 
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_html_title.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + "title.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -423,6 +431,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -480,6 +489,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "txtreplace1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../txtreplace/txtreplace1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -502,6 +512,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "html2epub1_config_file_setup", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_file_setup"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -524,6 +535,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "html2epub1_config_metadata_editor", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_metadata_editor"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -546,6 +558,7 @@ public class odt2epub1
 
         builder = new ProcessBuilder("java", "html2epub1", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1"));
+        builder.redirectErrorStream(true);
 
         try
         {

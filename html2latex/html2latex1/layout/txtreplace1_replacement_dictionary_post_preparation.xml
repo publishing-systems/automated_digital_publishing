@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2014  Stephan Kreutzer
+
+This file is part of html2latex1.
+
+html2latex1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+html2latex1 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
+-->
+<txtreplace1-replacement-dictionary>
+  <replace>
+    <pattern>&amp;amp;</pattern>
+    <!-- The backslash is needed for escaping LaTeX special characters. -->
+    <replacement>\&amp;amp;</replacement>
+  </replace>
+</txtreplace1-replacement-dictionary>

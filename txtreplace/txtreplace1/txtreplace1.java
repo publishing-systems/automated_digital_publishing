@@ -50,8 +50,9 @@ public class txtreplace1
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
         if (args.length < 3)
         {
@@ -165,36 +166,34 @@ public class txtreplace1
                             {
                                 if (event.asStartElement().getName().getLocalPart().equalsIgnoreCase("pattern") == true)
                                 {
-                                    if (eventReader.hasNext() == true)
+                                    while (eventReader.hasNext() == true)
                                     {
                                         event = eventReader.nextEvent();
-                                        
+
                                         if (event.isCharacters() == true)
                                         {
-                                            pattern = event.asCharacters().getData();
+                                            pattern += event.asCharacters().getData();
                                         }
-                                    }
-                                    else
-                                    {
-                                        System.out.println("txtreplace1: Pattern definition in replacement dictionary file '" + replacementDictionaryFile.getAbsolutePath() + "' seems to be incomplete.");
-                                        System.exit(-8);
+                                        else
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                                 else if (event.asStartElement().getName().getLocalPart().equalsIgnoreCase("replacement") == true)
                                 {
-                                    if (eventReader.hasNext() == true)
+                                    while (eventReader.hasNext() == true)
                                     {
                                         event = eventReader.nextEvent();
                                         
                                         if (event.isCharacters() == true)
                                         {
-                                            replacement = event.asCharacters().getData();
+                                            replacement += event.asCharacters().getData();
                                         }
-                                    }
-                                    else
-                                    {
-                                        System.out.println("txtreplace1: Replacement definition in replacement dictionary file '" + replacementDictionaryFile.getAbsolutePath() + "' seems to be incomplete.");
-                                        System.exit(-9);
+                                        else
+                                        {
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -360,7 +359,7 @@ public class txtreplace1
                             reader = new BufferedReader(
                                      new InputStreamReader(
                                      new FileInputStream(destinationFile),
-                                    "UTF8"));
+                                     "UTF8"));
                             writer = new BufferedWriter(
                                      new OutputStreamWriter(
                                      new FileOutputStream(sourceFile),

@@ -72,6 +72,7 @@ public class odt2epub2
 
         ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", args[0]);
         builder.directory(new File(programPath));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -136,6 +137,8 @@ public class odt2epub2
             }
         }
 
+/*
+        // html_split1 takes care of this (copying image files to the out directory) now.
         {
             File extractionInfoFile = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "info.xml");
 
@@ -251,7 +254,7 @@ public class odt2epub2
                 System.exit(-1);
             }
         }
-
+*/
 
         {
             File from = new File(programPath + "../html_split/html_split1/entities/config_xhtml1-strict.xml");
@@ -268,6 +271,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_part.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
         builder.directory(new File(programPath + "../html_split/html_split1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -299,7 +303,7 @@ public class odt2epub2
             ex.printStackTrace();
             System.exit(-16);
         }
-        
+
         
         List<File> splittedChapters = new ArrayList<File>();
         
@@ -328,6 +332,7 @@ public class odt2epub2
             
                 builder = new ProcessBuilder("java", "xsltransformator1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_part.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
                 builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -371,6 +376,7 @@ public class odt2epub2
 
                 builder = new ProcessBuilder("java", "html_split1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i);
                 builder.directory(new File(programPath + "../html_split/html_split1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -419,6 +425,7 @@ public class odt2epub2
                     
                         builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(j-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + File.separator + j + ".html");
                         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                        builder.redirectErrorStream(true);
 
                         try
                         {
@@ -452,6 +459,7 @@ public class odt2epub2
 	    {
             builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
             builder.directory(new File(programPath + "../html_split/html_split1"));
+            builder.redirectErrorStream(true);
 
             try
             {
@@ -506,6 +514,7 @@ public class odt2epub2
             
                 builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
                 builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+                builder.redirectErrorStream(true);
 
                 try
                 {
@@ -530,6 +539,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_html_title.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + "title.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -552,6 +562,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -580,7 +591,7 @@ public class odt2epub2
                                     "UTF8"));
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<!-- This file was created by odt2epub2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+            writer.write("<!-- This file was generated by odt2epub2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
             writer.write("<txtreplace1-replacement-dictionary>\n");
             writer.write("  <replace>\n");
             writer.write("    <pattern>./</pattern>\n");
@@ -609,6 +620,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "txtreplace1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../txtreplace/txtreplace1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -631,6 +643,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "html2epub1_config_merge1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", programPath + File.separator + args[1], outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1/workflows"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -653,6 +666,7 @@ public class odt2epub2
 
         builder = new ProcessBuilder("java", "html2epub1", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1"));
+        builder.redirectErrorStream(true);
 
         try
         {

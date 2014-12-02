@@ -46,8 +46,9 @@ public class odt2pdf1
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
     
         String programPath = odt2pdf1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
@@ -63,7 +64,8 @@ public class odt2pdf1
             builder = new ProcessBuilder("java", "odt2html1");
         }
         
-        builder.directory(new File("."));
+        builder.directory(new File(programPath));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -89,49 +91,44 @@ public class odt2pdf1
         if (tempDirectory.exists() != true)
         {
             System.out.print("odt2pdf1 workflow: Temp directory '" + tempDirectory.getAbsolutePath() + "' doesn't exist.\n");
-            System.exit(-2);
+            System.exit(-9);
         }
         else
         {
             if (tempDirectory.isDirectory() != true)
             {
                 System.out.print("odt2pdf1 workflow: Temp directory path '" + tempDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
-                System.exit(-3);
+                System.exit(-10);
             }
         }
 
 
-        File outputDirectory = new File(tempDirectory + File.separator + "pdf");
-        
-        if (outputDirectory.exists() == true)
-        {  
-            if (odt2pdf1.DeleteFileRecursively(outputDirectory) != 0)
-            {
-                System.out.println("odt2pdf1 workflow: Can't clean '" + outputDirectory.getAbsolutePath() + "'.");
-                System.exit(-4);
-            }
-        }
-        
-        if (outputDirectory.mkdirs() != true)
-        {
-            System.out.print("odt2pdf1 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
-            System.exit(-5);
-        }
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/prepare4html2latex1_layout1.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_5.html");
+        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
-
+        try
         {
-            File from = new File(programPath + "../html2latex/html_prepare4latex1/entities/config_xhtml1-strict.xml");
-            File to = new File(programPath + "../html2latex/html_prepare4latex1/entities/config.xml");
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
             
-            if (odt2pdf1.CopyFile(from, to) != 0)
+            while (scanner.hasNext() == true)
             {
-                System.exit(-6);
+                System.out.println(scanner.next());
             }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-15);
         }
 
 
-        builder = new ProcessBuilder("java", "html_prepare4latex1", tempDirectory.getAbsolutePath() + File.separator + "output_4.html", outputDirectory.getAbsolutePath() + File.separator + "input.html");
-        builder.directory(new File(programPath + "../html2latex/html_prepare4latex1"));
+        builder = new ProcessBuilder("java", "html2pdf1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_5.html");
+        builder.directory(new File(programPath));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -151,140 +148,6 @@ public class odt2pdf1
             System.exit(-7);
         }
 
-
-        builder = new ProcessBuilder("java", "xsltransformator1", outputDirectory.getAbsolutePath() + File.separator + "input.html", programPath + "../html2latex/html2latex1/layout/layout1.xsl", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
-        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                System.out.println(scanner.next());
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-8);
-        }
-
-
-        for (int i = 0; i < 4; i++)
-        {
-            builder = new ProcessBuilder("pdflatex", "-halt-on-error", outputDirectory.getAbsolutePath() + File.separator + "output.tex");
-            builder.directory(new File(outputDirectory.getAbsolutePath()));
-
-            try
-            {
-                Process process = builder.start();
-                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                
-                while (scanner.hasNext() == true)
-                {
-                    System.out.println(scanner.next());
-                }
-                
-                scanner.close();
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-                System.exit(-9);
-            }
-        }
-
         return;
-    }
-
-    public static int DeleteFileRecursively(File file)
-    {
-        if (file.isDirectory() == true)
-        {
-            for (File child : file.listFiles())
-            {
-                if (odt2pdf1.DeleteFileRecursively(child) != 0)
-                {
-                    return -1;
-                }
-            }
-        }
-        
-        if (file.delete() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't delete '" + file.getAbsolutePath() + "'.");
-            return -1;
-        }
-    
-        return 0;
-    }
-
-    public static int CopyFile (File from, File to)
-    {
-        if (from.exists() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
-            return -1;
-        }
-        
-        if (from.isFile() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
-            return -2;
-        }
-        
-        if (from.canRead() != true)
-        {
-            System.out.println("odt2pdf1 workflow: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
-            return -3;
-        }
-    
-    
-        char[] buffer = new char[1024];
-
-        try
-        {
-            to.createNewFile();
-        
-            BufferedReader reader = new BufferedReader(
-                                    new InputStreamReader(
-                                    new FileInputStream(from),
-                                    "UTF8"));
-            BufferedWriter writer = new BufferedWriter(
-                                    new OutputStreamWriter(
-                                    new FileOutputStream(to),
-                                    "UTF8"));
-            int charactersRead = reader.read(buffer, 0, buffer.length);
-
-            while (charactersRead > 0)
-            {
-                writer.write(buffer, 0, charactersRead);
-                charactersRead = reader.read(buffer, 0, buffer.length);
-            }
-            
-            writer.close();
-            reader.close();
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-10);
-        }
-        catch (UnsupportedEncodingException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-11);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-12);
-        }
-
-        return 0;
     }
 }
