@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2014  Stephan Kreutzer
+
+This file is part of odt2html2 workflow.
+
+odt2html2 workflow is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+odt2html2 workflow is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with odt2html2 workflow. If not, see <http://www.gnu.org/licenses/>.
+-->
+<odt2html2-config>
+  <inFile path="input_1.odt"/>
+  <inFile path="input_2.odt"/>
+  <outFile path="output.html"/>
+</odt2html2-config>

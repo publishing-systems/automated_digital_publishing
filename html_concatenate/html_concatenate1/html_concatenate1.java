@@ -69,7 +69,8 @@ public class html_concatenate1
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
-                         "repository: https://github.com/publishing-systems/automated_digital_publishing/\n\n");
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
         if (args.length < 1)
         {
@@ -484,24 +485,24 @@ public class html_concatenate1
                             }
 
                             writer.write(" " + fullAttributeName + "=\"" + attribute.getValue() + "\"");
-                            
-                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                            @SuppressWarnings("unchecked")
-                            Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
-                            
-                            if (namespaces.hasNext() == true)
+                        }
+
+                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                        @SuppressWarnings("unchecked")
+                        Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
+
+                        if (namespaces.hasNext() == true)
+                        {
+                            Namespace namespace = namespaces.next();
+
+                            if (namespace.isDefaultNamespaceDeclaration() == true &&
+                                namespace.getPrefix().length() <= 0)
                             {
-                                Namespace namespace = namespaces.next();
-                                
-                                if (namespace.isDefaultNamespaceDeclaration() == true &&
-                                    namespace.getPrefix().length() <= 0)
-                                {
-                                    writer.write(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
-                                }
-                                else
-                                {
-                                    writer.write(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
-                                }
+                                writer.write(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
+                            }
+                            else
+                            {
+                                writer.write(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
                             }
                         }
 
@@ -527,24 +528,24 @@ public class html_concatenate1
                             }
 
                             afterBodyStringBuilder.append(" " + fullAttributeName + "=\"" + attribute.getValue() + "\"");
+                        }
+                        
+                        // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                        @SuppressWarnings("unchecked")
+                        Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
+                        
+                        if (namespaces.hasNext() == true)
+                        {
+                            Namespace namespace = namespaces.next();
                             
-                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                            @SuppressWarnings("unchecked")
-                            Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
-                            
-                            if (namespaces.hasNext() == true)
+                            if (namespace.isDefaultNamespaceDeclaration() == true &&
+                                namespace.getPrefix().length() <= 0)
                             {
-                                Namespace namespace = namespaces.next();
-                                
-                                if (namespace.isDefaultNamespaceDeclaration() == true &&
-                                    namespace.getPrefix().length() <= 0)
-                                {
-                                    afterBodyStringBuilder.append(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
-                                }
-                                else
-                                {
-                                    afterBodyStringBuilder.append(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
-                                }
+                                afterBodyStringBuilder.append(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
+                            }
+                            else
+                            {
+                                afterBodyStringBuilder.append(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
                             }
                         }
 
@@ -752,24 +753,24 @@ public class html_concatenate1
                                 }
 
                                 writer.write(" " + fullAttributeName + "=\"" + attribute.getValue() + "\"");
+                            }
+
+                            // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                            @SuppressWarnings("unchecked")
+                            Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
+                            
+                            if (namespaces.hasNext() == true)
+                            {
+                                Namespace namespace = namespaces.next();
                                 
-                                // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
-                                @SuppressWarnings("unchecked")
-                                Iterator<Namespace> namespaces = (Iterator<Namespace>)event.asStartElement().getNamespaces();
-                                
-                                if (namespaces.hasNext() == true)
+                                if (namespace.isDefaultNamespaceDeclaration() == true &&
+                                    namespace.getPrefix().length() <= 0)
                                 {
-                                    Namespace namespace = namespaces.next();
-                                    
-                                    if (namespace.isDefaultNamespaceDeclaration() == true &&
-                                        namespace.getPrefix().length() <= 0)
-                                    {
-                                        writer.write(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
-                                    }
-                                    else
-                                    {
-                                        writer.write(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
-                                    }
+                                    writer.write(" xmlns=\"" + namespace.getNamespaceURI() + "\"");
+                                }
+                                else
+                                {
+                                    writer.write(" xmlns:" + namespace.getPrefix() + "=\"" + namespace.getNamespaceURI() + "\"");
                                 }
                             }
 

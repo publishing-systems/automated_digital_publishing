@@ -94,7 +94,7 @@ public class odt2html1
         }
         else
         {
-            if (outDirectory.mkdir() != true)
+            if (outDirectory.mkdirs() != true)
             {
                 System.out.println("odt2html1: Can't create out directory '" + outDirectory.getAbsolutePath() + "'.");
                 System.exit(-6);

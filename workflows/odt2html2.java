@@ -57,8 +57,9 @@ public class odt2html2
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
         String programPath = odt2html2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
@@ -129,6 +130,7 @@ public class odt2html2
 
             ProcessBuilder builder = new ProcessBuilder("java", "file_picker1");
             builder.directory(new File(programPath + "../gui/file_picker/file_picker1"));
+            builder.redirectErrorStream(true);
 
             try
             {
@@ -195,41 +197,41 @@ public class odt2html2
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	           Document document = documentBuilder.parse(jobDescriptionFile);
-	           document.getDocumentElement().normalize();
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(jobDescriptionFile);
+            document.getDocumentElement().normalize();
               
-	           NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
-	           int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
-	           
-	           if (inputODTFilesNodeListLength > 0)
-	           {
-	               for (int i = 0; i < inputODTFilesNodeListLength; i++)
-	               {
-	                   Node inputODTFileNode = inputODTFilesNodeList.item(i);
-	                   NamedNodeMap attributes = inputODTFileNode.getAttributes();
-	                   
-	                   if (attributes == null)
-	                   {
+            NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
+            int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
+               
+            if (inputODTFilesNodeListLength > 0)
+            {
+                for (int i = 0; i < inputODTFilesNodeListLength; i++)
+                {
+                    Node inputODTFileNode = inputODTFilesNodeList.item(i);
+                    NamedNodeMap attributes = inputODTFileNode.getAttributes();
+                       
+                    if (attributes == null)
+                    {
                         System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                         System.exit(-8);
-	                   }
-	                   
-	                   Node inputODTFilePathNode = attributes.getNamedItem("path");
-	                   
-	                   if (inputODTFilePathNode == null)
-	                   {
+                    }
+                       
+                    Node inputODTFilePathNode = attributes.getNamedItem("path");
+                       
+                    if (inputODTFilePathNode == null)
+                    {
                         System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
                         System.exit(-9);
-	                   }
-	                   
-	                   File inputODTFile = new File(inputODTFilePathNode.getTextContent());
-	                   
-	                   if (inputODTFile.isAbsolute() != true)
-	                   {
-	                       inputODTFile = new File(jobDescriptionFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + inputODTFilePathNode.getTextContent());
-	                   }
-	                   
+                    }
+                       
+                    File inputODTFile = new File(inputODTFilePathNode.getTextContent());
+                       
+                    if (inputODTFile.isAbsolute() != true)
+                    {
+                        inputODTFile = new File(jobDescriptionFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + inputODTFilePathNode.getTextContent());
+                    }
+                       
                     if (inputODTFile.exists() != true)
                     {
                         System.out.print("odt2html2 workflow: '" + inputODTFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -305,8 +307,9 @@ public class odt2html2
 
         for (int i = 0; i < inputODTFiles.size(); i++)
         {
-            ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", inputODTFiles.get(i).getAbsolutePath(), tempDirectory.getAbsolutePath() + File.separator + "output_1_" + (i + 1) + ".html");
+            ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", inputODTFiles.get(i).getAbsolutePath(), tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_1_" + (i + 1), "output_1_" + (i + 1) + ".html");
             builder.directory(new File(programPath + "../odt2html/odt2html1"));
+            builder.redirectErrorStream(true);
 
             try
             {
@@ -326,7 +329,7 @@ public class odt2html2
                 System.exit(-19);
             }
         
-            File resultFile = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1_" + (i + 1) + ".html");
+            File resultFile = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_1_" + (i + 1) + File.separator + "output_1_" + (i + 1) + ".html");
             
             if (resultFile.exists() != true)
             {
@@ -337,26 +340,78 @@ public class odt2html2
             if (resultFile.isFile() != true)
             {
                 System.out.print("odt2html2 workflow: '" + resultFile.getAbsolutePath() + "' isn't a file, but should be.\n");
-                System.exit(-21);
-            }       
-        }
-        
-         
-        {
-            /**
-             * @todo html_concatenate1
-             */
-        
-            File from = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1_1.html");
-            File to = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1.html");
-            
-            if (odt2html2.CopyFile(from, to) != 0)
-            {
-                System.exit(-22);
-            }
+                System.exit(-1);
+            }  
         }
 
+
+        try
+        {
+            BufferedWriter writer = new BufferedWriter(
+                                    new OutputStreamWriter(
+                                    new FileOutputStream(new File(tempDirectory.getAbsolutePath() + File.separator + "html_concatenate1_jobfile.xml")),
+                                    "UTF8"));
+
+            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            writer.write("<!-- This file was generated by odt2html2 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+            writer.write("<html-concatenate1-jobfile>\n");
+
+            for (int i = 0; i < inputODTFiles.size(); i++)
+            {
+                File inputFile = inputODTFiles.get(i);
+
+                if (i == 0)
+                {
+                    writer.write("  <head-file path=\"./output_1/output_1_" + (i + 1) + "/output_1_" + (i + 1) + ".html\"/>\n");
+                }
+
+                writer.write("  <input-file path=\"./output_1/output_1_" + (i + 1) + "/output_1_" + (i + 1) + ".html\"/>\n");
+            }
+
+            writer.write("  <output-file path=\"./output_1/output_1.html\"/>\n");
+            writer.write("</html-concatenate1-jobfile>\n");
+
+            writer.close();
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
         
+        ProcessBuilder builder = new ProcessBuilder("java", "html_concatenate1", tempDirectory.getAbsolutePath() + File.separator + "html_concatenate1_jobfile.xml");
+        builder.directory(new File(programPath + "../html_concatenate/html_concatenate1"));
+        builder.redirectErrorStream(true);
+
+        try
+        {
+            Process process = builder.start();
+            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+            
+            while (scanner.hasNext() == true)
+            {
+                System.out.println(scanner.next());
+            }
+            
+            scanner.close();
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+
         {
             File from = new File(programPath + "../xsltransformator/xsltransformator1/entities/config_xhtml1-strict.xml");
             File to = new File(programPath + "../xsltransformator/xsltransformator1/entities/config.xml");
@@ -367,9 +422,9 @@ public class odt2html2
             }
         }
 
-
-        ProcessBuilder builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1.html", programPath + "../odt2html/templates/template1/prepare4hierarchical.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_2.html");
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_1.html", programPath + "../odt2html/templates/template1/prepare4hierarchical.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_2.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -401,8 +456,9 @@ public class odt2html2
         }
 
 
-        builder = new ProcessBuilder("java", "html_flat2hierarchical1", tempDirectory.getAbsolutePath() + File.separator + "output_2.html", programPath + "../odt2html/templates/template1/html_flat2hierarchical1_config.xml", tempDirectory.getAbsolutePath() + File.separator + "output_3.html");
+        builder = new ProcessBuilder("java", "html_flat2hierarchical1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_2.html", programPath + "../odt2html/templates/template1/html_flat2hierarchical1_config.xml", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_3.html");
         builder.directory(new File(programPath + "../html_flat2hierarchical/html_flat2hierarchical1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -423,8 +479,9 @@ public class odt2html2
         }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_clean.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_4.html");
+        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_3.html", programPath + "../odt2html/templates/template1/html_clean.xsl", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html");
         builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder.redirectErrorStream(true);
 
         try
         {
@@ -447,7 +504,7 @@ public class odt2html2
         
         if (outputHTMLFile != null)
         {
-            File from = new File(tempDirectory.getAbsolutePath() + File.separator + "output_4.html");
+            File from = new File(tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html");
             
             if (odt2html2.CopyFile(from, outputHTMLFile) != 0)
             {
@@ -458,7 +515,7 @@ public class odt2html2
         return;
     }
     
-    public static int CopyFile (File from, File to)
+    public static int CopyFile(File from, File to)
     {
         if (from.exists() != true)
         {
