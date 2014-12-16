@@ -158,39 +158,6 @@ public class odt2pdf2
                 System.out.print("odtpdf2 workflow: No input ODT files.\n");
                 System.exit(-13);
             }
-            /*
-            NodeList outputHTMLFileNodeList = document.getElementsByTagName("outFile");
-            
-            if (outputHTMLFileNodeList.getLength() > 0)
-            {
-                Node outputHTMLFileNode = outputHTMLFileNodeList.item(0);
-                NamedNodeMap attributes = outputHTMLFileNode.getAttributes();
-
-                if (attributes == null)
-                {
-                    System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
-                    System.exit(-14);
-                }
-                   
-                Node outputHTMLFilePathNode = attributes.getNamedItem("path");
-                
-                if (outputHTMLFilePathNode == null)
-                {
-                    System.out.print("odt2html2 workflow: Misconfigured ODT input file entry in '" + jobDescriptionFile.getAbsolutePath() + "'.\n");
-                    System.exit(-15);
-                }
-                   
-                outputHTMLFile = new File(outputHTMLFilePathNode.getTextContent());
-                
-                if (outputHTMLFile.isAbsolute() != true)
-                {
-                    outputHTMLFile = new File(jobDescriptionFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + outputHTMLFilePathNode.getTextContent());
-                }
-            }
-            {
-                Kein else?
-            }
-            */
         }
         catch (ParserConfigurationException ex)
         {
