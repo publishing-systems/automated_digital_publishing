@@ -16,10 +16,14 @@
 
 
 
-.PHONY: xsltransformator1 clean
+directories = ./workflows
 
 
 
+.PHONY: all xsltransformator1 $(directories) clean
+
+
+all: xsltransformator1 $(directories)
 xsltransformator1: xsltransformator1.class
 
 EntityResolverLocal.class: xsltransformator1.java
@@ -27,6 +31,9 @@ EntityResolverLocal.class: xsltransformator1.java
 	
 xsltransformator1.class: xsltransformator1.java
 	javac xsltransformator1.java
+
+$(directories):
+	$(MAKE) --directory=$@
 
 clean:
 	rm -f xsltransformator1.class

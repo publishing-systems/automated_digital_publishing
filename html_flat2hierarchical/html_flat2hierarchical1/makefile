@@ -16,10 +16,11 @@
 
 
 
-.PHONY: html_flat2hierarchical1 clean
+.PHONY: all html_flat2hierarchical1 clean
 
 
 
+all: html_flat2hierarchical1
 html_flat2hierarchical1: html_flat2hierarchical1.class
 
 EntityResolverLocal.class: html_flat2hierarchical1.java

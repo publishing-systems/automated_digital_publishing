@@ -16,11 +16,18 @@
 
 
 
-.PHONY: html2epub1 clean
+directories = ./workflows ./gui
 
 
 
+.PHONY: all html2epub1 $(directories) clean
+
+
+
+all: html2epub1 $(directories)
 html2epub1: html2epub1.class
+
+
 
 ConfigProcessor.class: ConfigProcessor.java
 	javac ConfigProcessor.java
@@ -48,6 +55,9 @@ ZipProcessor.class: ZipProcessor.java
 
 html2epub1.class: html2epub1.java ConfigProcessor.class LocalEntityInput.class EntityResolverLocal.class XHTMLValidator.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
 	javac html2epub1.java
+
+$(directories):
+	$(MAKE) --directory=$@
 
 clean:
 	rm -f html2epub1.class

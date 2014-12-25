@@ -66,7 +66,7 @@ public class odt2all1
         if (args.length < 2)
         {
             System.out.print("Usage:\n" +
-                             "\todt2epub3 config-file out-directory\n\n");
+                             "\todt2all1 config-file out-directory\n\n");
             System.exit(1);
         }
 
