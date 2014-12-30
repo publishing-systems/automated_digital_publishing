@@ -362,47 +362,203 @@ class ODTContentProcessor
                     {
                         text = true;
                     }
-                    else if (fullElementName.equalsIgnoreCase("draw:image") == true &&
+                    else if (fullElementName.equalsIgnoreCase("draw:frame") == true &&
                              body == true)
                     {
-                        Attribute attributeHref = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "href", "xlink"));
-
-                        if (attributeHref != null)
+                        String imageHref = null;
+                        String imageTitle = null;
+                        String imageDescription = null;
+                    
+                        while (eventReader.hasNext() == true)
                         {
-                            File imageFile = new File(this.contentFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + attributeHref.getValue());
+                            event = eventReader.nextEvent();
 
-                            if (imageFile.exists() != true)
+                            if (event.isStartElement() == true)
                             {
-                                System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' doesn't exist.\n");
-                                return -1;
-                            }
+                                elementName = event.asStartElement().getName();
+                                fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                
+                                if (fullElementName.equalsIgnoreCase("draw:image") == true)
+                                {
+                                    if (imageHref != null)
+                                    {
+                                        System.out.println("odt2html1: Frame contains more than one image.");
+                                        return -1;
+                                    }
+                                
+                                    Attribute attributeHref = event.asStartElement().getAttributeByName(new QName(ODT_CONTENT_XLINK_NAMESPACE_URL, "href", "xlink"));
 
-                            if (imageFile.isFile() != true)
+                                    if (attributeHref != null)
+                                    {
+                                        File imageFile = new File(this.contentFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + attributeHref.getValue());
+
+                                        if (imageFile.exists() != true)
+                                        {
+                                            System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' doesn't exist.\n");
+                                            return -1;
+                                        }
+
+                                        if (imageFile.isFile() != true)
+                                        {
+                                            System.out.print("odt2html1: Image path '" + imageFile.getAbsolutePath() + "' isn't a file.\n");
+                                            return -1;
+                                        }
+
+                                        if (imageFile.canRead() != true)
+                                        {
+                                            System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' isn't readable.\n");
+                                            return -1;
+                                        }
+
+                                        if (CopyFileBinary(imageFile, new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + imageFile.getName())) != 0)
+                                        {
+                                            return -1;
+                                        }
+
+                                        imageHref = imageFile.getName();
+                                    }
+                                    else
+                                    {
+                                        System.out.println("odt2html1: Image is missing the 'href' reference.");
+                                        return -1;
+                                    }
+                                }
+                                else if (fullElementName.equalsIgnoreCase("svg:title") == true)
+                                {
+                                    if (imageTitle != null)
+                                    {
+                                        System.out.println("odt2html1: Image title specified more than once.");
+                                        return -1;
+                                    }
+                                
+                                    imageTitle = "";
+                                
+                                    while (eventReader.hasNext() == true)
+                                    {
+                                        event = eventReader.nextEvent();
+
+                                        if (event.isCharacters() == true)
+                                        {
+                                            imageTitle += event.asCharacters();
+                                        }
+                                        else if (event.isEndElement() == true)
+                                        {
+                                            elementName = event.asEndElement().getName();
+                                            fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                            
+                                            if (fullElementName.equalsIgnoreCase("svg:title") == true)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                                else if (fullElementName.equalsIgnoreCase("svg:desc") == true)
+                                {
+                                    if (imageDescription != null)
+                                    {
+                                        System.out.println("odt2html1: Image description specified more than once.");
+                                        return -1;
+                                    }
+                                
+                                    imageDescription = "";
+                                
+                                    while (eventReader.hasNext() == true)
+                                    {
+                                        event = eventReader.nextEvent();
+
+                                        if (event.isCharacters() == true)
+                                        {
+                                            imageDescription += event.asCharacters();
+                                        }
+                                        else if (event.isEndElement() == true)
+                                        {
+                                            elementName = event.asEndElement().getName();
+                                            fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                            
+                                            if (fullElementName.equalsIgnoreCase("svg:desc") == true)
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else if (event.isEndElement() == true)
                             {
-                                System.out.print("odt2html1: Image path '" + imageFile.getAbsolutePath() + "' isn't a file.\n");
-                                return -1;
+                                elementName = event.asEndElement().getName();
+                                fullElementName = elementName.getPrefix() + ":" + elementName.getLocalPart();
+                                
+                                if (fullElementName.equalsIgnoreCase("draw:frame") == true)
+                                {
+                                    if (imageHref == null)
+                                    {
+                                        System.out.println("odt2html1: Image is missing the 'href' reference.");
+                                        return -1;
+                                    }
+                                
+                                    infoWriter.write("  <extracted-file type=\"image\" path=\"" + imageHref + "\"/>\n");
+
+                                    writer.write("<img src=\"" + imageHref + "\"");
+                                    
+                                    if (imageTitle != null)
+                                    {
+                                        if (imageTitle.length() > 0)
+                                        {
+                                            // Ampersand needs to be the first, otherwise it would double-encode
+                                            // other entities.
+		                                    imageTitle = imageTitle.replaceAll("&", "&amp;");
+                                            imageTitle = imageTitle.replaceAll("\"", "&quot;");
+		                                    imageTitle = imageTitle.replaceAll("'", "&apos;");
+		                                    imageTitle = imageTitle.replaceAll("<", "&lt;");
+		                                    imageTitle = imageTitle.replaceAll(">", "&gt;");
+
+                                            writer.write(" title=\"" + imageTitle + "\"");
+                                        }
+                                        else
+                                        {
+                                            System.out.println("odt2html1: Title of image '" + imageHref + "' is empty.");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("odt2html1: Image '" + imageHref + "' is missing a title.");
+                                    }
+
+                                    if (imageDescription != null)
+                                    {
+                                        if (imageDescription.length() > 0)
+                                        {
+                                            // Ampersand needs to be the first, otherwise it would double-encode
+                                            // other entities.
+		                                    imageDescription = imageDescription.replaceAll("&", "&amp;");
+                                            imageDescription = imageDescription.replaceAll("\"", "&quot;");
+		                                    imageDescription = imageDescription.replaceAll("'", "&apos;");
+		                                    imageDescription = imageDescription.replaceAll("<", "&lt;");
+		                                    imageDescription = imageDescription.replaceAll(">", "&gt;");
+
+                                            writer.write(" alt=\"" + imageDescription + "\"");
+                                        }
+                                        else
+                                        {
+                                            System.out.println("odt2html1: Description of image '" + imageHref + "' is empty.");
+                                            writer.write(" alt=\"\"");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        System.out.println("odt2html1: Image '" + imageHref + "' is missing a description.");
+                                        writer.write(" alt=\"\"");
+                                    } 
+                                    
+                                    writer.write("/>");
+                                
+                                    structureStack.pop();
+                                    
+                                    break;
+                                }
                             }
-
-                            if (imageFile.canRead() != true)
-                            {
-                                System.out.print("odt2html1: Image file '" + imageFile.getAbsolutePath() + "' isn't readable.\n");
-                                return -1;
-                            }
-
-                            if (CopyFileBinary(imageFile, new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + imageFile.getName())) != 0)
-                            {
-                                return -1;
-                            }
-
-                            infoWriter.write("  <extracted-file type=\"image\" path=\"" + imageFile.getName() + "\"/>\n");
-
-                            writer.write("<img src=\"" + imageFile.getName() + "\"/>");
                         }
-                        else
-                        {
-                            System.out.println("odt2html1: Image is missing the 'href' reference.");
-                        }
-
                     }
                     else if (fullElementName.equalsIgnoreCase("text:p") == true &&
                              body == true &&

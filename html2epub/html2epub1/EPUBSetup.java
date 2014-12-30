@@ -582,8 +582,10 @@ class EPUBSetup
                 {
                     String title = xhtmlInFileTitles.get(currentXHTMLFile-1);
 
-                    title = title.replaceAll("\"", "&quot;");
+                    // Ampersand needs to be the first, otherwise it would double-encode
+                    // other entities.
                     title = title.replaceAll("&", "&amp;");
+                    title = title.replaceAll("\"", "&quot;");
                     title = title.replaceAll("'", "&apos;");
                     title = title.replaceAll("<", "&lt;");
                     title = title.replaceAll(">", "&gt;");

@@ -385,8 +385,10 @@ class XHTMLProcessor
          *     are existing, readable, etc.?
          */
 
-        title = title.replaceAll("\"", "&quot;");
+        // Ampersand needs to be the first, otherwise it would double-encode
+        // other entities.
         title = title.replaceAll("&", "&amp;");
+        title = title.replaceAll("\"", "&quot;");
         title = title.replaceAll("'", "&apos;");
         title = title.replaceAll("<", "&lt;");
         title = title.replaceAll(">", "&gt;");
@@ -486,7 +488,17 @@ class XHTMLProcessor
                                     writer.write(attributeName.getPrefix() + ":");
                                 }
 
-                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                String attributeValue = attribute.getValue();
+                                
+                                // Ampersand needs to be the first, otherwise it would double-encode
+                                // other entities.
+                                attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                             }
                             
                             writer.write(">");
@@ -625,7 +637,17 @@ class XHTMLProcessor
                                                     writer.write(attributeName.getPrefix() + ":");
                                                 }
 
-                                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                                String attributeValue = attribute.getValue();
+                                                
+                                                // Ampersand needs to be the first, otherwise it would double-encode
+                                                // other entities.
+                                                attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                                attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                                attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                                attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                                attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                                writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                             }
                                         }
                                         
@@ -672,7 +694,17 @@ class XHTMLProcessor
                                         writer.write(attributeName.getPrefix() + ":");
                                     }
 
-                                    writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                    String attributeValue = attribute.getValue();
+                                    
+                                    // Ampersand needs to be the first, otherwise it would double-encode
+                                    // other entities.
+                                    attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                    attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                    attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                    attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                    attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                    writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                 }
 
                                 writer.write(">");
@@ -709,7 +741,17 @@ class XHTMLProcessor
                                         writer.write(attributeName.getPrefix() + ":");
                                     }
 
-                                    writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                    String attributeValue = attribute.getValue();
+                                    
+                                    // Ampersand needs to be the first, otherwise it would double-encode
+                                    // other entities.
+                                    attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                    attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                    attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                    attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                    attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                    writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                 }
 
                                 writer.write(">");
@@ -766,7 +808,17 @@ class XHTMLProcessor
                                                     writer.write(attributeName.getPrefix() + ":");
                                                 }
 
-                                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                                String attributeValue = attribute.getValue();
+                                                
+                                                // Ampersand needs to be the first, otherwise it would double-encode
+                                                // other entities.
+                                                attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                                attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                                attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                                attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                                attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                                writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                             }
                                         }
 
@@ -808,7 +860,17 @@ class XHTMLProcessor
                                     writer.write(attributeName.getPrefix() + ":");
                                 }
 
-                                writer.write(attributeName.getLocalPart() + "=\"" + attribute.getValue() + "\"");
+                                String attributeValue = attribute.getValue();
+                                
+                                // Ampersand needs to be the first, otherwise it would double-encode
+                                // other entities.
+                                attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                             }
                             
                             writer.write(">");
