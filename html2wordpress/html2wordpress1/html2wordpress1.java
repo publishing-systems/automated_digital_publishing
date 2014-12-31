@@ -437,7 +437,17 @@ public class html2wordpress1
                                 fullAttributeName = attributeName.getPrefix() + ":" + fullAttributeName;
                             }
 
-                            xmlrpc += " " + fullAttributeName + "=&quot;" + attribute.getValue() + "&quot;";
+                            String attributeValue = attribute.getValue();
+
+                            // Ampersand needs to be the first, otherwise it would double-encode
+                            // other entities.
+                            attributeValue = attributeValue.replaceAll("&", "&amp;");
+                            attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                            attributeValue = attributeValue.replaceAll("'", "&apos;");
+                            attributeValue = attributeValue.replaceAll("<", "&lt;");
+                            attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                            xmlrpc += " " + fullAttributeName + "=&quot;" + attributeValue + "&quot;";
                         }
                         
                         // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
@@ -598,12 +608,34 @@ public class html2wordpress1
                 xmlrpc +=                       "<value>" +
                                                   "<struct>" +
                                                     "<member>" +
-                                                      "<name>key</name>" +
-                                                      "<value><string>" + entry.getKey() + "</string></value>" +
+                                                      "<name>key</name>";
+
+                String key = entry.getKey();
+
+                // Ampersand needs to be the first, otherwise it would double-encode
+                // other entities.
+                key = key.replaceAll("&", "&amp;");
+                key = key.replaceAll("\"", "&quot;");
+                key = key.replaceAll("'", "&apos;");
+                key = key.replaceAll("<", "&lt;");
+                key = key.replaceAll(">", "&gt;");
+
+                xmlrpc +=                             "<value><string>" + key + "</string></value>" +
                                                     "</member>" +
                                                     "<member>" +
-                                                      "<name>value</name>" +
-                                                      "<value><string>" + entry.getValue() + "</string></value>" +
+                                                      "<name>value</name>";
+
+                String value = entry.getValue();
+
+                // Ampersand needs to be the first, otherwise it would double-encode
+                // other entities.
+                value = value.replaceAll("&", "&amp;");
+                value = value.replaceAll("\"", "&quot;");
+                value = value.replaceAll("'", "&apos;");
+                value = value.replaceAll("<", "&lt;");
+                value = value.replaceAll(">", "&gt;");
+
+                xmlrpc +=                             "<value><string>" + value + "</string></value>" +
                                                     "</member>" +
                                                   "</struct>" +
                                                 "</value>";
@@ -626,14 +658,33 @@ public class html2wordpress1
                                             
             for (Map.Entry<String, ArrayList<String>> taxonomy : taxonomyHierarchy.entrySet())
             {
-                xmlrpc +=                     "<member>" +
-                                                "<name>" + taxonomy.getKey() + "</name>" +
+                xmlrpc +=                     "<member>";
+                
+                String name = taxonomy.getKey();
+
+                // Ampersand needs to be the first, otherwise it would double-encode
+                // other entities.
+                name = name.replaceAll("&", "&amp;");
+                name = name.replaceAll("\"", "&quot;");
+                name = name.replaceAll("'", "&apos;");
+                name = name.replaceAll("<", "&lt;");
+                name = name.replaceAll(">", "&gt;");
+                
+                xmlrpc +=                       "<name>" + name + "</name>" +
                                                 "<value>" +
                                                   "<array>" +
                                                     "<data>";
 
                 for (String term : taxonomy.getValue())
                 {
+                    // Ampersand needs to be the first, otherwise it would double-encode
+                    // other entities.
+                    term = term.replaceAll("&", "&amp;");
+                    term = term.replaceAll("\"", "&quot;");
+                    term = term.replaceAll("'", "&apos;");
+                    term = term.replaceAll("<", "&lt;");
+                    term = term.replaceAll(">", "&gt;");
+                
                     xmlrpc +=                         "<value><int>" + term + "</int></value>";
                 }
                 
@@ -659,14 +710,33 @@ public class html2wordpress1
                                             
             for (Map.Entry<String, ArrayList<String>> taxonomy : taxonomyTags.entrySet())
             {
-                xmlrpc +=                     "<member>" +
-                                                "<name>" + taxonomy.getKey() + "</name>" +
+                xmlrpc +=                     "<member>";
+
+                String name = taxonomy.getKey();
+
+                // Ampersand needs to be the first, otherwise it would double-encode
+                // other entities.
+                name = name.replaceAll("&", "&amp;");
+                name = name.replaceAll("\"", "&quot;");
+                name = name.replaceAll("'", "&apos;");
+                name = name.replaceAll("<", "&lt;");
+                name = name.replaceAll(">", "&gt;");
+
+                xmlrpc +=                       "<name>" + name + "</name>" +
                                                 "<value>" +
                                                   "<array>" +
                                                     "<data>";
 
                 for (String term : taxonomy.getValue())
                 {
+                    // Ampersand needs to be the first, otherwise it would double-encode
+                    // other entities.
+                    term = term.replaceAll("&", "&amp;");
+                    term = term.replaceAll("\"", "&quot;");
+                    term = term.replaceAll("'", "&apos;");
+                    term = term.replaceAll("<", "&lt;");
+                    term = term.replaceAll(">", "&gt;");
+
                     xmlrpc +=                         "<value><string>" + term + "</string></value>";
                 }
                 

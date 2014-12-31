@@ -358,7 +358,17 @@ public class html_split1
                                 fullAttributeName = attributeName.getPrefix() + ":" + fullAttributeName;
                             }
 
-                            writer.write(" " + fullAttributeName + "=\"" + attribute.getValue() + "\"");
+                            String attributeValue = attribute.getValue();
+
+                            // Ampersand needs to be the first, otherwise it would double-encode
+                            // other entities.
+                            attributeValue = attributeValue.replaceAll("&", "&amp;");
+                            attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                            attributeValue = attributeValue.replaceAll("'", "&apos;");
+                            attributeValue = attributeValue.replaceAll("<", "&lt;");
+                            attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                            writer.write(" " + fullAttributeName + "=\"" + attributeValue + "\"");
                         }
                         
                         // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html

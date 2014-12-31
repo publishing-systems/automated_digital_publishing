@@ -257,7 +257,17 @@ public class html_prepare4latex1
                             fullAttributeName = attributeName.getPrefix() + ":" + fullAttributeName;
                         }
 
-                        writer.write(" " + fullAttributeName + "=\"" + attribute.getValue() + "\"");
+                        String attributeValue = attribute.getValue();
+
+                        // Ampersand needs to be the first, otherwise it would double-encode
+                        // other entities.
+                        attributeValue = attributeValue.replaceAll("&", "&amp;");
+                        attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                        attributeValue = attributeValue.replaceAll("'", "&apos;");
+                        attributeValue = attributeValue.replaceAll("<", "&lt;");
+                        attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                        writer.write(" " + fullAttributeName + "=\"" + attributeValue + "\"");
                     }
 
                     writer.write(">");

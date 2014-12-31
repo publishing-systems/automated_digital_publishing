@@ -388,12 +388,18 @@ public class html_attributereplace1
                         if (mapping.containsKey(mappingKey) == true &&
                             body == true)
                         {
-                            writer.write(" " + fullAttributeName + "=\"" + mapping.get(mappingKey) + "\"");
+                            attributeValue = mapping.get(mappingKey);
                         }
-                        else
-                        {
-                            writer.write(" " + fullAttributeName + "=\"" + attributeValue + "\"");
-                        }
+
+                        // Ampersand needs to be the first, otherwise it would double-encode
+                        // other entities.
+                        attributeValue = attributeValue.replaceAll("&", "&amp;");
+                        attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                        attributeValue = attributeValue.replaceAll("'", "&apos;");
+                        attributeValue = attributeValue.replaceAll("<", "&lt;");
+                        attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                        writer.write(" " + fullAttributeName + "=\"" + attributeValue + "\"");
                         
                         // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                         @SuppressWarnings("unchecked")

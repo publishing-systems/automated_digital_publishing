@@ -388,6 +388,14 @@ class EPUBSetup
                     {
                         writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".svg\" media-type=\"image/svg+xml\"/>\n");
                     }
+                    else if (fileExtension.equals(".jpg") == true)
+                    {
+                        writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".jpg\" media-type=\"image/jpeg\"/>\n");
+                    }
+                    else if (fileExtension.equals(".jpeg") == true)
+                    {
+                        writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".jpeg\" media-type=\"image/jpeg\"/>\n");
+                    }
                     else
                     {
                         System.out.print("html2epub1: Unsupported file type for image '" + inFile.getAbsolutePath() + "'.\n");

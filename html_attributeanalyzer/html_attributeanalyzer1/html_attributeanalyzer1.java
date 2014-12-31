@@ -398,10 +398,20 @@ public class html_attributeanalyzer1
                 {
                     AttributeInformation attributeInformation = iterAttributeInformation.next();
                     
+                    String attributeValue = attributeInformation.GetValue();
+
+                    // Ampersand needs to be the first, otherwise it would double-encode
+                    // other entities.
+                    attributeValue = attributeValue.replaceAll("&", "&amp;");
+                    attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                    attributeValue = attributeValue.replaceAll("'", "&apos;");
+                    attributeValue = attributeValue.replaceAll("<", "&lt;");
+                    attributeValue = attributeValue.replaceAll(">", "&gt;");
+                    
                     writer.write("  <attribute ");
                     writer.write("element=\"" + attributeInformation.GetElement() + "\" ");
                     writer.write("attribute=\"" + attributeInformation.GetAttribute() + "\" ");
-                    writer.write("value=\"" + attributeInformation.GetValue() + "\" ");
+                    writer.write("value=\"" + attributeValue + "\" ");
                     writer.write("parent=\"" + attributeInformation.GetParent() + "\"/>\n");
                 }
             }

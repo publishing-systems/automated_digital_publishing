@@ -531,11 +531,11 @@ class ODTContentProcessor
                                         {
                                             // Ampersand needs to be the first, otherwise it would double-encode
                                             // other entities.
-		                                    imageDescription = imageDescription.replaceAll("&", "&amp;");
+                                            imageDescription = imageDescription.replaceAll("&", "&amp;");
                                             imageDescription = imageDescription.replaceAll("\"", "&quot;");
-		                                    imageDescription = imageDescription.replaceAll("'", "&apos;");
-		                                    imageDescription = imageDescription.replaceAll("<", "&lt;");
-		                                    imageDescription = imageDescription.replaceAll(">", "&gt;");
+                                            imageDescription = imageDescription.replaceAll("'", "&apos;");
+                                            imageDescription = imageDescription.replaceAll("<", "&lt;");
+                                            imageDescription = imageDescription.replaceAll(">", "&gt;");
 
                                             writer.write(" alt=\"" + imageDescription + "\"");
                                         }
