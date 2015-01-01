@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2014-2015  Stephan Kreutzer
 
 This file is part of html2wordpress1.
 
@@ -19,7 +19,7 @@ along with html2wordpress1. If not, see <http://www.gnu.org/licenses/>.
 <html2wordpress1-job>
   <input-html-file>input.html</input-html-file>
   <wordpress-xmlrpc-url>http://www.example.org/wordpress/xmlrpc.php</wordpress-xmlrpc-url>
-  <!-- User authentication requires the fixed version of the "Secure XML-RPC" WordPress plugin by Eric Mann from https://github.com/publishing-systems/secure-xmlrpc (original located here: https://wordpress.org/plugins/secure-xml-rpc/). -->
+  <!-- User authentication requires the "Secure XML-RPC" WordPress plugin by Eric Mann from https://wordpress.org/plugins/secure-xml-rpc/ or https://github.com/ericmann/secure-xmlrpc, Commit 31). -->
   <wordpress-user-public-key>b730db0864b0d4453ba6a26ad6613cd4</wordpress-user-public-key>
   <wordpress-user-private-key>7647a19f5bf3e9fd001419900ad48a54</wordpress-user-private-key>
   <wordpress-post-user-id>1</wordpress-post-user-id>
@@ -27,6 +27,7 @@ along with html2wordpress1. If not, see <http://www.gnu.org/licenses/>.
   <wordpress-post-status>publish</wordpress-post-status>
   <wordpress-post-title>Title</wordpress-post-title>
   <wordpress-post-excerpt>This is the post excerpt.</wordpress-post-excerpt>
+  <!-- Leave it empty for 'now'. -->
   <wordpress-post-date>20140816T10:14:58Z</wordpress-post-date>
   <wordpress-post-format>Standard</wordpress-post-format>
   <wordpress-post-name-slug>htmlpost</wordpress-post-name-slug>
@@ -39,6 +40,7 @@ along with html2wordpress1. If not, see <http://www.gnu.org/licenses/>.
     <wordpress-post-custom-field name="metafield">metadata</wordpress-post-custom-field>
   </wordpress-post-custom-fields>
   <wordpress-post-taxonomies>
+    <!-- Taxonomy hierarchy IDs must be present in WordPress. -->
     <wordpress-post-taxonomy-hierarchy name="category">
       <wordpress-post-taxonomy-id>1</wordpress-post-taxonomy-id>
       <wordpress-post-taxonomy-id>3</wordpress-post-taxonomy-id>

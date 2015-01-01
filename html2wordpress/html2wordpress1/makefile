@@ -1,4 +1,4 @@
-# Copyright (C) 2014  Stephan Kreutzer
+# Copyright (C) 2014-2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -29,16 +29,13 @@ html2wordpress1: html2wordpress1.class
 
 
 
-Base64Coder.class: Base64Coder.java
-	javac Base64Coder.java
-
 JobFileProcessor.class: JobFileProcessor.java
 	javac JobFileProcessor.java
 
 XHTMLValidator.class: XHTMLValidator.java
 	javac XHTMLValidator.java
 
-html2wordpress1.class: html2wordpress1.java Base64Coder.class JobFileProcessor.class XHTMLValidator.java
+html2wordpress1.class: html2wordpress1.java JobFileProcessor.class XHTMLValidator.java
 	javac html2wordpress1.java
 
 $(directories):
@@ -48,5 +45,4 @@ clean:
 	rm -f ./html2wordpress1.class
 	rm -f ./XHTMLValidator.class
 	rm -f ./JobFileProcessor.class
-	rm -f ./Base64Coder.class
 

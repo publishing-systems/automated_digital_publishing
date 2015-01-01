@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html2wordpress1.
  *
@@ -60,12 +60,13 @@ public class html2wordpress1
 {
     public static void main(String[] args)
     {
-        System.out.print("html2wordpress1  Copyright (C) 2014  Stephan Kreutzer, Christian d'Heureuse\n" +
+        System.out.print("html2wordpress1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
-                         "repository: https://github.com/publishing-systems/automated_digital_publishing/\n\n");
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
         if (args.length != 1)
         {
@@ -202,6 +203,10 @@ public class html2wordpress1
                                     "<value><string></string></value>" +
                                     "<value>" +
                                       "<struct>";
+
+        /**
+         * @todo Every setting needs proper XML special characters encoding.
+         */
 
         if (jobSettings.containsKey("wordpress-post-type") == true)
         {
@@ -441,11 +446,11 @@ public class html2wordpress1
 
                             // Ampersand needs to be the first, otherwise it would double-encode
                             // other entities.
-                            attributeValue = attributeValue.replaceAll("&", "&amp;");
-                            attributeValue = attributeValue.replaceAll("\"", "&quot;");
-                            attributeValue = attributeValue.replaceAll("'", "&apos;");
-                            attributeValue = attributeValue.replaceAll("<", "&lt;");
-                            attributeValue = attributeValue.replaceAll(">", "&gt;");
+                            attributeValue = attributeValue.replaceAll("&", "&amp;amp;");
+                            attributeValue = attributeValue.replaceAll("\"", "&amp;quot;");
+                            attributeValue = attributeValue.replaceAll("'", "&amp;apos;");
+                            attributeValue = attributeValue.replaceAll("<", "&amp;lt;");
+                            attributeValue = attributeValue.replaceAll(">", "&amp;gt;");
 
                             xmlrpc += " " + fullAttributeName + "=&quot;" + attributeValue + "&quot;";
                         }
@@ -503,7 +508,17 @@ public class html2wordpress1
                 {
                     if (body == true)
                     {
-                        xmlrpc += event.asCharacters().getData();
+                        String characters = event.asCharacters().getData();
+                        
+                        // Ampersand needs to be the first, otherwise it would double-encode
+                        // other entities.
+                        characters = characters.replaceAll("&", "&amp;amp;");
+                        characters = characters.replaceAll("\"", "&amp;quot;");
+                        characters = characters.replaceAll("'", "&amp;apos;");
+                        characters = characters.replaceAll("<", "&amp;lt;");
+                        characters = characters.replaceAll(">", "&amp;gt;");
+                    
+                        xmlrpc += characters;
                     }
                 }
             }
@@ -775,7 +790,7 @@ public class html2wordpress1
         String http = "POST " + xmlrpcPath + " HTTP/1.1\r\n" +
                       "Host: " + host + "\r\n" +
                       "Content-Type: text/xml\r\n" +
-                      "User-Agent: html2wordpress1\r\n";
+                      "User-Agent: html2wordpress1 (publishing-systems.org)\r\n";
 
         MessageDigest md = null;
 
@@ -801,14 +816,43 @@ public class html2wordpress1
             System.exit(-1);
         }
 
-
         byte[] digest = md.digest();
 
         StringBuffer hexString = new StringBuffer();
 
         for (int i = 0; i < digest.length; i++)
         {
-            String hex = Integer.toHexString(0xff & digest[i]);
+            String hex = Integer.toHexString(0xFF & digest[i]);
+
+            if (hex.length() == 1)
+            {
+                hexString.append('0');
+            }
+
+            hexString.append(hex);
+        }
+
+        // Second time.
+
+        hashBase = jobSettings.get("wordpress-user-private-key") + hexString;
+
+        try
+        {
+            md.update(hashBase.getBytes("UTF-8"));
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        digest = md.digest();
+
+        hexString = new StringBuffer();
+
+        for (int i = 0; i < digest.length; i++)
+        {
+            String hex = Integer.toHexString(0xFF & digest[i]);
 
             if (hex.length() == 1)
             {
@@ -819,9 +863,7 @@ public class html2wordpress1
         }
 
 
-        String authorization = Base64Coder.encodeString(String.valueOf(hexString));
-        authorization = new String(jobSettings.get("wordpress-user-public-key") + "||" + authorization);
-
+        String authorization = new String(jobSettings.get("wordpress-user-public-key") + "||" + hexString);
         http += "Authorization: " + authorization + "\r\n";
 
         try
