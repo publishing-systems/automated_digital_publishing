@@ -507,20 +507,20 @@ public class html2epub1_config_metadata_editor
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	          DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	          Document document = documentBuilder.parse(this.configFile);
-	          document.getDocumentElement().normalize();
-             
-	          NodeList metaDataNodeList = document.getElementsByTagName("metaData");
-	          
-	          if (metaDataNodeList.getLength() <= 0)
-	          {
-	              ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
-	              this.labelFile.setIcon(iconIncorrect);
-	              return false;
-	          }
-	          
-	          
+	        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+	        Document document = documentBuilder.parse(this.configFile);
+	        document.getDocumentElement().normalize();
+
+	        NodeList metaDataNodeList = document.getElementsByTagName("metaData");
+
+	        if (metaDataNodeList.getLength() <= 0)
+	        {
+	            ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
+	            this.labelFile.setIcon(iconIncorrect);
+	            return false;
+	        }
+
+
             Node metaDataNode = metaDataNodeList.item(0);
             Node parentNode = metaDataNode.getParentNode();
             parentNode.removeChild(metaDataNode);

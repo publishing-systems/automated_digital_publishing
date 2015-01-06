@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,7 +16,7 @@
 
 
 
-directories = ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./odt2html ./txtreplace ./unzip ./workflows ./xsltransformator
+directories = ./csv2xml1
 
 
 

@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,18 +16,18 @@
 
 
 
-directories = ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./odt2html ./txtreplace ./unzip ./workflows ./xsltransformator
+.PHONY: all csv2xml1 clean
 
 
 
-.PHONY: all $(directories)
+all: csv2xml1
+csv2xml1: csv2xml1.class
 
 
 
-all: $(directories)
+csv2xml1.class: csv2xml1.java
+	javac csv2xml1.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
+clean:
+	rm -f csv2xml1.class
 
