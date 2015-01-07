@@ -20,7 +20,7 @@ directories = ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpr
 
 
 
-.PHONY: all $(directories)
+.PHONY: all $(directories) install
 
 
 
@@ -30,4 +30,7 @@ all: $(directories)
 
 $(directories):
 	$(MAKE) --directory=$@
+
+install:
+	java -classpath ./workflows/ setup1
 
