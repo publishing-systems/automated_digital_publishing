@@ -16,18 +16,18 @@
 
 
 
-directories = ./csv2xml1 ./csv2xml2
+.PHONY: all csv2xml2 clean
 
 
 
-.PHONY: all $(directories)
+all: csv2xml2
+csv2xml2: csv2xml2.class
 
 
 
-all: $(directories)
+csv2xml2.class: csv2xml2.java
+	javac csv2xml2.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
+clean:
+	rm -f csv2xml2.class
 

@@ -145,7 +145,107 @@ public class html_split1
             System.out.print("html_split1: '" + configFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-8);
         }
-        
+
+
+        String doctypeDeclaration = new String("<!DOCTYPE");
+        int doctypePosMatching = 0;
+        String doctype = new String();
+    
+        try
+        {
+            FileInputStream in = new FileInputStream(inFile);
+            
+            int currentByte = 0;
+ 
+            do
+            {
+                currentByte = in.read();
+                
+                if (currentByte < 0 ||
+                    currentByte > 255)
+                {
+                    break;
+                }
+                
+
+                char currentByteCharacter = (char) currentByte;
+                
+                if (doctypePosMatching < doctypeDeclaration.length())
+                {
+                    if (currentByteCharacter == doctypeDeclaration.charAt(doctypePosMatching))
+                    {
+                        doctypePosMatching++;
+                        doctype += currentByteCharacter;
+                    }
+                    else
+                    {
+                        doctypePosMatching = 0;
+                        doctype = new String();
+                    }
+                }
+                else
+                {
+                    doctype += currentByteCharacter;
+                
+                    if (currentByteCharacter == '>')
+                    {
+                        break;
+                    }
+                }
+            
+            } while (true);
+        }
+        catch (FileNotFoundException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        File resolverConfigFile = null;
+
+        if (doctype.contains("\"-//W3C//DTD XHTML 1.0 Strict//EN\"") == true)
+        {
+            resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
+        }
+        else if (doctype.contains("\"-//W3C//DTD XHTML 1.1//EN\"") == true)
+        {
+            resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
+        }
+        else
+        {
+            System.out.print("html_split1: Unknown XHTML version '" + doctype + "'.\n");
+            System.exit(-1);
+        }
+
+        if (resolverConfigFile == null)
+        {
+            System.exit(-1);
+        }
+
+        if (resolverConfigFile.exists() != true)
+        {
+            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.exit(-1);
+        }
+
+        if (resolverConfigFile.isFile() != true)
+        {
+            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
+            System.exit(-1);
+        }
+
+        if (resolverConfigFile.canRead() != true)
+        {
+            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
+            System.exit(-1);
+        }
+
+
         File outDirectory = new File(args[2]);
         
         if (outDirectory.exists() == true)
@@ -241,7 +341,7 @@ public class html_split1
 
         try
         {
-            EntityResolverLocal localResolver = new EntityResolverLocal(entitiesDirectory);
+            EntityResolverLocal localResolver = new EntityResolverLocal(resolverConfigFile, entitiesDirectory);
         
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             inputFactory.setXMLResolver(localResolver);
@@ -620,14 +720,29 @@ class HierarchyDefinition
 
 class EntityResolverLocal implements XMLResolver
 {
-    public EntityResolverLocal(File entitiesDirectory)
+    public EntityResolverLocal(File configFile, File entitiesDirectory)
     {
+        this.configFile = configFile;
         this.entitiesDirectory = entitiesDirectory;
-        this.configFile = null;
         this.localEntities = new HashMap<String, File>();
         
         boolean success = true;
-        
+
+        if (success == true)
+        {
+            success = this.configFile.exists();
+        }
+
+        if (success == true)
+        {
+            success = this.configFile.isFile();
+        }
+
+        if (success == true)
+        {
+            success = this.configFile.canRead();
+        }
+
         if (success == true)
         {
             success = this.entitiesDirectory.exists();
@@ -641,22 +756,6 @@ class EntityResolverLocal implements XMLResolver
         if (success != true)
         {
             this.entitiesDirectory = null;
-        }
-        
-        if (success == true)
-        {
-            this.configFile = new File(this.entitiesDirectory.getAbsolutePath() + "/config.xml");
-            success = this.configFile.exists();
-        }
-        
-        if (success == true)
-        {
-            success = this.configFile.isFile();
-        }
-        
-        if (success == true)
-        {
-            success = this.configFile.canRead();
         }
 
         if (success == true)
@@ -673,17 +772,17 @@ class EntityResolverLocal implements XMLResolver
             catch (ParserConfigurationException ex)
             {
                 ex.printStackTrace();
-                System.exit(-18);
+                System.exit(-1);
             }
             catch (SAXException ex)
             {
                 ex.printStackTrace();
-                System.exit(-19);
+                System.exit(-1);
             }
             catch (IOException ex)
             {
                 ex.printStackTrace();
-                System.exit(-20);
+                System.exit(-1);
             }
 
 
@@ -710,7 +809,7 @@ class EntityResolverLocal implements XMLResolver
                         if (identifier.length() <= 0)
                         {
                             System.out.print("html_split1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
-                            System.exit(-21);
+                            System.exit(-1);
                         }
                         
                         if (referencedFile.isAbsolute() != true)
@@ -735,19 +834,19 @@ class EntityResolverLocal implements XMLResolver
                         if (referencedFile.exists() != true)
                         {
                             System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
-                            System.exit(-22);
+                            System.exit(-1);
                         }
                         
                         if (referencedFile.isFile() != true)
                         {
                             System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
-                            System.exit(-23);
+                            System.exit(-1);
                         }
                         
                         if (referencedFile.canRead() != true)
                         {
                             System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
-                            System.exit(-24);
+                            System.exit(-1);
                         }
                         
                         if (this.localEntities.containsKey(identifier) != true)
@@ -757,7 +856,7 @@ class EntityResolverLocal implements XMLResolver
                         else
                         {
                             System.out.print("html_split1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
-                            System.exit(-25);
+                            System.exit(-1);
                         }
                     }
                 }
@@ -773,13 +872,13 @@ class EntityResolverLocal implements XMLResolver
         if (this.entitiesDirectory == null)
         {
             System.out.print("html_split1: Can't resolve entity, no local entities directory.\n");
-            System.exit(-26);
+            System.exit(-1);
         }
         
         if (this.configFile == null)
         {
             System.out.print("html_split1: Can't resolve entity, no entities configured.\n");
-            System.exit(-27);
+            System.exit(-1);
         }
     
         File localEntity = null;
@@ -803,25 +902,25 @@ class EntityResolverLocal implements XMLResolver
         if (localEntity == null)
         {
             System.out.print("html_split1: Can't resolve entity with public ID '" + publicID + "', system ID '" + systemID + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
-            System.exit(-28);                  
+            System.exit(-1);
         }
     
         if (localEntity.exists() != true)
         {
             System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
-            System.exit(-29);
+            System.exit(-1);
         }
         
         if (localEntity.isFile() != true)
         {
             System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
-            System.exit(-30);
+            System.exit(-1);
         }
         
         if (localEntity.canRead() != true)
         {
             System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
-            System.exit(-31);
+            System.exit(-1);
         }
         
         FileInputStream fileInputStream = null;
@@ -833,13 +932,14 @@ class EntityResolverLocal implements XMLResolver
         catch (FileNotFoundException ex)
         {
             ex.printStackTrace();
-            System.exit(-32);
+            System.exit(-1);
         }
         
         return fileInputStream;
     }
 
-    protected File entitiesDirectory;
     protected File configFile;
+    protected File entitiesDirectory;
     protected Map<String, File> localEntities;
 }
+

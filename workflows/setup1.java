@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of setup1.
  *
@@ -40,7 +40,7 @@ public class setup1
 {
     public static void main(String args[])
     {
-        System.out.print("setup1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("setup1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -66,6 +66,7 @@ public class setup1
         CopyXHTML_1_1(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
         CopyXHTML_1_1(programPath, "../html_attributereplace/html_attributereplace1/entities/");
         CopyXHTML_1_1(programPath, "../html_concatenate/html_concatenate1/entities/");
+        CopyXHTML_1_1(programPath, "../html_split/html_split1/entities/");
 
 
         {

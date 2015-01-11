@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of csv2xml2.
+
+csv2xml2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+csv2xml2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with csv2xml2. If not, see <http://www.gnu.org/licenses/>.
+-->
+<csv2xml2-config>
+  <delimiter>;</delimiter>
+  <!-- Some CSV exports use the first line for column header captions. -->
+  <ignore-first-line>false</ignore-first-line>
+  <root-tag-name>places</root-tag-name>
+  <row-tag-name>place</row-tag-name>
+  <mapping>
+    <csv-column number="0" xml-tag-name="id"/>
+    <csv-column number="1" xml-tag-name="name"/>
+    <csv-column number="3" xml-tag-name="location"/>
+  </mapping>
+</csv2xml2-config>
