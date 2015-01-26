@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2epub1 workflow.
  *
@@ -24,21 +24,17 @@
 
 
 
+import java.io.File;
+import java.util.Scanner;
+import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
-import java.io.IOException;
-import java.util.Scanner;
-import java.util.StringTokenizer;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.FileInputStream;
-import java.util.ArrayList;
-import java.util.List;
-
 
 
 
@@ -46,7 +42,7 @@ public class odt2epub1
 {
     public static void main(String args[])
     {
-        System.out.print("odt2epub1 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("odt2epub1 workflow Copyright (C) 2014-2015 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -123,291 +119,10 @@ public class odt2epub1
             System.out.print("odt2epub1 workflow: Can't create output directory '" + outputDirectory.getAbsolutePath() + "'.\n");
             System.exit(-14);
         }
-        
-
-        {
-            File from = new File(programPath + "../html_split/html_split1/entities/config_xhtml1-strict.xml");
-            File to = new File(programPath + "../html_split/html_split1/entities/config.xml");
-            
-            if (odt2epub1.CopyFile(from, to) != 0)
-            {
-                System.exit(-15);
-            }
-        }
-        
-
-        List<File> splittedParts = new ArrayList<File>();
-
-        builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_part.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
-        builder.directory(new File(programPath + "../html_split/html_split1"));
-        builder.redirectErrorStream(true);
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                String line = scanner.next();
-                
-                System.out.println(line);
-                
-                if (line.contains("Splitting to '") == true)
-                {
-                    StringTokenizer tokenizer = new StringTokenizer(line, "'");
-                    
-                    if (tokenizer.countTokens() >= 2)
-                    {
-                        tokenizer.nextToken();
-                        splittedParts.add(new File(tokenizer.nextToken()));
-                    }
-                }
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-16);
-        }
-        
-        
-        List<File> splittedChapters = new ArrayList<File>();
-        
-        if (splittedParts.size() > 0)
-        {
-            for (int i = 1; i <= splittedParts.size(); i++)
-            {
-                if (splittedParts.get(i-1).exists() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
-                    continue;
-                }
-                
-                if (splittedParts.get(i-1).isFile() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
-                    continue;
-                }
-                
-                if (splittedParts.get(i-1).canRead() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
-                    continue;
-                }
-
-            
-                builder = new ProcessBuilder("java", "xsltransformator1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_part.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
-                builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
-                builder.redirectErrorStream(true);
-
-                try
-                {
-                    Process process = builder.start();
-                    Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                    
-                    while (scanner.hasNext() == true)
-                    {
-                        System.out.println(scanner.next());
-                    }
-                    
-                    scanner.close();
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-17);
-                }
-            }
-            
-            for (int i = 1; i <= splittedParts.size(); i++)
-            {
-                if (splittedParts.get(i-1).exists() != true)
-                {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
-                    continue;
-                }
-                
-                if (splittedParts.get(i-1).isFile() != true)
-                {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
-                    continue;
-                }
-                
-                if (splittedParts.get(i-1).canRead() != true)
-                {
-                    //System.out.println("odt2epub1 workflow: '" + splittedParts.get(i-1).getAbsolutePath() + "' isn't readable.");
-                    continue;
-                }
-            
-
-                builder = new ProcessBuilder("java", "html_split1", splittedParts.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i);
-                builder.directory(new File(programPath + "../html_split/html_split1"));
-                builder.redirectErrorStream(true);
-
-                try
-                {
-                    Process process = builder.start();
-                    Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                    
-                    while (scanner.hasNext() == true)
-                    {
-                        String line = scanner.next();
-                        
-                        System.out.println(line);
-                        
-                        if (line.contains("Splitting to '") == true)
-                        {
-                            StringTokenizer tokenizer = new StringTokenizer(line, "'");
-                            
-                            if (tokenizer.countTokens() >= 2)
-                            {
-                                tokenizer.nextToken();
-                                splittedChapters.add(new File(tokenizer.nextToken()));
-                            }
-                        }
-                    }
-                    
-                    scanner.close();
-                    
-                    for (int j = 1; j <= splittedChapters.size(); j++)
-                    {
-                        if (splittedChapters.get(j-1).exists() != true)
-                        {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
-                            continue;
-                        }
-                        
-                        if (splittedChapters.get(j-1).isFile() != true)
-                        {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' should be a file, but isn't.");
-                            continue;
-                        }
-                        
-                        if (splittedChapters.get(j-1).canRead() != true)
-                        {
-                            System.out.println("odt2epub1 workflow: '" + splittedChapters.get(j-1).getAbsolutePath() + "' isn't readable.");
-                            continue;
-                        }
-                    
-                        builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(j-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + File.separator + j + ".html");
-                        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
-                        builder.redirectErrorStream(true);
-
-                        try
-                        {
-                            process = builder.start();
-                            scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                            
-                            while (scanner.hasNext() == true)
-                            {
-                                System.out.println(scanner.next());
-                            }
-                            
-                            scanner.close();
-                        }
-                        catch (IOException ex)
-                        {
-                            ex.printStackTrace();
-                            System.exit(-18);
-                        } 
-                    }
-                    
-                    splittedChapters.clear();
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-19);
-                }
-            }
-	    }
-	    else
-	    {
-            builder = new ProcessBuilder("java", "html_split1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html_split1_config_chapter.xml", outputDirectory.getAbsolutePath() + File.separator + "in");
-            builder.directory(new File(programPath + "../html_split/html_split1"));
-            builder.redirectErrorStream(true);
-
-            try
-            {
-                Process process = builder.start();
-                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                
-                while (scanner.hasNext() == true)
-                {
-                    String line = scanner.next();
-                    
-                    System.out.println(line);
-                    
-                    if (line.contains("Splitting to '") == true)
-                    {
-                        StringTokenizer tokenizer = new StringTokenizer(line, "'");
-                        
-                        if (tokenizer.countTokens() >= 2)
-                        {
-                            tokenizer.nextToken();
-                            splittedChapters.add(new File(tokenizer.nextToken()));
-                        }
-                    }
-                }
-                
-                scanner.close(); 
-            }
-            catch (IOException ex)
-            {
-                ex.printStackTrace();
-                System.exit(-20);
-            }
-            
-            for (int i = 1; i <= splittedChapters.size(); i++)
-            {
-                if (splittedChapters.get(i-1).exists() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should have been created, but doesn't exist.");
-                    continue;
-                }
-                
-                if (splittedChapters.get(i-1).isFile() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' should be a file, but isn't.");
-                    continue;
-                }
-                
-                if (splittedChapters.get(i-1).canRead() != true)
-                {
-                    System.out.println("odt2epub1 workflow: '" + splittedChapters.get(i-1).getAbsolutePath() + "' isn't readable.");
-                    continue;
-                }
-            
-                builder = new ProcessBuilder("java", "xsltransformator1", splittedChapters.get(i-1).getAbsolutePath(), programPath + "../odt2html/templates/template1/html2epub1_html_chapter.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + i + ".html");
-                builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
-                builder.redirectErrorStream(true);
-
-                try
-                {
-                    Process process = builder.start();
-                    Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-                    
-                    while (scanner.hasNext() == true)
-                    {
-                        System.out.println(scanner.next());
-                    }
-                    
-                    scanner.close();
-                }
-                catch (IOException ex)
-                {
-                    ex.printStackTrace();
-                    System.exit(-21);
-                }
-            }
-	    }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_html_title.xsl", outputDirectory.getAbsolutePath() + File.separator + "in" + File.separator + "title.html");
-        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
+        builder = new ProcessBuilder("java", "html2epub1_config_create_new", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_metadata_config.xml");
+        builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_create_new"));
         builder.redirectErrorStream(true);
 
         try
@@ -425,115 +140,11 @@ public class odt2epub1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-34);
+            System.exit(-1);
         }
 
 
-        builder = new ProcessBuilder("java", "xsltransformator1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", programPath + "../odt2html/templates/template1/html2epub1_config.xsl", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../xsltransformator/xsltransformator1"));
-        builder.redirectErrorStream(true);
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                System.out.println(scanner.next());
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-22);
-        }
-        
-        
-        try
-        {
-            BufferedWriter writer = new BufferedWriter(
-                                    new OutputStreamWriter(
-                                    new FileOutputStream(new File(tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml")),
-                                    "UTF8"));
-
-            writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            writer.write("<!-- This file was created by odt2epub1 workflow, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
-            writer.write("<txtreplace1-replacement-dictionary>\n");
-            writer.write("  <replace>\n");
-            writer.write("    <pattern>./</pattern>\n");
-            writer.write("    <replacement>./in/</replacement>\n");
-            writer.write("  </replace>\n");
-            writer.write("</txtreplace1-replacement-dictionary>\n");
-            
-            writer.close();
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-23);
-        }
-        catch (UnsupportedEncodingException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-24);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-25);
-        }
-        
-
-        builder = new ProcessBuilder("java", "txtreplace1", outputDirectory.getAbsolutePath() + File.separator + "config.xml", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_config_replacement_dictionary.xml", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../txtreplace/txtreplace1"));
-        builder.redirectErrorStream(true);
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                System.out.println(scanner.next());
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-26);
-        }
-        
-
-        builder = new ProcessBuilder("java", "html2epub1_config_file_setup", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_file_setup"));
-        builder.redirectErrorStream(true);
-
-        try
-        {
-            Process process = builder.start();
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
-            while (scanner.hasNext() == true)
-            {
-                System.out.println(scanner.next());
-            }
-            
-            scanner.close();
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-27);
-        }
-
-
-        builder = new ProcessBuilder("java", "html2epub1_config_metadata_editor", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
+        builder = new ProcessBuilder("java", "html2epub1_config_metadata_editor", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_metadata_config.xml");
         builder.directory(new File(programPath + "../html2epub/html2epub1/gui/html2epub1_config_metadata_editor"));
         builder.redirectErrorStream(true);
 
@@ -552,12 +163,12 @@ public class odt2epub1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-28);
+            System.exit(-1);
         }
 
 
-        builder = new ProcessBuilder("java", "html2epub1", outputDirectory.getAbsolutePath() + File.separator + "config.xml");
-        builder.directory(new File(programPath + "../html2epub/html2epub1"));
+        builder = new ProcessBuilder("java", "html2epub1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_4.html", tempDirectory.getAbsolutePath() + File.separator + "html2epub1_metadata_config.xml");
+        builder.directory(new File(programPath));
         builder.redirectErrorStream(true);
 
         try
@@ -575,7 +186,7 @@ public class odt2epub1
         catch (IOException ex)
         {
             ex.printStackTrace();
-            System.exit(-29);
+            System.exit(-1);
         }
 
         return;

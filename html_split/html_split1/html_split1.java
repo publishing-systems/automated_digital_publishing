@@ -218,7 +218,7 @@ public class html_split1
         }
         else
         {
-            System.out.print("html_split1: Unknown XHTML version '" + doctype + "'.\n");
+            System.out.print("html_split1: Unknown XHTML version '" + doctype + "' in '" + inFile.getAbsolutePath() + "'.\n");
             System.exit(-1);
         }
 
