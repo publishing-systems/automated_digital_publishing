@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of automated_digital_publishing.
+
+automated_digital_publishing is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+automated_digital_publishing is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with automated_digital_publishing. If not, see <http://www.gnu.org/licenses/>.
+-->
+<html2epub1-config>
+  <in>
+  </in>
+  <out>
+    <outDirectory/>
+    <metaData>
+      <title>Dokumentation der Werkzeuge für digitales Publizieren</title>
+      <creator>Stephan Kreutzer</creator>
+      <subject>Software-Dokumentation</subject>
+      <description>Dokumentation der Werkzeuge für digitales Publizieren.</description>
+      <publisher>Stephan Kreutzer</publisher>
+      <identifier>automated_digital_publishing_documentation_de</identifier>
+      <source>https://github.com/publishing-systems/automated_digital_publishing</source>
+      <language>de</language>
+      <coverage>Projektziele, Design-Kriterien für eigene Software, Installationsanweisungen, Beschreibung der Tools, Den Quellcode kompilieren</coverage>
+      <rights>Copyright (C) 2014-2015 Stephan Kreutzer. GNU Affero General Public License 3 or any later version.</rights>
+    </metaData>
+  </out>
+</html2epub1-config>

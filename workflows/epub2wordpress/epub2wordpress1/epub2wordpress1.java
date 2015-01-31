@@ -221,26 +221,26 @@ public class epub2wordpress1
         try
         {
             DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
-	           DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-	           Document document = documentBuilder.parse(xhtmlListFile);
-	           document.getDocumentElement().normalize();
-              
-	           NodeList xhtmlFilesNodeList = document.getElementsByTagName("file");
-	           int xhtmlFilesNodeListLength = xhtmlFilesNodeList.getLength();
-	           
-	           if (xhtmlFilesNodeListLength > 0)
-	           {
-	               for (int i = 0; i < xhtmlFilesNodeListLength; i++)
-	               {
-	                   Node xhtmlFileNode = xhtmlFilesNodeList.item(i);
-	                   
-	                   File xhtmlFile = new File(xhtmlFileNode.getTextContent());
-	                   
-	                   if (xhtmlFile.isAbsolute() != true)
-	                   {
-	                       xhtmlFile = new File(xhtmlListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + xhtmlFileNode.getTextContent());
-	                   }
-	                   
+            DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+            Document document = documentBuilder.parse(xhtmlListFile);
+            document.getDocumentElement().normalize();
+
+            NodeList xhtmlFilesNodeList = document.getElementsByTagName("file");
+            int xhtmlFilesNodeListLength = xhtmlFilesNodeList.getLength();
+
+            if (xhtmlFilesNodeListLength > 0)
+            {
+                for (int i = 0; i < xhtmlFilesNodeListLength; i++)
+                {
+                    Node xhtmlFileNode = xhtmlFilesNodeList.item(i);
+
+                    File xhtmlFile = new File(xhtmlFileNode.getTextContent());
+
+                    if (xhtmlFile.isAbsolute() != true)
+                    {
+                        xhtmlFile = new File(xhtmlListFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + xhtmlFileNode.getTextContent());
+                    }
+
                     if (xhtmlFile.exists() != true)
                     {
                         System.out.print("epub2wordpress1 workflow: Referenced XHTML file '" + xhtmlFile.getAbsolutePath() + "' doesn't exist.\n");

@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2all2 workflow.
  *
@@ -68,7 +68,7 @@ public class odt2all2
 {
     public static void main(String args[])
     {
-        System.out.print("odt2all2 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("odt2all2 workflow  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -375,7 +375,7 @@ public class odt2all2
         File outDirectory = null;
 
         {
-            final JFileChooser chooser = new JFileChooser("Select/Create html2epub1 Configuration File");
+            final JFileChooser chooser = new JFileChooser("Select/Create Output Directory");
             chooser.setDialogType(JFileChooser.CUSTOM_DIALOG);
             chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             chooser.setApproveButtonText("Select/Create");
