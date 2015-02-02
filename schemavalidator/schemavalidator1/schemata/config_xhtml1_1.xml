@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of schemavalidator1.
+
+schemavalidator1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+schemavalidator1 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with schemavalidator1. If not, see <http://www.gnu.org/licenses/>.
+-->
+<schemavalidator1-schema-resolver-config>
+  <schema>
+    <resolve identifier="http://www.w3.org/2001/xml.xsd" reference="xml.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml11-model-1.xsd" reference="xhtml11-model-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-datatypes-1.xsd" reference="xhtml-datatypes-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml11-modules-1.xsd" reference="xhtml11-modules-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-framework-1.xsd" reference="xhtml-framework-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-attribs-1.xsd" reference="xhtml-attribs-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-text-1.xsd" reference="xhtml-text-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-blkphras-1.xsd" reference="xhtml-blkphras-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-blkstruct-1.xsd" reference="xhtml-blkstruct-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-inlphras-1.xsd" reference="xhtml-inlphras-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-inlstruct-1.xsd" reference="xhtml-inlstruct-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-hypertext-1.xsd" reference="xhtml-hypertext-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-list-1.xsd" reference="xhtml-list-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-struct-1.xsd" reference="xhtml-struct-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-edit-1.xsd" reference="xhtml-edit-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-bdo-1.xsd" reference="xhtml-bdo-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-pres-1.xsd" reference="xhtml-pres-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-blkpres-1.xsd" reference="xhtml-blkpres-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-inlpres-1.xsd" reference="xhtml-inlpres-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-link-1.xsd" reference="xhtml-link-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-meta-1.xsd" reference="xhtml-meta-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-base-1.xsd" reference="xhtml-base-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-script-1.xsd" reference="xhtml-script-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-style-1.xsd" reference="xhtml-style-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-inlstyle-1.xsd" reference="xhtml-inlstyle-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-image-1.xsd" reference="xhtml-image-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-csismap-1.xsd" reference="xhtml-csismap-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-ssismap-1.xsd" reference="xhtml-ssismap-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-object-1.xsd" reference="xhtml-object-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="xhtml-param-1.xsd" reference="xhtml-param-1.xsd"/>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-param-1.xsd" reference="xhtml-param-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-table-1.xsd" reference="xhtml-table-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-form-1.xsd" reference="xhtml-form-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-ruby-1.xsd" reference="xhtml-ruby-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-events-1.xsd" reference="xhtml-events-1.xsd"/>
+  </schema>
+  <schema>
+    <resolve identifier="http://www.w3.org/MarkUp/SCHEMA/xhtml-target-1.xsd" reference="xhtml-target-1.xsd"/>
+  </schema>
+</schemavalidator1-schema-resolver-config>

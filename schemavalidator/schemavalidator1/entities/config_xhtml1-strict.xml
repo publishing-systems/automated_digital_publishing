@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of schemavalidator1.
+
+schemavalidator1 is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+schemavalidator1 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with schemavalidator1. If not, see <http://www.gnu.org/licenses/>.
+-->
+<schemavalidator1-entity-resolver-config>
+  <entity>
+    <resolve identifier="-//W3C//DTD XHTML 1.0 Strict//EN" reference="xhtml1-strict.dtd"/>
+    <resolve identifier="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" reference="xhtml1-strict.dtd"/>
+  </entity>
+  <entity>
+    <resolve identifier="-//W3C//ENTITIES Latin 1 for XHTML//EN" reference="xhtml-lat1.ent"/>
+    <resolve identifier="xhtml-lat1.ent" reference="xhtml-lat1.ent"/>
+  </entity>
+  <entity>
+    <resolve identifier="-//W3C//ENTITIES Symbols for XHTML//EN" reference="xhtml-symbol.ent"/>
+    <resolve identifier="xhtml-symbol.ent" reference="xhtml-symbol.ent"/>
+  </entity>
+  <entity>
+    <resolve identifier="-//W3C//ENTITIES Special for XHTML//EN" reference="xhtml-special.ent"/>
+    <resolve identifier="xhtml-special.ent" reference="xhtml-special.ent"/>
+  </entity>
+</schemavalidator1-entity-resolver-config>
