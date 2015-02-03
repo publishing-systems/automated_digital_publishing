@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of automated_digital_publishing.
  *
@@ -48,34 +48,66 @@ public class file_picker1
 {
     public static void main(String[] args)
     {
-        System.out.print("file_picker1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("file_picker1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "or the project website http://www.publishing-systems.org.\n\n");
 
 
         String programPath = file_picker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        
-        File configFile = new File(programPath + "config.xml");
-        
+
+        File configFile = null;
+
+        if (args.length >= 1)
+        {
+            configFile = new File(args[0]);
+        }
+        else
+        {
+            configFile = new File(programPath + "config.xml");
+        }
+
         if (configFile.exists() != true)
         {
-            System.out.print("file_picker1: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("file_picker1: Configuration file '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-1);
         }
 
         if (configFile.isFile() != true)
         {
-            System.out.print("file_picker1: '" + configFile.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("file_picker1: Configuration path '" + configFile.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-2);
         }
 
         if (configFile.canRead() != true)
         {
-            System.out.print("file_picker1: '" + configFile.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("file_picker1: Configuration file '" + configFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-3);
+        }
+        
+        File startDirectory = null;
+        
+        if (args.length >= 2)
+        {
+            startDirectory = new File(args[1]);
+
+            if (startDirectory.isDirectory() != true)
+            {
+                if (startDirectory.exists() != true)
+                {
+                    System.out.print("file_picker1: Start directory '" + startDirectory.getAbsolutePath() + "' doesn't exist.\n");
+                    System.exit(-1);
+                }
+
+                if (configFile.isDirectory() != true)
+                {
+                    System.out.print("file_picker1: Start path '" + startDirectory.getAbsolutePath() + "' isn't a directory.\n");
+                    System.exit(-2);
+                }
+            }
         }
 
 
@@ -159,6 +191,11 @@ public class file_picker1
         final JFileChooser chooser = new JFileChooser("Select File");
         chooser.setDialogType(JFileChooser.OPEN_DIALOG);
         chooser.setFileSelectionMode(JFileChooser.FILES_ONLY);
+
+        if (startDirectory != null)
+        {
+            chooser.setCurrentDirectory(startDirectory);
+        }
 
         chooser.addPropertyChangeListener(new PropertyChangeListener() {
             public void propertyChange(PropertyChangeEvent e) {

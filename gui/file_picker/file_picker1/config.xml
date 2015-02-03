@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2014-2015  Stephan Kreutzer
 
 This file is part of automated_digital_publishing.
 
@@ -17,5 +17,5 @@ You should have received a copy of the GNU Affero General Public License 3
 along with automated_digital_publishing. If not, see <http://www.gnu.org/licenses/>.
 -->
 <file-picker1-config>
-  <extension extension="odt">ODF Text Document (.odt)</extension>
+  <!-- extension extension="odt">ODF Text Document (.odt)</extension -->
 </file-picker1-config>
