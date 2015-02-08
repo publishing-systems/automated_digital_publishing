@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,7 +16,7 @@
 
 
 
-directories = ./file_picker ./option_picker
+directories = ./option_picker1
 
 
 

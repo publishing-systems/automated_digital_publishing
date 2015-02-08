@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,18 +16,18 @@
 
 
 
-directories = ./file_picker ./option_picker
+.PHONY: all option_picker1 clean
 
 
 
-.PHONY: all $(directories)
+all: option_picker1
+option_picker1: option_picker1.class
 
 
 
-all: $(directories)
+option_picker1.class: option_picker1.java
+	javac option_picker1.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
+clean:
+	rm -f ./*.class
 

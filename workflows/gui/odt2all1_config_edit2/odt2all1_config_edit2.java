@@ -832,7 +832,7 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        JLabel notice = new JLabel("<html><head><title>asdf</title></head><body>" +
+        JLabel notice = new JLabel("<html><head><title>About odt2all1_config_edit2</title></head><body>" +
                                    "odt2all1_config_edit2  Copyright (C) 2014  Stephan Kreutzer<br/><br/>" +
                                    "This program comes with ABSOLUTELY NO WARRANTY.<br/>" +
                                    "This is free software, and you are welcome to redistribute it<br/>" +

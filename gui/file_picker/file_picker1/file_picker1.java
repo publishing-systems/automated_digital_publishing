@@ -54,7 +54,7 @@ public class file_picker1
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
-                         "or the project website http://www.publishing-systems.org.\n\n");
+                         "and the project website http://www.publishing-systems.org.\n\n");
 
 
         String programPath = file_picker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
