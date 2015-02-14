@@ -521,7 +521,7 @@ class AboutDialog extends JDialog
         setTitle("About");
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setLocationRelativeTo(parent);
-        setSize(520, 415);
+        setSize(520, 435);
     }
 }
 
