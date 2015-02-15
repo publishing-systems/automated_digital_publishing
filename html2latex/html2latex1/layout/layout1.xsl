@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2014-2015  Stephan Kreutzer
 
 This file is part of html2latex1.
 
@@ -30,6 +30,16 @@ along with html2latex1. If not, see <http://www.gnu.org/licenses/>.
     <xsl:text>\usepackage{url}&#xA;</xsl:text>
     <xsl:text>&#xA;</xsl:text>
     <xsl:text>\setlength{\parskip}{0pt}&#xA;</xsl:text>
+    <xsl:text>&#xA;</xsl:text>
+    <!-- No support for attaching a visual display to semantically encoded lists yet. -->
+    <xsl:text>\renewcommand{\theenumi}{\arabic{enumi}}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\labelenumi}{\theenumi}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\theenumii}{\arabic{enumii}}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\labelenumii}{\theenumii}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\theenumiii}{\arabic{enumiii}}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\labelenumiii}{\theenumiii}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\theenumiv}{\arabic{enumiv}}&#xA;</xsl:text>
+    <xsl:text>\renewcommand{\labelenumiv}{\theenumiv}&#xA;</xsl:text>
     <xsl:text>
 \renewcommand*{\maketitle}{%
   \thispagestyle{empty}

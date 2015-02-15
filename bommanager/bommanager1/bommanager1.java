@@ -25,20 +25,9 @@
 
 
 import java.io.File;
-import javax.xml.stream.XMLInputFactory;
-import java.io.InputStream;
 import java.io.FileInputStream;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.namespace.QName;
-import java.io.FileNotFoundException;
-import javax.xml.stream.XMLStreamException;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.BufferedWriter;
-import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 

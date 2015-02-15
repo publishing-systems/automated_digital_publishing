@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2014-2015  Stephan Kreutzer
 
 This file is part of template1 for odt2html.
 
@@ -26,7 +26,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
         <title>
           <xsl:for-each select="xhtml:body/xhtml:p">
             <xsl:if test="@class='title'">
-              <xsl:for-each select="text()|*/text()">
+              <xsl:for-each select="text()|.//text()">
                 <xsl:value-of select="."/>
               </xsl:for-each>
             </xsl:if>
@@ -43,7 +43,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='part_5f_heading']">
     <div class="part">
       <h1>
-        <xsl:for-each select="text()|*/text()">
+        <xsl:for-each select="text()|.//text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h1>
@@ -53,7 +53,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='chapter_5f_heading']">
     <div class="chapter">
       <h2>
-        <xsl:for-each select="text()|*/text()">
+        <xsl:for-each select="text()|.//text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h2>
@@ -63,7 +63,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='section_5f_heading']">
     <div class="section">
       <h3>
-        <xsl:for-each select="text()|*/text()">
+        <xsl:for-each select="text()|.//text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h3>
@@ -73,7 +73,7 @@ along with template1 for odt2html. If not, see <http://www.gnu.org/licenses/>.
   <xsl:template match="xhtml:html/xhtml:body/xhtml:p[@class='subsection_5f_heading']">
     <div class="subsection">
       <h4>
-        <xsl:for-each select="text()|*/text()">
+        <xsl:for-each select="text()|.//text()">
           <xsl:value-of select="."/>
         </xsl:for-each>
       </h4>
