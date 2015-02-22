@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html2pdf1 workflow.
  *
@@ -43,13 +43,13 @@ public class html2pdf1
 {
     public static void main(String args[])
     {
-        System.out.print("html2pdf1 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2pdf1 workflow  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
-                         "or the project website http://www.publishing-systems.org.\n\n");
+                         "and the project website http://www.publishing-systems.org.\n\n");
     
         String programPath = html2pdf1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
@@ -267,6 +267,51 @@ public class html2pdf1
         {
             ex.printStackTrace();
             System.exit(-15);
+        }
+
+        if (args.length >= 2)
+        {
+            File txtreplaceDictionary = new File(args[1]);
+
+            if (txtreplaceDictionary.exists() != true)
+            {
+                System.out.print("html2pdf1 workflow: txtreplace1 replacement dictionary file '" + txtreplaceDictionary.getAbsolutePath() + "' doesn't exist.\n");
+                System.exit(-1);
+            }
+
+            if (txtreplaceDictionary.isFile() != true)
+            {
+                System.out.print("html2pdf1 workflow: txtreplace1 replacement dictionary path '" + txtreplaceDictionary.getAbsolutePath() + "' isn't a file.\n");
+                System.exit(-1);
+            }
+
+            if (txtreplaceDictionary.canRead() != true)
+            {
+                System.out.print("html2pdf1 workflow: txtreplace1 replacement dictionary file '" + txtreplaceDictionary.getAbsolutePath() + "' isn't readable.\n");
+                System.exit(-1);
+            }
+
+            builder = new ProcessBuilder("java", "txtreplace1", outputDirectory.getAbsolutePath() + File.separator + "output.tex", txtreplaceDictionary.getAbsolutePath(), outputDirectory.getAbsolutePath() + File.separator + "output.tex");
+            builder.directory(new File(programPath + ".." + File.separator + "txtreplace" + File.separator + "txtreplace1"));
+            builder.redirectErrorStream(true);
+
+            try
+            {
+                Process process = builder.start();
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
+                
+                while (scanner.hasNext() == true)
+                {
+                    System.out.println(scanner.next());
+                }
+                
+                scanner.close();
+            }
+            catch (IOException ex)
+            {
+                ex.printStackTrace();
+                System.exit(-1);
+            }
         }
 
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2014-2015  Stephan Kreutzer
 
 This file is part of odt2all1 workflow.
 
@@ -20,4 +20,6 @@ along with odt2all1 workflow. If not, see <http://www.gnu.org/licenses/>.
   <input-file path="input_1.odt"/>
   <input-file path="input_2.odt"/>
   <html2epub1-config-file path="html2epub1_config.xml"/>
+  <!-- Optional. -->
+  <html2pdf1-workflow-txtreplace1-replacement-dictionary path="txtreplace1_replacement_dictionary.xml"/>
 </odt2all1-config>

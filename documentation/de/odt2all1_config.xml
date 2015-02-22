@@ -21,4 +21,5 @@ along with automated_digital_publishing. If not, see <http://www.gnu.org/license
   <input-file path="./beschreibung.odt"/>
   <input-file path="./lizenzbestimmungen.odt"/>
   <html2epub1-config-file path="./html2epub1_config.xml"/>
+  <html2pdf1-workflow-txtreplace1-replacement-dictionary path="./html2pdf1_workflow_txtreplace1_replacement_dictionary.xml"/>
 </odt2all1-config>

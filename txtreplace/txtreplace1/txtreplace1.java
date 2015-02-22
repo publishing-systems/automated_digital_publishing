@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of txtreplace1.
  *
@@ -46,13 +46,15 @@ public class txtreplace1
 {
     public static void main(String args[])
     {
-        System.out.print("txtreplace1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("txtreplace1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
-                         "or the project website http://www.publishing-systems.org.\n\n");
+                         "and the project website http://www.publishing-systems.org.\n\n");
+
+        String programPath = txtreplace1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
         if (args.length < 3)
         {
@@ -103,11 +105,30 @@ public class txtreplace1
             System.exit(-6);
         }
 
-        
+        File tempDirectory = new File(programPath + "temp");
+
+        if (tempDirectory.exists() != true)
+        {
+            if (tempDirectory.mkdir() != true)
+            {
+                System.out.print("txtreplace1: Can't create temp directory '" + tempDirectory.getAbsolutePath() + "'.\n");
+                System.exit(-1);
+            }
+        }
+        else
+        {
+            if (tempDirectory.isDirectory() != true)
+            {
+                System.out.print("txtreplace1: Temp directory path '" + tempDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.exit(-1);
+            }
+        }
+
+
         char[] buffer = new char[1024];
         
-        File sourceFile = new File(args[2] + ".1");
-        File destinationFile = new File(args[2] + ".2");
+        File sourceFile = new File(tempDirectory.getAbsolutePath() + File.separator + "in.file");
+        File destinationFile = new File(tempDirectory.getAbsolutePath() + File.separator + "out.file");
         
         try
         {
@@ -205,7 +226,7 @@ public class txtreplace1
                                 }
                             }
                         }
-                    
+
 
                         int patternLength = pattern.length();
                         int replacementLength = replacement.length();
@@ -221,16 +242,16 @@ public class txtreplace1
                             System.out.println("txtreplace1: Replacement in replacement dictionary file '" + replacementDictionaryFile.getAbsolutePath() + "' seems to be incomplete.");
                             System.exit(-11);
                         }
-                        
-                        
+
+
                         int matchCount = 0;
                         boolean found = false;
                         int bufferOverlapCount = 0;
-                        
+
                         if (patternLength > buffer.length)
                         {
                             System.out.println("txtreplace1: Replacement pattern has a length of " + patternLength + " characters, maximum is " + buffer.length + ".");
-                        
+
                             if (sourceFile.delete() != true)
                             {
                                 System.out.println("txtreplace1: Can't delete temporary file '" + sourceFile.getAbsolutePath() + "'.");
@@ -240,7 +261,7 @@ public class txtreplace1
                             {
                                 System.out.println("txtreplace1: Can't delete temporary file '" + destinationFile.getAbsolutePath() + "'.");
                             }
-                            
+
                             System.exit(-12);
                         }
 
@@ -259,7 +280,7 @@ public class txtreplace1
                             for (int i = 0; i < charactersRead; i++)
                             {
                                 boolean matched = false;
-                            
+
                                 if (i >= 0)
                                 {
                                     if (buffer[i] == pattern.charAt(matchCount))
@@ -272,20 +293,20 @@ public class txtreplace1
                                 else
                                 {
                                     int offset = bufferOverlapCount - (i * -1);
-                                
+ 
                                     // If i is negative, it points always to the
                                     // second character of oldValue in the now
                                     // hypothetic previous buffer, so it is save
                                     // to assume that all characters until i >= 0
                                     // are the same than ... (otherwise it wouldn't
                                     // have matched in the first place).
-                                
+
                                     if (pattern.charAt(offset) == pattern.charAt(matchCount))
                                     {
                                         matched = true;
                                     }
                                 }
-                            
+
                                 if (matched == true)
                                 {
                                     matchCount++;
@@ -295,7 +316,7 @@ public class txtreplace1
                                     if (matchCount > 0)
                                     {
                                         i = (i - 1) - (matchCount - 1);
-                                        
+
                                         if (i < 0)
                                         {
                                             // Matching occurred between two buffers, and the
@@ -334,7 +355,9 @@ public class txtreplace1
                                         }
                                         else
                                         {
-                                            writer.write(pattern, (patternLength - 1) - (i * -1), 1);
+                                            int offset = bufferOverlapCount - (i * -1);
+
+                                            writer.write(pattern, offset, 1);
                                         }
                                     }
                                 }
@@ -346,7 +369,7 @@ public class txtreplace1
                                     found = true;
                                 }
                             }
-                            
+
                             charactersRead = reader.read(buffer, 0, buffer.length);
                         }
                         
@@ -427,7 +450,6 @@ public class txtreplace1
             System.exit(-16);
         }
         
-        
         if (sourceFile.delete() != true)
         {
             System.out.println("txtreplace1: Can't delete temporary file '" + sourceFile.getAbsolutePath() + "'.");
@@ -437,7 +459,6 @@ public class txtreplace1
         {
             System.out.println("txtreplace1: Can't delete temporary file '" + destinationFile.getAbsolutePath() + "'.");
         }
-
 
         System.exit(0);
     }

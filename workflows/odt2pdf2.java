@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2pdf2 workflow.
  *
@@ -52,13 +52,13 @@ public class odt2pdf2
 {
     public static void main(String args[])
     {
-        System.out.print("odt2pdf2 workflow  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("odt2pdf2 workflow  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
-                         "or the project website http://www.publishing-systems.org.\n\n");
+                         "and the project website http://www.publishing-systems.org.\n\n");
     
         if (args.length != 2)
         {
@@ -93,6 +93,7 @@ public class odt2pdf2
 
 
         List<File> inputODTFiles = new ArrayList<File>();
+        File html2pdf1ReplacementDictionaryFile = null;
 
         try
         {
@@ -100,63 +101,106 @@ public class odt2pdf2
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
             Document document = documentBuilder.parse(configFile);
             document.getDocumentElement().normalize();
-              
-            NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
-            int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
-               
-            if (inputODTFilesNodeListLength > 0)
-            {
-                for (int i = 0; i < inputODTFilesNodeListLength; i++)
+
+            {  
+                NodeList inputODTFilesNodeList = document.getElementsByTagName("inFile");
+                int inputODTFilesNodeListLength = inputODTFilesNodeList.getLength();
+
+                if (inputODTFilesNodeListLength > 0)
                 {
-                    Node inputODTFileNode = inputODTFilesNodeList.item(i);
-                    NamedNodeMap attributes = inputODTFileNode.getAttributes();
-                       
-                    if (attributes == null)
+                    for (int i = 0; i < inputODTFilesNodeListLength; i++)
                     {
-                        System.out.print("odt2pdf2 workflow: Misconfigured ODT input file entry in '" + configFile.getAbsolutePath() + "'.\n");
-                        System.exit(-1);
-                    }
-                       
-                    Node inputODTFilePathNode = attributes.getNamedItem("path");
-                       
-                    if (inputODTFilePathNode == null)
-                    {
-                        System.out.print("odt2pdf2 workflow: Misconfigured ODT input file entry in '" + configFile.getAbsolutePath() + "'.\n");
-                        System.exit(-1);
-                    }
-                       
-                    File inputODTFile = new File(inputODTFilePathNode.getTextContent());
-                       
-                    if (inputODTFile.isAbsolute() != true)
-                    {
-                        inputODTFile = new File(configFile.getAbsoluteFile().getParent() + File.separator + inputODTFilePathNode.getTextContent());
-                    }
-                       
-                    if (inputODTFile.exists() != true)
-                    {
-                        System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' doesn't exist.\n");
-                        System.exit(-10);
-                    }
+                        Node inputODTFileNode = inputODTFilesNodeList.item(i);
+                        NamedNodeMap attributes = inputODTFileNode.getAttributes();
 
-                    if (inputODTFile.isFile() != true)
-                    {
-                        System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' isn't a file.\n");
-                        System.exit(-11);
-                    }
+                        if (attributes == null)
+                        {
+                            System.out.print("odt2pdf2 workflow: Misconfigured ODT input file entry in '" + configFile.getAbsolutePath() + "'.\n");
+                            System.exit(-1);
+                        }
 
-                    if (inputODTFile.canRead() != true)
-                    {
-                        System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' isn't readable.\n");
-                        System.exit(-12);
-                    }
+                        Node inputODTFilePathNode = attributes.getNamedItem("path");
 
-                    inputODTFiles.add(inputODTFile);
+                        if (inputODTFilePathNode == null)
+                        {
+                            System.out.print("odt2pdf2 workflow: Misconfigured ODT input file entry in '" + configFile.getAbsolutePath() + "'.\n");
+                            System.exit(-1);
+                        }
+
+                        File inputODTFile = new File(inputODTFilePathNode.getTextContent());
+
+                        if (inputODTFile.isAbsolute() != true)
+                        {
+                            inputODTFile = new File(configFile.getAbsoluteFile().getParent() + File.separator + inputODTFilePathNode.getTextContent());
+                        }
+
+                        if (inputODTFile.exists() != true)
+                        {
+                            System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' doesn't exist.\n");
+                            System.exit(-10);
+                        }
+
+                        if (inputODTFile.isFile() != true)
+                        {
+                            System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' isn't a file.\n");
+                            System.exit(-11);
+                        }
+
+                        if (inputODTFile.canRead() != true)
+                        {
+                            System.out.print("odt2pdf2 workflow: '" + inputODTFile.getAbsolutePath() + "' isn't readable.\n");
+                            System.exit(-12);
+                        }
+
+                        inputODTFiles.add(inputODTFile);
+                    }
+                }
+                else
+                {
+                    System.out.print("odtpdf2 workflow: No input ODT files.\n");
+                    System.exit(-13);
                 }
             }
-            else
+            
             {
-                System.out.print("odtpdf2 workflow: No input ODT files.\n");
-                System.exit(-13);
+                NodeList html2pdf1ReplacementDictionaryNodeList = document.getElementsByTagName("html2pdf1-workflow-txtreplace1-replacement-dictionary");
+                int html2pdf1ReplacementDictionaryNodeListLength = html2pdf1ReplacementDictionaryNodeList.getLength();
+
+                if (html2pdf1ReplacementDictionaryNodeListLength == 1)
+                {
+                    for (int i = 0; i < html2pdf1ReplacementDictionaryNodeListLength; i++)
+                    {
+                        Node html2pdf1ReplacementDictionaryNode = html2pdf1ReplacementDictionaryNodeList.item(i);
+
+                        NamedNodeMap html2pdf1ReplacementDictionaryNodeAttributes = html2pdf1ReplacementDictionaryNode.getAttributes();
+
+                        if (html2pdf1ReplacementDictionaryNodeAttributes == null)
+                        {
+                            System.out.print("odt2pdf2 workflow: html2pdf1 workflow txtreplace1 replacement dictionary file entry in '" + configFile.getAbsolutePath() + "' has no attributes.\n");
+                            System.exit(-1);
+                        }
+
+                        Node pathAttribute = html2pdf1ReplacementDictionaryNodeAttributes.getNamedItem("path");
+
+                        if (pathAttribute == null)
+                        {
+                            System.out.print("odt2pdf2 workflow: html2pdf1 workflow txtreplace1 replacement dictionary file entry in '" + configFile.getAbsolutePath() + "' is missing the 'path' attribute.\n");
+                            System.exit(-1);
+                        }
+
+                        html2pdf1ReplacementDictionaryFile = new File(pathAttribute.getTextContent());
+
+                        if (html2pdf1ReplacementDictionaryFile.isAbsolute() != true)
+                        {
+                            html2pdf1ReplacementDictionaryFile = new File(configFile.getAbsoluteFile().getParent() + File.separator + pathAttribute.getTextContent());
+                        }
+                    }
+                }
+                else if (html2pdf1ReplacementDictionaryNodeListLength > 1)
+                {
+                    System.out.print("odt2pdf2 workflow: More than one html2pdf1 workflow txtreplace1 replacement dictionary file configured in '" + configFile.getAbsolutePath() + "'.\n");
+                    System.exit(-1);
+                }
             }
         }
         catch (ParserConfigurationException ex)
@@ -175,6 +219,27 @@ public class odt2pdf2
             System.exit(-18);
         }
 
+
+        if (html2pdf1ReplacementDictionaryFile != null)
+        {
+            if (html2pdf1ReplacementDictionaryFile.exists() != true)
+            {
+                System.out.print("odt2pdf2 workflow: html2pdf1 workflow txtreplace1 replacement dictionary file '" + html2pdf1ReplacementDictionaryFile.getAbsolutePath() + "' doesn't exist.\n");
+                System.exit(-1);
+            }
+
+            if (html2pdf1ReplacementDictionaryFile.isFile() != true)
+            {
+                System.out.print("odt2pdf2 workflow: html2pdf1 workflow txtreplace1 replacement dictionary path '" + html2pdf1ReplacementDictionaryFile.getAbsolutePath() + "' isn't a file.\n");
+                System.exit(-1);
+            }
+
+            if (html2pdf1ReplacementDictionaryFile.canRead() != true)
+            {
+                System.out.print("odt2pdf2 workflow: html2pdf1 workflow txtreplace1 replacement dictionary file '" + html2pdf1ReplacementDictionaryFile.getAbsolutePath() + "' isn't readable.\n");
+                System.exit(-1);
+            }
+        }
 
         File tempDirectory = new File(programPath + "temp");
         
@@ -280,7 +345,15 @@ public class odt2pdf2
         }
 
 
-        builder = new ProcessBuilder("java", "html2pdf1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_5.html");
+        if (html2pdf1ReplacementDictionaryFile == null)
+        {
+            builder = new ProcessBuilder("java", "html2pdf1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_5.html");
+        }
+        else
+        {
+            builder = new ProcessBuilder("java", "html2pdf1", tempDirectory.getAbsolutePath() + File.separator + "output_1" + File.separator + "output_5.html", html2pdf1ReplacementDictionaryFile.getAbsolutePath());
+        }
+
         builder.directory(new File(programPath));
         builder.redirectErrorStream(true);
 

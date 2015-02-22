@@ -19,4 +19,6 @@ along with odt2pdf2 workflow. If not, see <http://www.gnu.org/licenses/>.
 <odt2pdf2-config>
   <inFile path="input_1.odt"/>
   <inFile path="input_2.odt"/>
+  <!-- Optional. -->
+  <html2pdf1-workflow-txtreplace1-replacement-dictionary path="txtreplace1_replacement_dictionary.xml"/>
 </odt2pdf2-config>

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of automated_digital_publishing.
+
+automated_digital_publishing is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+automated_digital_publishing is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with automated_digital_publishing. If not, see <http://www.gnu.org/licenses/>.
+-->
+<txtreplace1-replacement-dictionary>
+  <replace>
+    <pattern>Satzsystem</pattern>
+    <replacement>Satz\-system</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/epub2html/epub2html1/temp/epub\_extraction/</pattern>
+    <replacement>\$/epub2html/epub2html1/temp/\linebreak{}$\rightarrow{}$epub\_extraction/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/epub2html/epub2html1/workflows/</pattern>
+    <replacement>\$/epub2html/epub2html1/\linebreak{}$\rightarrow{}$workflows/</replacement>
+  </replace>
+  <replace>
+    <pattern>Workflow-Unterstützung</pattern>
+    <replacement>Work\-flow-""Un\-ter\-stüt\-zung</replacement>
+  </replace>
+  <replace>
+    <pattern>option\_picker1/ dient der Work\-flow-""Un\-ter\-stüt\-zung</pattern>
+    <replacement>option\_picker1/ dient der\linebreak{}Work\-flow-""Un\-ter\-stüt\-zung</replacement>
+  </replace>
+  <replace>
+    <pattern>Auswahlbox</pattern>
+    <replacement>Aus\-wahl\-box</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2epub/html2epub1/gui/html2epub1\_config\_create\_new/</pattern>
+    <replacement>\$/html2epub/html2epub1/\linebreak{}$\rightarrow{}$gui/html2epub1\_config\_create\_new/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2epub/html2epub1/gui/html2epub1\_config\_file\_setup/</pattern>
+    <replacement>\$/html2epub/html2epub1/gui/\linebreak{}$\rightarrow{}$html2epub1\_config\_file\_setup/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2epub/html2epub1/gui/html2epub1\_config\_metadata\_editor/</pattern>
+    <replacement>\$/html2epub/html2\linebreak{}$\rightarrow{}$epub1/gui/html2epub1\_config\_metadata\_editor/</replacement>
+  </replace>
+</txtreplace1-replacement-dictionary>
