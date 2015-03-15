@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2html1.
  *
@@ -701,8 +701,11 @@ class ODTContentProcessor
                                 if (attributeHref != null)
                                 {
                                     link = true;
-                                    
-                                    writer.write("<a href=\"" + attributeHref.getValue() + "\">");
+
+                                    String href = attributeHref.getValue();
+                                    href = href.replaceAll("&", "&amp;");
+
+                                    writer.write("<a href=\"" + href + "\">");
                                 }
                             }
                         }

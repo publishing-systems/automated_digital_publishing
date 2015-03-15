@@ -1,4 +1,4 @@
-/* Copyright (C) 2013-2014  Stephan Kreutzer
+/* Copyright (C) 2013-2015  Stephan Kreutzer
  *
  * This file is part of html2epub1.
  *
@@ -33,12 +33,13 @@ public class html2epub1
 {
     public static void main(String args[])
     {
-        System.out.print("html2epub1  Copyright (C) 2013-2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1  Copyright (C) 2013-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
-                         "License 3 or any later version for details. Also, see the source\n" +
-                         "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
+                         "License 3 or any later version for details. Also, see the source code\n" +
+                         "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
+                         "and the project website http://www.publishing-systems.org.\n\n");
 
         if (args.length != 1)
         {

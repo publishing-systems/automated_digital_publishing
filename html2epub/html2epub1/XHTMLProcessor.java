@@ -1,4 +1,4 @@
-/* Copyright (C) 2013-2014  Stephan Kreutzer
+/* Copyright (C) 2013-2015  Stephan Kreutzer
  *
  * This file is part of html2epub1.
  *
@@ -837,7 +837,43 @@ class XHTMLProcessor
                             }
                             else
                             {
-                                writer.write("<a href=\"" + href + "\">");
+                                href = href.replaceAll("&", "&amp;");
+                            
+                                writer.write("<a href=\"" + href + "\"");
+                                
+                                // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
+                                @SuppressWarnings("unchecked")
+                                Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
+                                
+                                while (attributes.hasNext() == true)
+                                {  
+                                    Attribute attribute = attributes.next();
+                                    QName attributeName = attribute.getName();
+
+                                    if (attributeName.getLocalPart().equalsIgnoreCase("href") != true)
+                                    {
+                                        writer.write(" ");
+                                        
+                                        if (attributeName.getPrefix().length() > 0)
+                                        {
+                                            writer.write(attributeName.getPrefix() + ":");
+                                        }
+
+                                        String attributeValue = attribute.getValue();
+                                        
+                                        // Ampersand needs to be the first, otherwise it would double-encode
+                                        // other entities.
+                                        attributeValue = attributeValue.replaceAll("&", "&amp;");
+                                        attributeValue = attributeValue.replaceAll("\"", "&quot;");
+                                        attributeValue = attributeValue.replaceAll("'", "&apos;");
+                                        attributeValue = attributeValue.replaceAll("<", "&lt;");
+                                        attributeValue = attributeValue.replaceAll(">", "&gt;");
+
+                                        writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
+                                    }
+                                }
+
+                                writer.write(">");
                             }
                         }
                         else
