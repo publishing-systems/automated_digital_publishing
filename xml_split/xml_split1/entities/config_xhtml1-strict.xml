@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2014  Stephan Kreutzer
+Copyright (C) 2015  Stephan Kreutzer
 
-This file is part of html_split1.
+This file is part of xml_split1.
 
-html_split1 is free software: you can redistribute it and/or modify
+xml_split1 is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License version 3 or any later version,
 as published by the Free Software Foundation.
 
-html_split1 is distributed in the hope that it will be useful,
+xml_split1 is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU Affero General Public License 3 for more details.
 
 You should have received a copy of the GNU Affero General Public License 3
-along with html_split1. If not, see <http://www.gnu.org/licenses/>.
+along with xml_split1. If not, see <http://www.gnu.org/licenses/>.
 -->
-<html-split1-entity-resolver-config>
+<xml-split1-entity-resolver-config>
   <entity>
     <resolve identifier="-//W3C//DTD XHTML 1.0 Strict//EN" reference="xhtml1-strict.dtd"/>
     <resolve identifier="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd" reference="xhtml1-strict.dtd"/>
@@ -33,4 +33,4 @@ along with html_split1. If not, see <http://www.gnu.org/licenses/>.
     <resolve identifier="-//W3C//ENTITIES Special for XHTML//EN" reference="xhtml-special.ent"/>
     <resolve identifier="xhtml-special.ent" reference="xhtml-special.ent"/>
   </entity>
-</html-split1-entity-resolver-config>
+</xml-split1-entity-resolver-config>

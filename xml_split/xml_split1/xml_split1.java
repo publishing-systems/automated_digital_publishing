@@ -1,24 +1,24 @@
-/* Copyright (C) 2014-2015  Stephan Kreutzer
+/* Copyright (C) 2015  Stephan Kreutzer
  *
- * This file is part of html_split1.
+ * This file is part of xml_split1.
  *
- * html_split1 is free software: you can redistribute it and/or modify
+ * xml_split1 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Affero General Public License version 3 or any later version,
  * as published by the Free Software Foundation.
  *
- * html_split1 is distributed in the hope that it will be useful,
+ * xml_split1 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU Affero General Public License 3 for more details.
  *
  * You should have received a copy of the GNU Affero General Public License 3
- * along with html_split1. If not, see <http://www.gnu.org/licenses/>.
+ * along with xml_split1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html_split1.java
- * @brief Splits a HTML file into several XML output files.
+ * @file $/xml_split1.java
+ * @brief Splits a XML file into several XML output files.
  * @author Stephan Kreutzer
- * @since 2014-05-05
+ * @since 2015-03-14
  */
 
 
@@ -60,11 +60,11 @@ import java.util.ArrayList;
 
 
 
-public class html_split1
+public class xml_split1
 {
     public static void main(String args[])
     {
-        System.out.print("html_split1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
+        System.out.print("xml_split1  Copyright (C) 2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -72,18 +72,17 @@ public class html_split1
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
-        if (args.length < 3)
+        if (args.length < 4)
         {
             System.out.print("Usage:\n" +
-                             "\thtml_split1 in-file configuration-file out-directory\n\n" +
-                             "Please note that html_split1 will overwrite existing files in\n" +
+                             "\txml_split1 in-file entities-resolver-config-file configuration-file out-directory\n\n" +
+                             "Please note that xml_split1 will overwrite existing files in\n" +
                              "out-directory.\n\n");
-
             System.exit(1);
         }
 
 
-        String programPath = html_split1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = xml_split1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
         File entitiesDirectory = new File(programPath + "entities");
         
@@ -91,7 +90,7 @@ public class html_split1
         {
             if (entitiesDirectory.mkdir() != true)
             {
-                System.out.print("html_split1: Can't create entities directory '" + entitiesDirectory.getAbsolutePath() + "'.\n");
+                System.out.print("xml_split1: Can't create entities directory '" + entitiesDirectory.getAbsolutePath() + "'.\n");
                 System.exit(-1);
             }
         }
@@ -99,7 +98,7 @@ public class html_split1
         {
             if (entitiesDirectory.isDirectory() != true)
             {
-                System.out.print("html_split1: Entities path '" + entitiesDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
+                System.out.print("xml_split1: Entities path '" + entitiesDirectory.getAbsolutePath() + "' exists, but isn't a directory.\n");
                 System.exit(-2);
             }
         }
@@ -109,143 +108,63 @@ public class html_split1
 
         if (inFile.exists() != true)
         {
-            System.out.print("html_split1: '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("xml_split1: XML input file '" + inFile.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-3);
         }
 
         if (inFile.isFile() != true)
         {
-            System.out.print("html_split1: '" + inFile.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("xml_split1: XML input path '" + inFile.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-4);
         }
 
         if (inFile.canRead() != true)
         {
-            System.out.print("html_split1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("xml_split1: XML input file '" + inFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-5);
         }
-        
-        File configFile = new File(args[1]);
+
+        File resolverConfigFile = new File(args[1]);
+
+        if (resolverConfigFile.exists() != true)
+        {
+            System.out.print("xml_split1: Entity resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.exit(-6);
+        }
+
+        if (resolverConfigFile.isFile() != true)
+        {
+            System.out.print("xml_split1: Entity resolver configuration path '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
+            System.exit(-7);
+        }
+
+        if (resolverConfigFile.canRead() != true)
+        {
+            System.out.print("xml_split1: Entity resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
+            System.exit(-8);
+        }
+
+        File configFile = new File(args[2]);
 
         if (configFile.exists() != true)
         {
-            System.out.print("html_split1: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
+            System.out.print("xml_split1: Configuration file '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
             System.exit(-6);
         }
 
         if (configFile.isFile() != true)
         {
-            System.out.print("html_split1: '" + configFile.getAbsolutePath() + "' isn't a file.\n");
+            System.out.print("xml_split1: Configuration path '" + configFile.getAbsolutePath() + "' isn't a file.\n");
             System.exit(-7);
         }
 
         if (configFile.canRead() != true)
         {
-            System.out.print("html_split1: '" + configFile.getAbsolutePath() + "' isn't readable.\n");
+            System.out.print("xml_split1: Configuration file '" + configFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-8);
         }
 
-
-        String doctypeDeclaration = new String("<!DOCTYPE");
-        int doctypePosMatching = 0;
-        String doctype = new String();
-    
-        try
-        {
-            FileInputStream in = new FileInputStream(inFile);
-            
-            int currentByte = 0;
- 
-            do
-            {
-                currentByte = in.read();
-                
-                if (currentByte < 0 ||
-                    currentByte > 255)
-                {
-                    break;
-                }
-                
-
-                char currentByteCharacter = (char) currentByte;
-                
-                if (doctypePosMatching < doctypeDeclaration.length())
-                {
-                    if (currentByteCharacter == doctypeDeclaration.charAt(doctypePosMatching))
-                    {
-                        doctypePosMatching++;
-                        doctype += currentByteCharacter;
-                    }
-                    else
-                    {
-                        doctypePosMatching = 0;
-                        doctype = new String();
-                    }
-                }
-                else
-                {
-                    doctype += currentByteCharacter;
-                
-                    if (currentByteCharacter == '>')
-                    {
-                        break;
-                    }
-                }
-            
-            } while (true);
-        }
-        catch (FileNotFoundException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-1);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-1);
-        }
-
-        File resolverConfigFile = null;
-
-        if (doctype.contains("\"-//W3C//DTD XHTML 1.0 Strict//EN\"") == true)
-        {
-            resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
-        }
-        else if (doctype.contains("\"-//W3C//DTD XHTML 1.1//EN\"") == true)
-        {
-            resolverConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1_1.xml");
-        }
-        else
-        {
-            System.out.print("html_split1: Unknown XHTML version '" + doctype + "' in '" + inFile.getAbsolutePath() + "'.\n");
-            System.exit(-1);
-        }
-
-        if (resolverConfigFile == null)
-        {
-            System.exit(-1);
-        }
-
-        if (resolverConfigFile.exists() != true)
-        {
-            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' doesn't exist.\n");
-            System.exit(-1);
-        }
-
-        if (resolverConfigFile.isFile() != true)
-        {
-            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't a file.\n");
-            System.exit(-1);
-        }
-
-        if (resolverConfigFile.canRead() != true)
-        {
-            System.out.print("html_split1: Resolver configuration file '" + resolverConfigFile.getAbsolutePath() + "' isn't readable.\n");
-            System.exit(-1);
-        }
-
-
-        File outDirectory = new File(args[2]);
+        File outDirectory = new File(args[3]);
         
         if (outDirectory.exists() == true)
         {
@@ -253,13 +172,13 @@ public class html_split1
             {
                 if (outDirectory.canWrite() != true)
                 {
-                    System.out.println("html_split1: Can't write to '" + outDirectory.getAbsolutePath() + "'.");
+                    System.out.println("xml_split1: Can't write to '" + outDirectory.getAbsolutePath() + "'.");
                     System.exit(-9);
                 }
             }
             else
             {
-                System.out.println("html_split1: '" + outDirectory.getAbsolutePath() + "' isn't a directory.");
+                System.out.println("xml_split1: '" + outDirectory.getAbsolutePath() + "' isn't a directory.");
                 System.exit(-10);
             }
         }
@@ -267,7 +186,7 @@ public class html_split1
         {
             if (outDirectory.mkdir() != true)
             {
-                System.out.println("html_split1: Can't create directory '" + outDirectory.getAbsolutePath() + "'.");
+                System.out.println("xml_split1: Can't create directory '" + outDirectory.getAbsolutePath() + "'.");
                 System.exit(-11);
             }
         }
@@ -301,7 +220,7 @@ public class html_split1
                         
                         if (attributeElement == null)
                         {
-                            System.out.println("html_split1: Hierarchy definition is missing the 'element' attribute in '" + configFile.getAbsolutePath() + "'.");                            
+                            System.out.println("xml_split1: Hierarchy definition is missing the 'element' attribute in configuration file '" + configFile.getAbsolutePath() + "'.");                            
                             continue;
                         }
 
@@ -313,7 +232,7 @@ public class html_split1
                         {
                             if (attributeValue == null)
                             {
-                                System.out.println("html_split1: Hierarchy definition has 'attribute' attribute but is missing the 'value' attribute in '" + configFile.getAbsolutePath() + "'.");                            
+                                System.out.println("xml_split1: Hierarchy definition has 'attribute' attribute but is missing the 'value' attribute in configuration file '" + configFile.getAbsolutePath() + "'.");                            
                                 continue;
                             }
                         
@@ -343,7 +262,7 @@ public class html_split1
 
         if (hierarchyDefinitions.isEmpty() == true)
         {
-            System.out.println("html_split1: No hierarchy definitions for splitting found in configuration file '" + configFile.getAbsolutePath() + "'.");
+            System.out.println("xml_split1: No hierarchy definitions for splitting found in configuration file '" + configFile.getAbsolutePath() + "'.");
             System.exit(1);
         }
 
@@ -365,8 +284,8 @@ public class html_split1
                                         "UTF8"));
 
             metaWriter.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-            metaWriter.write("<!-- This file was generated by html_split1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
-            metaWriter.write("<html-split1-out-meta-info>\n");
+            metaWriter.write("<!-- This file was generated by xml_split1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+            metaWriter.write("<xml-split1-out-meta-info>\n");
 
 
             BufferedWriter writer = null;
@@ -432,7 +351,7 @@ public class html_split1
                                 {
                                     currentOutFile++;
                                     
-                                    System.out.println("html_split1: Splitting to '" + outDirectory.getAbsolutePath() + File.separator + currentOutFile + ".xml'.");
+                                    System.out.println("xml_split1: Splitting to '" + outDirectory.getAbsolutePath() + File.separator + currentOutFile + ".xml'.");
                                     
                                     writer = new BufferedWriter(
                                              new OutputStreamWriter(
@@ -440,7 +359,7 @@ public class html_split1
                                              "UTF8"));
 
                                     writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-                                    writer.write("<!-- This file was generated by html_split1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
+                                    writer.write("<!-- This file was generated by xml_split1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
                                     
                                     break;
                                 }
@@ -502,67 +421,6 @@ public class html_split1
                         writer.write(">");
                         
                         structureStack.push(new StructureStackElement(fullElementName));
-
-                        
-                        if (fullElementName.equalsIgnoreCase("img") == true)
-                        {
-                            String src = event.asStartElement().getAttributeByName(new QName("src")).getValue();
-
-                            if (src.startsWith("file://") == true)
-                            {
-                                System.out.print("html_split1: The image file reference '" + src + "' uses the 'file' protocol.\n");
-                                System.exit(-1);
-                            }
-
-                            if (src.contains("://") == false)
-                            {
-                                File srcFile = new File(src);
-                                
-                                if (srcFile.isAbsolute() == true)
-                                {
-                                    System.out.println("html_split1: The image file reference '" + src + "' is an absolute path.");
-                                    System.exit(-1);
-                                }
-                                
-                                srcFile = new File(inFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
-
-                                /**
-                                 * @todo A security problem: fake references might copy system files.
-                                 */
-                                //if (srcFile.getAbsoluteFile().getParent().toLowerCase().startsWith(inFile.getAbsoluteFile().getParent().toLowerCase()) != true)
-                                if (inFile.getAbsoluteFile().getParent().equalsIgnoreCase(srcFile.getAbsoluteFile().getParent()) != true)
-                                {
-                                    //System.out.println("html_split1: The image file reference '" + src + "' references an image outside of the directory of the input file '" + inFile.getAbsoluteFile().getParent() + "'.\n");
-                                    System.out.print("html_split1: The image file referenced by '" + src + "' must be located in the same directory as '" + inFile.getAbsolutePath() + "'.\n");
-                                    System.exit(-1);
-                                }
-
-                                if (srcFile.exists() != true)
-                                {
-                                    System.out.print("html_split1: The image file '" + srcFile.getAbsolutePath() + "', referenced by '" + src + "', doesn't exist.\n");
-                                    System.exit(-1);
-                                }
-
-                                if (srcFile.isFile() != true)
-                                {
-                                    System.out.print("html_split1: The image file '" + srcFile.getAbsolutePath() + "', referenced by '" + src + "', isn't a file.\n");
-                                    System.exit(-1);
-                                }
-
-                                if (srcFile.canRead() != true)
-                                {
-                                    System.out.print("html_split1: The image file '" + srcFile.getAbsolutePath() + "', referenced by '" + src + "', isn't readable.\n");
-                                    System.exit(-1);
-                                }
-
-                                File to = new File(outDirectory.getAbsolutePath() + File.separator + srcFile.getName());
-                                
-                                if (html_split1.CopyFileBinary(srcFile, to) != 0)
-                                {
-                                    System.exit(-1);
-                                }
-                            }
-                        }
                     }
                 }
                 else if (event.isEndElement() == true)
@@ -587,12 +445,12 @@ public class html_split1
                             writer.close();
                             
                             writer = null;
-
+                            
                             /**
                              * @todo Write to the result meta info file the hierarchy definition
                              *     that lead to the current split portion.
                              */
-
+                            
                             metaWriter.write("  <split-portion path=\"" + currentOutFile + ".xml\"/>\n");
                         }
                     }
@@ -606,7 +464,7 @@ public class html_split1
                 }
             }
 
-            metaWriter.write("</html-split1-out-meta-info>\n");
+            metaWriter.write("</xml-split1-out-meta-info>\n");
             metaWriter.flush();
             metaWriter.close();
         }
@@ -633,19 +491,19 @@ public class html_split1
     {
         if (from.exists() != true)
         {
-            System.out.println("html_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
+            System.out.println("xml_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' doesn't exist.");
             return -1;
         }
         
         if (from.isFile() != true)
         {
-            System.out.println("html_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
+            System.out.println("xml_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't a file.");
             return -2;
         }
         
         if (from.canRead() != true)
         {
-            System.out.println("html_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
+            System.out.println("xml_split1: Can't copy '" + from.getAbsolutePath() + "' to '" + to.getAbsolutePath() + "' because '" + from.getAbsolutePath() + "' isn't readable.");
             return -3;
         }
     
@@ -821,7 +679,7 @@ class EntityResolverLocal implements XMLResolver
                         
                         if (identifier.length() <= 0)
                         {
-                            System.out.print("html_split1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
+                            System.out.print("xml_split1: '" + this.configFile.getAbsolutePath() + "' contains a resolve entry with empty identifier.\n");
                             System.exit(-1);
                         }
                         
@@ -846,19 +704,19 @@ class EntityResolverLocal implements XMLResolver
                         
                         if (referencedFile.exists() != true)
                         {
-                            System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+                            System.out.print("xml_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.isFile() != true)
                         {
-                            System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+                            System.out.print("xml_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
                             System.exit(-1);
                         }
                         
                         if (referencedFile.canRead() != true)
                         {
-                            System.out.print("html_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+                            System.out.print("xml_split1: '" + referencedFile.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
                             System.exit(-1);
                         }
                         
@@ -868,7 +726,7 @@ class EntityResolverLocal implements XMLResolver
                         }
                         else
                         {
-                            System.out.print("html_split1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
+                            System.out.print("xml_split1: Identifier '" + identifier + "' configured twice in '" + this.configFile.getAbsolutePath() + "'.\n");
                             System.exit(-1);
                         }
                     }
@@ -884,13 +742,13 @@ class EntityResolverLocal implements XMLResolver
     {
         if (this.entitiesDirectory == null)
         {
-            System.out.print("html_split1: Can't resolve entity, no local entities directory.\n");
+            System.out.print("xml_split1: Can't resolve entity, no local entities directory.\n");
             System.exit(-1);
         }
         
         if (this.configFile == null)
         {
-            System.out.print("html_split1: Can't resolve entity, no entities configured.\n");
+            System.out.print("xml_split1: Can't resolve entity, no entities configured.\n");
             System.exit(-1);
         }
     
@@ -914,25 +772,25 @@ class EntityResolverLocal implements XMLResolver
         
         if (localEntity == null)
         {
-            System.out.print("html_split1: Can't resolve entity with public ID '" + publicID + "', system ID '" + systemID + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
+            System.out.print("xml_split1: Can't resolve entity with public ID '" + publicID + "', system ID '" + systemID + "', no local copy configured in '" + this.configFile.getAbsolutePath() + "'.\n");
             System.exit(-1);
         }
     
         if (localEntity.exists() != true)
         {
-            System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
+            System.out.print("xml_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', doesn't exist.\n");
             System.exit(-1);
         }
         
         if (localEntity.isFile() != true)
         {
-            System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
+            System.out.print("xml_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't a file.\n");
             System.exit(-1);
         }
         
         if (localEntity.canRead() != true)
         {
-            System.out.print("html_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
+            System.out.print("xml_split1: '" + localEntity.getAbsolutePath() + "', referenced in '" + this.configFile.getAbsolutePath() + "', isn't readable.\n");
             System.exit(-1);
         }
         

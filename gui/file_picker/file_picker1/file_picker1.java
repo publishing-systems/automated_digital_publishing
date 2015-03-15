@@ -102,7 +102,7 @@ public class file_picker1
                     System.exit(-1);
                 }
 
-                if (configFile.isDirectory() != true)
+                if (startDirectory.isDirectory() != true)
                 {
                     System.out.print("file_picker1: Start path '" + startDirectory.getAbsolutePath() + "' isn't a directory.\n");
                     System.exit(-2);

@@ -16,18 +16,18 @@
 
 
 
-directories = ./file_picker1 ./file_picker2
+.PHONY: all file_picker2 clean
 
 
 
-.PHONY: all $(directories)
+all: file_picker2
+file_picker2: file_picker2.class
 
 
 
-all: $(directories)
+file_picker2.class: file_picker2.java
+	javac file_picker2.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
+clean:
+	rm -f ./*.class
 

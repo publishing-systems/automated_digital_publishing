@@ -16,7 +16,7 @@
 
 
 
-directories = ./bommanager ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./odt2html ./schemavalidator ./txtreplace ./unzip ./workflows ./xsltransformator
+directories = ./bommanager ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./odt2html ./schemavalidator ./txtreplace ./unzip ./workflows ./xml_split ./xsltransformator
 
 
 

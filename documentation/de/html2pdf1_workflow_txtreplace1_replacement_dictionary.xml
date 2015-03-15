@@ -53,4 +53,36 @@ along with automated_digital_publishing. If not, see <http://www.gnu.org/license
     <pattern>\$/html2epub/html2epub1/gui/html2epub1\_config\_metadata\_editor/</pattern>
     <replacement>\$/html2epub/html2\linebreak{}$\rightarrow{}$epub1/gui/html2epub1\_config\_metadata\_editor/</replacement>
   </replace>
+  <replace>
+    <pattern>Wohlgeformtheit</pattern>
+    <replacement>Wohl\-ge\-formt\-heit</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\_preparation.xml</pattern>
+    <replacement>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\_\linebreak{}$\rightarrow{}$preparation.xml</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2latex/html\_prepare4latex1/entities/</pattern>
+    <replacement>\$/html2latex/html\_\linebreak{}$\rightarrow{}$prepare4latex1/entities/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2wordpress/html2wordpress1/html2wordpress1\_jobfile\_create\_new1/</pattern>
+    <replacement>\$/html2wordpress/\linebreak{}$\rightarrow{}$html2wordpress1/html2wordpress1\_jobfile\_create\_new1/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html\_attributeanalyzer/html\_attributeanalyzer1/</pattern>
+    <replacement>\$/html\_attributeanalyzer/html\_attri\linebreak{}$\rightarrow{}$buteanalyzer1/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html\_attributereplace/html\_attributereplace1/</pattern>
+    <replacement>\$/html\_attributereplace/html\_attribute\linebreak{}$\rightarrow{}$replace1/</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html\_flat2hierarchical/html\_flat2hierarchical1/</pattern>
+    <replacement>\$/html\_flat2hierarchical/html\_flat2hier\linebreak{}$\rightarrow{}$archical1/</replacement>
+  </replace>
+  <replace>
+    <pattern>Eingabedatei</pattern>
+    <replacement>Ein\-ga\-be\-da\-tei</replacement>
+  </replace>
 </txtreplace1-replacement-dictionary>

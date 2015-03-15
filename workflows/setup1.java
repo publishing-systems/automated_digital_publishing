@@ -61,6 +61,7 @@ public class setup1
         CopyEntitiesXHTML_1_0_Strict(programPath, "../html_attributereplace/html_attributereplace1/entities/");
         CopyEntitiesXHTML_1_0_Strict(programPath, "../html_concatenate/html_concatenate1/entities/");
         CopyEntitiesXHTML_1_0_Strict(programPath, "../schemavalidator/schemavalidator1/entities/");
+        CopyEntitiesXHTML_1_0_Strict(programPath, "../xml_split/xml_split1/entities/");
     
         CopyEntitiesXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");
@@ -70,6 +71,7 @@ public class setup1
         CopyEntitiesXHTML_1_1(programPath, "../html_concatenate/html_concatenate1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../html_split/html_split1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../schemavalidator/schemavalidator1/entities/");
+        CopyEntitiesXHTML_1_1(programPath, "../xml_split/xml_split1/entities/");
 
         CopySchemataXHTML_1_0_Strict(programPath, "../html2epub/html2epub1/");
         CopySchemataXHTML_1_0_Strict(programPath, "../html2wordpress/html2wordpress1/schemata/");
