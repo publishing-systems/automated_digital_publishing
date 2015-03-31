@@ -1,4 +1,4 @@
-/* Copyright (C) 2013-2014  Stephan Kreutzer
+/* Copyright (C) 2013-2015  Stephan Kreutzer
  *
  * This file is part of html2epub1.
  *
@@ -298,12 +298,47 @@ class EPUBSetup
                             
                     while (iter.hasNext())
                     {
-                        File referencedXHTMLFile = iter.next();
                         boolean found = false;
+                        File referencedXHTMLFile = iter.next();
+                        String referencedXHTMLFilePath = null;
+
+                        try
+                        {
+                            referencedXHTMLFilePath = referencedXHTMLFile.getCanonicalPath();
+                        }
+                        catch (IOException ex)
+                        {
+                            ex.printStackTrace();
+                            System.exit(-1);
+                        }
+                        
+                        if (referencedXHTMLFilePath == null)
+                        {
+                            System.out.println("html2epub1: Can't get canonical path of referenced XHTML file '" + referencedXHTMLFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
 
                         for (int j = 0; j < xhtmlInFiles.size(); j++)
                         {
-                            if (referencedXHTMLFile.getAbsolutePath().equalsIgnoreCase(xhtmlInFiles.get(j).getAbsolutePath()) == true)
+                            String xhtmlInFilePath = null;
+
+                            try
+                            {
+                                xhtmlInFilePath = xhtmlInFiles.get(j).getCanonicalPath();
+                            }
+                            catch (IOException ex)
+                            {
+                                ex.printStackTrace();
+                                System.exit(-1);
+                            }
+                            
+                            if (xhtmlInFilePath == null)
+                            {
+                                System.out.println("html2epub1: Can't get canonical path of XHTML input file '" + xhtmlInFiles.get(j).getAbsolutePath() + "'.");
+                                System.exit(-1);
+                            }
+
+                            if (referencedXHTMLFilePath.equals(xhtmlInFilePath) == true)
                             {
                                 found = true;
                                 break;
@@ -312,7 +347,7 @@ class EPUBSetup
                         
                         if (found != true)
                         {
-                            System.out.print("html2epub1: '" + referencedXHTMLFile.getAbsolutePath() + "' referenced in '" + inFile.getAbsolutePath() + "', but not configured as input file.\n");
+                            System.out.print("html2epub1: '" + referencedXHTMLFile.getAbsolutePath() + "' referenced in '" + inFile.getAbsolutePath() + "', but not configured as input file. Comparison is case sensitive.\n");
                             System.exit(-28);
                         }
                     }
@@ -321,12 +356,41 @@ class EPUBSetup
 
                     while (iter.hasNext())
                     {
-                        File referencedImageFile = iter.next();
                         boolean alreadyKnown = false;
+                        File referencedImageFile = iter.next();
+                        String referencedImageFilePath = null;
+                        
+                        try
+                        {
+                            referencedImageFilePath = referencedImageFile.getCanonicalPath();
+                        }
+                        catch (IOException ex)
+                        {
+                            ex.printStackTrace();
+                            System.exit(-1);
+                        }
+
+                        if (referencedImageFilePath == null)
+                        {
+                            System.out.println("html2epub1: Can't get canonical path of referenced image file '" + referencedImageFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
 
                         for (int currentAllReferencedImageFile = 0; currentAllReferencedImageFile < this.allReferencedImageFiles.size(); currentAllReferencedImageFile++)
                         {
-                            if (this.allReferencedImageFiles.get(currentAllReferencedImageFile).getAbsolutePath().equalsIgnoreCase(referencedImageFile.getAbsolutePath()) == true)
+                            String currentAllReferencedImageFilePath = null;
+
+                            try
+                            {
+                                currentAllReferencedImageFilePath = this.allReferencedImageFiles.get(currentAllReferencedImageFile).getCanonicalPath();
+                            }
+                            catch (IOException ex)
+                            {
+                                ex.printStackTrace();
+                                System.exit(-1);
+                            }
+                        
+                            if (currentAllReferencedImageFilePath.equals(referencedImageFilePath) == true)
                             {
                                 alreadyKnown = true;
                             }
@@ -342,12 +406,41 @@ class EPUBSetup
 
                     while (iter.hasNext())
                     {
-                        File referencedCSSFile = iter.next();
                         boolean alreadyKnown = false;
+                        File referencedCSSFile = iter.next();
+                        String referencedCSSFilePath = null;
+                        
+                        try
+                        {
+                            referencedCSSFilePath = referencedCSSFile.getCanonicalPath();
+                        }
+                        catch (IOException ex)
+                        {
+                            ex.printStackTrace();
+                            System.exit(-1);
+                        }
+                        
+                        if (referencedCSSFilePath == null)
+                        {
+                            System.out.println("html2epub1: Can't get canonical path of referenced CSS file '" + referencedCSSFile.getAbsolutePath() + "'.");
+                            System.exit(-1);
+                        }
 
                         for (int currentAllReferencedCSSFile = 0; currentAllReferencedCSSFile < this.allReferencedCSSFiles.size(); currentAllReferencedCSSFile++)
                         {
-                            if (this.allReferencedCSSFiles.get(currentAllReferencedCSSFile).getAbsolutePath().equalsIgnoreCase(referencedCSSFile.getAbsolutePath()) == true)
+                            String currentAllReferencedCSSFilePath = null;
+                            
+                            try
+                            {
+                                currentAllReferencedCSSFilePath = this.allReferencedCSSFiles.get(currentAllReferencedCSSFile).getCanonicalPath();
+                            }
+                            catch (IOException ex)
+                            {
+                                ex.printStackTrace();
+                                System.exit(-1);
+                            }
+                        
+                            if (currentAllReferencedCSSFilePath.equals(referencedCSSFilePath) == true)
                             {
                                 alreadyKnown = true;
                             }
@@ -365,7 +458,7 @@ class EPUBSetup
                     File inFile = this.allReferencedImageFiles.get(currentImageFile-1);
                     String fileName = inFile.getName().toLowerCase();
                     String fileExtension = new String();
-                    
+
                     {
                         int dotPosition = fileName.lastIndexOf('.');
                        
@@ -379,7 +472,7 @@ class EPUBSetup
                             System.exit(-68);
                         }
                     }
-                    
+
                     if (fileExtension.equals(".png") == true)
                     {
                         writer.write("    <item id=\"id_image_" + currentImageFile + "\" href=\"image_" + currentImageFile + ".png\" media-type=\"image/png\"/>\n");
@@ -402,7 +495,7 @@ class EPUBSetup
                         System.exit(-29);
                     }
 
-                    
+
                     File outFile = new File(outDirectory.getAbsolutePath() + System.getProperty("file.separator") + "image_" + currentImageFile + fileExtension);
 
                     try

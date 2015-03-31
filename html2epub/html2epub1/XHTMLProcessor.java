@@ -554,16 +554,50 @@ class XHTMLProcessor
                                         
                                         if (cssFile.isAbsolute() != true)
                                         {
-                                            cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
+                                            cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + href);
                                         }
 
                                         boolean found = false;
+                                        String cssFilePath = null;
+
+                                        try
+                                        {
+                                            cssFilePath = cssFile.getCanonicalPath();
+                                        }
+                                        catch (IOException ex)
+                                        {
+                                            ex.printStackTrace();
+                                            System.exit(-1);
+                                        }
                                         
+                                        if (cssFilePath == null)
+                                        {
+                                            System.out.println("html2epub1: Can't get canonical path of referenced CSS file '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "'.");
+                                            System.exit(-1);
+                                        }
+
                                         for (int referencedCSSFile = 1; referencedCSSFile <= referencedCSSFiles.size(); referencedCSSFile++)
                                         {
                                             File currentCSSFile = referencedCSSFiles.get(referencedCSSFile-1);
+                                            String currentCSSFilePath = null;
+                                            
+                                            try
+                                            {
+                                                currentCSSFilePath = currentCSSFile.getCanonicalPath();
+                                            }
+                                            catch (IOException ex)
+                                            {
+                                                ex.printStackTrace();
+                                                System.exit(-1);
+                                            }
+                                            
+                                            if (currentCSSFilePath == null)
+                                            {
+                                                System.out.println("html2epub1: Can't get canonical path of CSS file '" + currentCSSFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
+                                                System.exit(-1);
+                                            }
                                         
-                                            if (currentCSSFile.getAbsolutePath().equalsIgnoreCase(cssFile.getAbsolutePath()) == true)
+                                            if (currentCSSFilePath.equals(cssFilePath) == true)
                                             {
                                                 writer.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"style_" + referencedCSSFile + ".css\"/>");
                                                 
@@ -574,7 +608,7 @@ class XHTMLProcessor
                                         
                                         if (found == false)
                                         {
-                                            System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                            System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files. Comparison is case sensitive.\n");
                                             System.exit(-78);
                                         }
                                     }
@@ -604,16 +638,50 @@ class XHTMLProcessor
                                 
                                 if (srcFile.isAbsolute() != true)
                                 {
-                                    srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
+                                    srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + src);
                                 }
 
                                 boolean found = false;
+                                String srcFilePath = null;
                                 
+                                try
+                                {
+                                    srcFilePath = srcFile.getCanonicalPath();
+                                }
+                                catch (IOException ex)
+                                {
+                                    ex.printStackTrace();
+                                    System.exit(-1);
+                                }
+
+                                if (srcFilePath == null)
+                                {
+                                    System.out.println("html2epub1: Can't get canonical path of referenced image file '" + srcFile.getAbsolutePath() + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "'.");
+                                    System.exit(-1);
+                                }
+
                                 for (int referencedImageFile = 1; referencedImageFile <= referencedImageFiles.size(); referencedImageFile++)
                                 {
                                     File currentImageFile = referencedImageFiles.get(referencedImageFile-1);
+                                    String currentImageFilePath = null;
+                                    
+                                    try
+                                    {
+                                        currentImageFilePath = currentImageFile.getCanonicalPath();
+                                    }
+                                    catch (IOException ex)
+                                    {
+                                        ex.printStackTrace();
+                                        System.exit(-1);
+                                    }
+
+                                    if (currentImageFilePath == null)
+                                    {
+                                        System.out.println("html2epub1: Can't get canonical path of image file '" + currentImageFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
+                                        System.exit(-1);
+                                    }
                                 
-                                    if (currentImageFile.getAbsolutePath().equalsIgnoreCase(srcFile.getAbsolutePath()) == true)
+                                    if (currentImageFilePath.equals(srcFilePath) == true)
                                     {
                                         String extension = currentImageFile.getName().toLowerCase().substring(currentImageFile.getName().toLowerCase().lastIndexOf('.'));
                                     
@@ -660,7 +728,7 @@ class XHTMLProcessor
                                 
                                 if (found == false)
                                 {
-                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files.\n");
+                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files. Comparison is case sensitive.\n");
                                     System.exit(-58);
                                 }
                             }
@@ -777,16 +845,50 @@ class XHTMLProcessor
                                 
                                 if (hrefFile.isAbsolute() != true)
                                 {
-                                    hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
+                                    hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + hrefFilePart);
                                 }
                                 
                                 boolean found = false;
+                                String hrefFilePath = null;
+                                
+                                try
+                                {
+                                    hrefFilePath = hrefFile.getCanonicalPath();
+                                }
+                                catch (IOException ex)
+                                {
+                                    ex.printStackTrace();
+                                    System.exit(-1);
+                                }
+                                
+                                if (hrefFilePath == null)
+                                {
+                                    System.out.println("html2epub1: Can't get canonical path of linked file '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "'.");
+                                    System.exit(-1);
+                                }
                                 
                                 for (int referencedXHTMLFile = 1; referencedXHTMLFile <= xhtmlInFiles.size(); referencedXHTMLFile++)
                                 {
                                     File currentXHTMLFile = xhtmlInFiles.get(referencedXHTMLFile-1);
-                                
-                                    if (currentXHTMLFile.getAbsolutePath().equalsIgnoreCase(hrefFile.getAbsolutePath()) == true)
+                                    String currentXHTMLFilePath = null;
+                                    
+                                    try
+                                    {
+                                        currentXHTMLFilePath = currentXHTMLFile.getCanonicalPath();
+                                    }
+                                    catch (IOException ex)
+                                    {
+                                        ex.printStackTrace();
+                                        System.exit(-1);
+                                    }
+                                    
+                                    if (currentXHTMLFilePath == null)
+                                    {
+                                        System.out.println("html2epub1: Can't get canonical path of linked file '" + currentXHTMLFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
+                                        System.exit(-1);
+                                    }
+ 
+                                    if (currentXHTMLFilePath.equals(hrefFilePath) == true)
                                     {
                                         writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml" + hrefAnchor + "\"");
                                         
@@ -831,7 +933,7 @@ class XHTMLProcessor
                                 
                                 if (found == false)
                                 {
-                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files.\n");
+                                    System.out.print("html2epub1: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files. Comparison is case sensitive.\n");
                                     System.exit(-60);
                                 }
                             }
