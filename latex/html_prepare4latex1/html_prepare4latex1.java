@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html_prepare4latex1.
  *
@@ -15,8 +15,8 @@
  * along with html_prepare4latex1. If not, see <http://www.gnu.org/licenses/>.
  */
 /**
- * @file $/html2latex/html_prepare4latex1.java
- * @brief Prepares the text of a HTML file for use in latex (escaping of
+ * @file $/latex/html_prepare4latex1.java
+ * @brief Prepares the text of a HTML file for consumption by LaTeX (escaping of
  *     special characters).
  * @author Stephan Kreutzer
  * @since 2014-06-14
@@ -58,13 +58,13 @@ public class html_prepare4latex1
 {
     public static void main(String args[])
     {
-        System.out.print("html_prepare4latex1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html_prepare4latex1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
-                         "or the project website http://www.publishing-systems.org.\n\n");
+                         "and the project website http://www.publishing-systems.org.\n\n");
 
         if (args.length < 2)
         {
@@ -119,10 +119,18 @@ public class html_prepare4latex1
         
         File outFile = new File(args[1]);
 
-        if (inFile.getAbsolutePath().equalsIgnoreCase(outFile.getAbsolutePath()) == true)
+        try
         {
-            System.out.print("html_prepare4latex1: Input and output file are the same, can't read and write to '" + inFile.getAbsolutePath() + "' at the same time.\n");
-            System.exit(-6);
+            if (outFile.getCanonicalPath().equals(inFile.getCanonicalPath()) == true)
+            {
+                System.out.print("html_prepare4latex1: Input and output file are the same, can't read and write to '" + inFile.getAbsolutePath() + "' at the same time.\n");
+                System.exit(-1);
+            }
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
 

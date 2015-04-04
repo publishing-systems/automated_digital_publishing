@@ -51,17 +51,16 @@ public class setup1
         String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
     
     
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../xsltransformator/xsltransformator1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_flat2hierarchical/html_flat2hierarchical1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_split/html_split1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html2epub/html2epub1/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html2latex/html_prepare4latex1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html2wordpress/html2wordpress1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_attributereplace/html_attributereplace1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_concatenate/html_concatenate1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../schemavalidator/schemavalidator1/entities/");
-        CopyEntitiesXHTML_1_0_Strict(programPath, "../xml_split/xml_split1/entities/");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_flat2hierarchical" + File.separator + "html_flat2hierarchical1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_split" + File.separator + "html_split1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub1");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "latex" + File.separator + "html_prepare4latex1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html2wordpress" + File.separator + "html2wordpress1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_attributeanalyzer" + File.separator + "html_attributeanalyzer1" + File.separator + "entities");        CopyEntitiesXHTML_1_0_Strict(programPath, "../html_attributereplace/html_attributereplace1/entities/");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_concatenate" + File.separator + "html_concatenate1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xml_split" + File.separator + "xml_split1" + File.separator + "entities");
     
         CopyEntitiesXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");

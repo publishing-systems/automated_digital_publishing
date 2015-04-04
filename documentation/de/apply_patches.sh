@@ -15,5 +15,5 @@
 # You should have received a copy of the GNU Affero General Public License 3
 # along with automated_digital_publishing. If not, see <http://www.gnu.org/licenses/>.
 
-patch ../../html2latex/html_prepare4latex1/html_prepare4latex1.java < ./html_prepare4latex1.java.patch
-make -C ../../html2latex/html_prepare4latex1/
+patch ../../latex/html_prepare4latex1/html_prepare4latex1.java < ./html_prepare4latex1.java.patch
+make -C ../../latex/html_prepare4latex1/

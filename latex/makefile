@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,11 +16,11 @@
 
 
 
-directories = ./bommanager ./csv2xml ./epub2html ./gui ./html2epub ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./latex ./odt2html ./schemavalidator ./txtreplace ./unzip ./workflows ./xml_split ./xsltransformator
+directories = ./html_prepare4latex1 ./xml_prepare4latex1
 
 
 
-.PHONY: all $(directories) install
+.PHONY: all $(directories)
 
 
 
@@ -30,7 +30,4 @@ all: $(directories)
 
 $(directories):
 	$(MAKE) --directory=$@
-
-install:
-	java -classpath ./workflows/ setup1
 

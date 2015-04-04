@@ -58,14 +58,6 @@ along with automated_digital_publishing. If not, see <http://www.gnu.org/license
     <replacement>Wohl\-ge\-formt\-heit</replacement>
   </replace>
   <replace>
-    <pattern>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\_preparation.xml</pattern>
-    <replacement>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\_\linebreak{}$\rightarrow{}$preparation.xml</replacement>
-  </replace>
-  <replace>
-    <pattern>\$/html2latex/html\_prepare4latex1/entities/</pattern>
-    <replacement>\$/html2latex/html\_\linebreak{}$\rightarrow{}$prepare4latex1/entities/</replacement>
-  </replace>
-  <replace>
     <pattern>\$/html2wordpress/html2wordpress1/html2wordpress1\_jobfile\_create\_new1/</pattern>
     <replacement>\$/html2wordpress/\linebreak{}$\rightarrow{}$html2wordpress1/html2wordpress1\_jobfile\_create\_new1/</replacement>
   </replace>
@@ -84,5 +76,13 @@ along with automated_digital_publishing. If not, see <http://www.gnu.org/license
   <replace>
     <pattern>Eingabedatei</pattern>
     <replacement>Ein\-ga\-be\-da\-tei</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\_preparation.xml</pattern>
+    <replacement>\$/html2latex/html2latex1/layout/txtreplace1\_replacement\_dictionary\_post\linebreak{}$\rightarrow{}$\_preparation.xml</replacement>
+  </replace>
+  <replace>
+    <pattern>\$/latex/html\_prepare4latex1/entities/</pattern>
+    <replacement>\$/latex/html\_pre\linebreak{}$\rightarrow{}$pare4latex1/entities/</replacement>
   </replace>
 </txtreplace1-replacement-dictionary>

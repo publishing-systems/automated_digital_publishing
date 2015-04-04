@@ -1,4 +1,4 @@
-# Copyright (C) 2014  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,18 +16,16 @@
 
 
 
-directories = ./html_prepare4latex1
+.PHONY: xml_prepare4latex1 clean
 
 
 
-.PHONY: all $(directories)
+xml_prepare4latex1: xml_prepare4latex1.class
 
+xml_prepare4latex1.class: xml_prepare4latex1.java
+	javac xml_prepare4latex1.java
 
-
-all: $(directories)
-
-
-
-$(directories):
-	$(MAKE) --directory=$@
+clean:
+	rm -f ./xml_prepare4latex1.class
+	rm -f ./EntityResolverLocal.class
 

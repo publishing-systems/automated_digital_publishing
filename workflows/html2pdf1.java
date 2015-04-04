@@ -191,8 +191,8 @@ public class html2pdf1
 
 
         {
-            File from = new File(programPath + "../html2latex/html_prepare4latex1/entities/config_xhtml1-strict.xml");
-            File to = new File(programPath + "../html2latex/html_prepare4latex1/entities/config.xml");
+            File from = new File(programPath + ".." + File.separator + "latex" + File.separator + "html_prepare4latex1" + File.separator + "entities" + File.separator + "config_xhtml1-strict.xml");
+            File to = new File(programPath + ".." + File.separator + "latex" + File.separator + "html_prepare4latex1" + File.separator + "entities" + File.separator + "config.xml");
             
             if (html2pdf1.CopyFile(from, to) != 0)
             {
@@ -202,7 +202,7 @@ public class html2pdf1
 
 
         ProcessBuilder builder = new ProcessBuilder("java", "html_prepare4latex1", inputHTMLFile.getAbsolutePath(), outputDirectory.getAbsolutePath() + File.separator + "input.html");
-        builder.directory(new File(programPath + "../html2latex/html_prepare4latex1"));
+        builder.directory(new File(programPath + ".." + File.separator + "latex" + File.separator + "html_prepare4latex1"));
         builder.redirectErrorStream(true);
 
         try
