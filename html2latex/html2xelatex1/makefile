@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,21 +16,18 @@
 
 
 
-directories = ./bommanager ./csv2xml ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./latex ./odt2html ./schemavalidator ./txtreplace ./unzip ./workflows ./xml_split ./xsltransformator
+.PHONY: all html2xelatex1 clean
 
 
 
-.PHONY: all $(directories) install
+all: html2xelatex1
+html2xelatex1: html2xelatex1.class
 
 
 
-all: $(directories)
+html2xelatex1.class: html2xelatex1.java
+	javac html2xelatex1.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
-
-install:
-	java -classpath ./workflows/ setup1
+clean:
+	rm -f html2xelatex1.class
 

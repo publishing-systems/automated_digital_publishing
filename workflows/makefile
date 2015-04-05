@@ -25,7 +25,7 @@ directories = ./epub2wordpress ./gui
 
 
 all: workflows $(directories)
-workflows: html2epub1.class html2pdf1.class odt2all1.class odt2all2.class odt2epub1.class odt2epub2.class odt2epub3.class odt2html1.class odt2html2.class odt2pdf1.class odt2pdf2.class setup1.class
+workflows: html2epub1.class html2pdf1.class html2pdf2.class odt2all1.class odt2all2.class odt2epub1.class odt2epub2.class odt2epub3.class odt2html1.class odt2html2.class odt2pdf1.class odt2pdf2.class setup1.class
 
 
 
@@ -34,6 +34,9 @@ html2epub1.class: html2epub1.java
 
 html2pdf1.class: html2pdf1.java
 	javac html2pdf1.java
+
+html2pdf2.class: html2pdf2.java
+	javac html2pdf2.java
 
 odt2all1.class: odt2all1.java
 	javac odt2all1.java
