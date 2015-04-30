@@ -237,7 +237,7 @@ public class txtreplace1
                             System.exit(-10);
                         }
                         
-                        if (patternLength <= 0)
+                        if (replacementLength <= 0)
                         {
                             System.out.println("txtreplace1: Replacement in replacement dictionary file '" + replacementDictionaryFile.getAbsolutePath() + "' seems to be incomplete.");
                             System.exit(-11);
@@ -295,11 +295,12 @@ public class txtreplace1
                                     int offset = bufferOverlapCount - (i * -1);
  
                                     // If i is negative, it points always to the
-                                    // second character of oldValue in the now
-                                    // hypothetic previous buffer, so it is save
+                                    // second character of pattern in the now
+                                    // hypothetic previous buffer, so it is safe
                                     // to assume that all characters until i >= 0
-                                    // are the same than ... (otherwise it wouldn't
-                                    // have matched in the first place).
+                                    // are the same than the same amount of characters
+                                    // in patterns from its beginning (otherwise it
+                                    // wouldn't have matched in the first place).
 
                                     if (pattern.charAt(offset) == pattern.charAt(matchCount))
                                     {
@@ -322,7 +323,7 @@ public class txtreplace1
                                             // Matching occurred between two buffers, and the
                                             // previous buffer is already gone. However, since
                                             // matching was successful up to the current position,
-                                            // it is save to assume that the characters in the 
+                                            // it is safe to assume that the characters in the 
                                             // previous buffer were the same than pattern (otherwise
                                             // no matching would have occurred). In order to use
                                             // pattern as the now hypothetical previous buffer,
@@ -337,7 +338,7 @@ public class txtreplace1
                                             // specifies the number of characters of pattern the now
                                             // hypothetical buffer, which i needs to check towards i >= 0,
                                             // starting from the second character.
-                                            
+
                                             bufferOverlapCount = (i * -1);
                                         }
 

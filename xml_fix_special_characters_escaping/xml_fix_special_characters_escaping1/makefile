@@ -1,4 +1,4 @@
-# Copyright (C) 2014-2015  Stephan Kreutzer
+# Copyright (C) 2015  Stephan Kreutzer
 #
 # This file is part of automated_digital_publishing.
 #
@@ -16,21 +16,18 @@
 
 
 
-directories = ./bommanager ./csv2xml ./downloader ./epub2html ./gui ./html2epub ./html2latex ./html2wordpress ./html_attributeanalyzer ./html_attributereplace ./html_concatenate ./html_flat2hierarchical ./html_split ./latex ./odt2html ./schemavalidator ./txtreplace ./unzip ./workflows ./xml_fix_special_characters_escaping ./xml_split ./xsltransformator
+.PHONY: all xml_fix_special_characters_escaping1 clean
 
 
 
-.PHONY: all $(directories) install
+all: xml_fix_special_characters_escaping1
+xml_fix_special_characters_escaping1: xml_fix_special_characters_escaping1.class
 
 
 
-all: $(directories)
+xml_fix_special_characters_escaping1.class: xml_fix_special_characters_escaping1.java
+	javac xml_fix_special_characters_escaping1.java
 
-
-
-$(directories):
-	$(MAKE) --directory=$@
-
-install:
-	java -classpath ./workflows/ setup1
+clean:
+	rm -f xml_fix_special_characters_escaping1.class
 
