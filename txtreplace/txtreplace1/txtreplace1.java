@@ -314,12 +314,18 @@ public class txtreplace1
                                 }
                                 else
                                 {
+                                    // The current character doesn't match, ...
+
                                     if (matchCount > 0)
                                     {
+                                        // ... but previous characters matched ...
+
                                         i = (i - 1) - (matchCount - 1);
 
                                         if (i < 0)
                                         {
+                                            // ... while execution was looking at a previous buffer.
+
                                             // Matching occurred between two buffers, and the
                                             // previous buffer is already gone. However, since
                                             // matching was successful up to the current position,
@@ -339,7 +345,10 @@ public class txtreplace1
                                             // hypothetical buffer, which i needs to check towards i >= 0,
                                             // starting from the second character.
 
-                                            bufferOverlapCount = (i * -1);
+                                            if (bufferOverlapCount <= 0)
+                                            {
+                                                bufferOverlapCount = (i * -1);
+                                            }
                                         }
 
                                         writer.write(pattern, 0, 1);
