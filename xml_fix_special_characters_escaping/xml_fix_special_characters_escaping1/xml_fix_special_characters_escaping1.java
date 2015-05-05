@@ -81,26 +81,6 @@ public class xml_fix_special_characters_escaping1
             System.exit(-6);
         }
 
-        File replacementDictionaryFile = new File(args[1]);
-
-        if (replacementDictionaryFile.exists() != true)
-        {
-            System.out.print("xml_fix_special_characters_escaping1: '" + replacementDictionaryFile.getAbsolutePath() + "' doesn't exist.\n");
-            System.exit(-4);
-        }
-
-        if (replacementDictionaryFile.isFile() != true)
-        {
-            System.out.print("xml_fix_special_characters_escaping1: '" + replacementDictionaryFile.getAbsolutePath() + "' isn't a file.\n");
-            System.exit(-5);
-        }
-
-        if (replacementDictionaryFile.canRead() != true)
-        {
-            System.out.print("xml_fix_special_characters_escaping1: '" + replacementDictionaryFile.getAbsolutePath() + "' isn't readable.\n");
-            System.exit(-6);
-        }
-
         File tempDirectory = new File(programPath + "temp");
 
         if (tempDirectory.exists() != true)
@@ -164,6 +144,12 @@ public class xml_fix_special_characters_escaping1
                     }
                     else
                     {
+                        if (matchCount >= matchBuffer.length)
+                        {
+                            System.out.println("xml_fix_special_characters_escaping1: Maximum size of " + matchBuffer.length + " characters for a possible XML entity exceeded.");
+                            System.exit(-1);
+                        }
+
                         if (Character.isLetter(buffer[i]) == true)
                         {
                             matchBuffer[matchCount] = buffer[i];
@@ -227,7 +213,9 @@ public class xml_fix_special_characters_escaping1
                         {
                             writer.write("&amp;");
                             writer.write(matchBuffer, 0, matchCount);
-                            writer.write(buffer[i]);
+                            // buffer[i] needs to be checked in the next iteration
+                            // (for "&&" for instance).
+                            --i;
 
                             matching = false;
                             matchCount = 0;
