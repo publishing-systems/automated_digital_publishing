@@ -61,6 +61,7 @@ public class setup1
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_concatenate" + File.separator + "html_concatenate1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xml_split" + File.separator + "xml_split1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub2" + File.separator + "entities");
     
         CopyEntitiesXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");
@@ -72,12 +73,13 @@ public class setup1
         CopyEntitiesXHTML_1_1(programPath, "../schemavalidator/schemavalidator1/entities/");
         CopyEntitiesXHTML_1_1(programPath, "../xml_split/xml_split1/entities/");
 
-        CopySchemataXHTML_1_0_Strict(programPath, "../html2epub/html2epub1/");
-        CopySchemataXHTML_1_0_Strict(programPath, "../html2wordpress/html2wordpress1/schemata/");
-        CopySchemataXHTML_1_0_Strict(programPath, "../schemavalidator/schemavalidator1/schemata/");
+        CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub1");
+        CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "html2wordpress" + File.separator + "html2wordpress1" + File.separator + "schemata");
+        CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "schemata");
+        CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub2" + File.separator + "schemata");
 
-        CopySchemataXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/schemata/");
-        CopySchemataXHTML_1_1(programPath, "../schemavalidator/schemavalidator1/schemata/");
+        CopySchemataXHTML_1_1(programPath, ".." + File.separator + "html2wordpress" + File.separator + "html2wordpress1" + File.separator + "schemata");
+        CopySchemataXHTML_1_1(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "schemata");
 
         return;
     }
@@ -87,7 +89,7 @@ public class setup1
         if (programPath.endsWith("/") != true &&
             programPath.endsWith("\\") != true)
         {
-            programPath += "/";
+            programPath += File.separator;
         }
         
         if (to.startsWith("/") == true)
@@ -102,7 +104,7 @@ public class setup1
         if (to.endsWith("/") != true &&
             to.endsWith("\\") != true)
         {
-            to += "/";
+            to += File.separator;
         }
 
 
