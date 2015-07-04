@@ -106,16 +106,6 @@ class ZipProcessor
             this.AddFile(zipStream,
                          "META-INF/container.xml",
                          new File(outDirectory.getAbsolutePath() + File.separator + "META-INF" + File.separator + "container.xml"));
-                         /*
-            this.AddFile(zipStream,
-                         "OPS/package.opf",
-                         new File(outDirectory.getAbsolutePath() + File.separator + "OPS" + File.separator + "package.opf"));
-            this.AddFile(zipStream,
-                         "OPS/toc.ncx",
-                         new File(outDirectory.getAbsolutePath() + File.separator + "OPS" + File.separator + "toc.ncx"));
-            this.AddFile(zipStream,
-                         "OPS/navtoc.xhtml",
-                         new File(outDirectory.getAbsolutePath() + File.separator + "OPS" + File.separator + "navtoc.xhtml"));*/
 
             for (int packageFile = 0; packageFile < packageFiles.size(); packageFile++)
             {

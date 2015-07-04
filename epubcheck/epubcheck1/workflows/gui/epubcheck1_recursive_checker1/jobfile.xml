@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2015  Stephan Kreutzer
+
+This file is part of epubcheck1_recursive_checker1 GUI.
+
+epubcheck1_recursive_checker1 GUI is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License version 3 or any later version,
+as published by the Free Software Foundation.
+
+epubcheck1_recursive_checker1 GUI is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License 3 for more details.
+
+You should have received a copy of the GNU Affero General Public License 3
+along with epubcheck1_recursive_checker1 GUI. If not, see <http://www.gnu.org/licenses/>.
+-->
+<epubcheck1-recursive-checker1-job>
+  <in>
+    <input path="/home/user/" recursive="false"/>
+    <input path="/home/user/epubs" recursive="true"/>
+    <input path="./../../../../../ipsum.epub" recursive="false"/>
+  </in>
+</epubcheck1-recursive-checker1-job>

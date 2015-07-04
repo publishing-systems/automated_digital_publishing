@@ -52,9 +52,6 @@ ZipProcessor.class: ZipProcessor.java
 html2epub2.class: html2epub2.java ConfigProcessor.class LocalEntityInput.class EntityResolverLocal.class XHTMLValidator.class XHTMLProcessor.class ReferencedFiles.class EPUBSetup.class ZipProcessor.class
 	javac html2epub2.java
 
-$(directories):
-	$(MAKE) --directory=$@
-
 clean:
 	rm -f html2epub2.class
 	rm -f EPUBSetup.class
