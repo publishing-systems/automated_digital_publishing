@@ -53,6 +53,15 @@ public class odt2html1
 
         String programPath = odt2html1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File inputFileODT = null;
 

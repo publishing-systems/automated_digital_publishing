@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2all1_config_edit2.
  *
@@ -64,7 +64,7 @@ public class odt2all1_config_edit2
 {
     public static void main(String[] args)
     {
-        System.out.print("odt2all1_config_edit2  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("odt2all1_config_edit2  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -175,9 +175,19 @@ public class odt2all1_config_edit2
     public odt2all1_config_edit2(File configFile)
     {
         super("File Setup for a Configuration File of odt2all1");
-        
+
         this.programPath = odt2all1_config_edit2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        
+
+        try
+        {
+            this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         this.configFile = configFile;
         
         this.odtLabelList = new ArrayList<JLabel>();
@@ -825,7 +835,19 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        ImageIcon icon = new ImageIcon("publishing_systems_logo.png");
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        ImageIcon icon = new ImageIcon(programPath + "publishing_systems_logo.png");
         JLabel label = new JLabel(icon);
         label.setAlignmentX(0.5f);
         add(label);

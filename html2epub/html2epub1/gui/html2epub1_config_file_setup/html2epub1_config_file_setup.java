@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html2epub1.
  *
@@ -61,7 +61,7 @@ public class html2epub1_config_file_setup
 {
     public static void main(String[] args)
     {
-        System.out.print("html2epub1_config_file_setup  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html2epub1_config_file_setup  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -135,9 +135,19 @@ public class html2epub1_config_file_setup
     public html2epub1_config_file_setup(File configFile)
     {
         super("File Setup for a Configuration File of html2epub1");
-        
+
         this.programPath = html2epub1_config_file_setup.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        
+
+        try
+        {
+            this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         this.configFile = configFile;
         
         this.xhtmlLabelList = new ArrayList<JLabel>();

@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of epub2html1.
  *
@@ -69,6 +69,16 @@ class EPUBXHTMLProcessor
          */
 
         String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File entitiesDirectory = new File(programPath + "entities");
         
@@ -428,6 +438,16 @@ class EPUBXHTMLProcessor
          */
 
         String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File entitiesDirectory = new File(programPath + "entities");
         

@@ -50,8 +50,6 @@ public class xml_fix_special_characters_escaping1
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = xml_fix_special_characters_escaping1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
         if (args.length < 2)
         {
             System.out.print("Usage:\n" +
@@ -60,6 +58,17 @@ public class xml_fix_special_characters_escaping1
             System.exit(1);
         }
 
+        String programPath = xml_fix_special_characters_escaping1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File inFile = new File(args[0]);
 

@@ -52,6 +52,15 @@ public class odt2epub1
     
         String programPath = odt2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
         
         ProcessBuilder builder = null;
         

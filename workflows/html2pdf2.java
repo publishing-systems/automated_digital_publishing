@@ -50,9 +50,18 @@ public class html2pdf2
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
-    
+
         String programPath = html2pdf2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File inputHTMLFile = null;
 

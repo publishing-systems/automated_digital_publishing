@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of odt2html1.
  *
@@ -42,10 +42,21 @@ class ZipProcessor
     public ZipProcessor()
     {
         this.fileList = new HashMap<String, File>();
-        
+
         String programPath = ZipProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        this.tempDirectory = new File(programPath + "temp/");
-        
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        this.tempDirectory = new File(programPath + "temp" + File.separator);
+
         if (this.tempDirectory.exists() == true)
         {
             if (this.tempDirectory.isDirectory() == true)

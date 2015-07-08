@@ -22,6 +22,7 @@
 
 
 
+import java.io.File;
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.net.URI;
@@ -42,13 +43,23 @@ public class downloader1
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = downloader1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
         if (args.length < 2)
         {
             System.out.print("Usage:\n" +
                              "\tdownloader1 in-url out-file\n\n");
             System.exit(1);
+        }
+
+        String programPath = downloader1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
         // http://stackoverflow.com/questions/11650375/downloading-files-using-java-randomly-freezes

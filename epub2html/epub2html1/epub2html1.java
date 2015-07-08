@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of epub2html1.
  *
@@ -26,6 +26,7 @@
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
+import java.io.IOException;
 
 
 
@@ -33,7 +34,7 @@ public class epub2html1
 {
     public static void main(String args[])
     {
-        System.out.print("epub2html1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("epub2html1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -70,7 +71,18 @@ public class epub2html1
         }
 
         String programPath = epub2html1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-        File tempDirectory = new File(programPath + "temp/");
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        File tempDirectory = new File(programPath + "temp" + File.separator);
         File epubDirectory = null;
         Map<String, File> epubFiles = null;
         

@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html2wordpress1.
  *
@@ -67,6 +67,16 @@ class XHTMLValidator implements ErrorHandler
     public int Validate(File xhtmlFile)
     {
         String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File entitiesDirectory = new File(programPath + "entities");
         

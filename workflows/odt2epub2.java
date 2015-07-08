@@ -50,13 +50,23 @@ public class odt2epub2
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = odt2epub2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
         if (args.length < 3)
         {
             System.out.print("Usage:\n" +
                              "\todt2epub2 odt-in-file html2epub1-config-file epub-out-file\n\n");
             System.exit(1);
+        }
+
+        String programPath = odt2epub2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
         ProcessBuilder builder = new ProcessBuilder("java", "odt2html1", args[0]);

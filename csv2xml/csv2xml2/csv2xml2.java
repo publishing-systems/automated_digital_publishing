@@ -672,6 +672,16 @@ public class csv2xml2 {
 
         String programPath = csv2xml2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         File configFile = new File(args[1]);
 
         if (configFile.exists() != true)

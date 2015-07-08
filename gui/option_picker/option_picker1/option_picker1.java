@@ -96,6 +96,16 @@ public class option_picker1
 
         this.programPath = option_picker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         this.optionsList = new ArrayList<ChooseOption>();
 
         readConfigurationFile(configFile);
@@ -482,7 +492,19 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        ImageIcon icon = new ImageIcon("publishing_systems_logo.png");
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        ImageIcon icon = new ImageIcon(programPath + "publishing_systems_logo.png");
         JLabel label = new JLabel(icon);
         label.setAlignmentX(0.5f);
         add(label);

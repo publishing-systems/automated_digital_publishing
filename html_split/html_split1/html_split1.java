@@ -82,8 +82,17 @@ public class html_split1
             System.exit(1);
         }
 
-
         String programPath = html_split1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File entitiesDirectory = new File(programPath + "entities");
         

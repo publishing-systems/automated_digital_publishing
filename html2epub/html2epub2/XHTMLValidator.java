@@ -41,6 +41,16 @@ class XHTMLValidator
     {
         String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         String doctypeDeclaration = new String("<!DOCTYPE");
         int doctypePosMatching = 0;
         String doctype = new String();

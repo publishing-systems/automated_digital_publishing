@@ -62,6 +62,16 @@ public class odt2epub3
     
         String programPath = odt2epub3.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         if (args.length < 2)
         {
             System.out.print("Usage:\n" +

@@ -49,7 +49,17 @@ public class setup1
                          "or the project website http://www.publishing-systems.org.\n\n");
     
         String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-    
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
     
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_flat2hierarchical" + File.separator + "html_flat2hierarchical1" + File.separator + "entities");

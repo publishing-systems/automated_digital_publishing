@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of html_attributereplace1.
  *
@@ -58,7 +58,7 @@ public class html_attributereplace1
 {
     public static void main(String args[])
     {
-        System.out.print("html_attributereplace1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("html_attributereplace1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -115,6 +115,16 @@ public class html_attributereplace1
         }
 
         String programPath = html_attributereplace1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File entitiesDirectory = new File(programPath + "entities");
         

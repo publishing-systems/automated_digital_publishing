@@ -53,15 +53,24 @@ public class html2epub1
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = html2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
-
         if (args.length != 2)
         {
             System.out.print("Usage:\n" +
                              "\thtml2epub1 input-html-file input-config-file\n\n");
 
             System.exit(1);
+        }
+
+        String programPath = html2epub1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
         File inputHTMLFile = new File(args[0]);

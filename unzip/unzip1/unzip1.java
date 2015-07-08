@@ -1,4 +1,4 @@
-/* Copyright (C) 2014  Stephan Kreutzer
+/* Copyright (C) 2014-2015  Stephan Kreutzer
  *
  * This file is part of unzip1.
  *
@@ -38,7 +38,7 @@ public class unzip1
 {
     public static void main(String args[])
     {
-        System.out.print("unzip1  Copyright (C) 2014  Stephan Kreutzer\n" +
+        System.out.print("unzip1  Copyright (C) 2014-2015  Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -105,8 +105,19 @@ public class unzip1
         ZipProcessor zipProcessor = new ZipProcessor();
         Map<String, File> fileList = zipProcessor.Run(inFile, outDirectory);
 
-        
+
         String programPath = unzip1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+        
         File outLog = new File(programPath + "extraction.xml");
         
         try

@@ -84,6 +84,16 @@ public class xml_split1
 
         String programPath = xml_split1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         File entitiesDirectory = new File(programPath + "entities");
         
         if (entitiesDirectory.exists() != true)

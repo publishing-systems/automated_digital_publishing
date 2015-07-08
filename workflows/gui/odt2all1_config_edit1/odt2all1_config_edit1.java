@@ -176,8 +176,18 @@ public class odt2all1_config_edit1
     public odt2all1_config_edit1(File configFile)
     {
         super("File Setup for a Configuration File of odt2all1");
-        
+
         this.programPath = odt2all1_config_edit1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
         
         this.configFile = configFile;
         
@@ -1294,7 +1304,19 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        ImageIcon icon = new ImageIcon("publishing_systems_logo.png");
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
+        ImageIcon icon = new ImageIcon(programPath + "publishing_systems_logo.png");
         JLabel label = new JLabel(icon);
         label.setAlignmentX(0.5f);
         add(label);

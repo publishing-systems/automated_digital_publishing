@@ -76,6 +76,15 @@ public class xml_prepare4latex1
 
         String programPath = xml_prepare4latex1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
 
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
 
         File inFile = new File(args[0]);
 

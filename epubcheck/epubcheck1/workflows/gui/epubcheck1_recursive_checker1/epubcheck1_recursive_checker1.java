@@ -841,6 +841,17 @@ public class epubcheck1_recursive_checker1
         this.textAreaResult.setText("");
 
         String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         File tempDirectory = new File(programPath + "temp");
 
         if (tempDirectory.exists() == true)
@@ -1156,6 +1167,17 @@ public class epubcheck1_recursive_checker1
         this.textAreaResult.setText("");
         
         String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
+        }
+
         File tempDirectory = new File(programPath + "temp");
 
         if (tempDirectory.exists() == true)

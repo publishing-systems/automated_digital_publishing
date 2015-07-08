@@ -67,13 +67,23 @@ public class epubcheck1_recursive_checker1
     
     public int check(String args[])
     {
-        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
-
         if (args.length < 2)
         {
             System.out.print(getI10nString("messageArgumentsMissingUsage") + "\n" +
                              "\tepubcheck1_recursive_checker1 " + getI10nString("messageParameterList") + "\n\n");
             System.exit(1);
+        }
+
+        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        try
+        {
+            programPath = new File(programPath).getCanonicalPath() + File.separator;
+        }
+        catch (IOException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
 
         File jobFile = new File(args[0]);
