@@ -428,7 +428,11 @@ public class epubcheck1_recursive_checker1
 
             for (int i = 0; i < epubFilesSize; i++)
             {
-                writer.write("  <check-result nr=\"" + (i + 1) + "\" input=\"" + this.epubFiles.get(i).getCanonicalPath() + "\" result=\"result_" + (i + 1) + ".log\"");
+                String epubFilePath = this.epubFiles.get(i).getCanonicalPath();
+
+                epubFilePath = epubFilePath.replaceAll("&", "&amp;");
+
+                writer.write("  <check-result nr=\"" + (i + 1) + "\" input=\"" + epubFilePath + "\" result=\"result_" + (i + 1) + ".log\"");
 
                 if (this.checkResults.containsKey(i) == true)
                 {
