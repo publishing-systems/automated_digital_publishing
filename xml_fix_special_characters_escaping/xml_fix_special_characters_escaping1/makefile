@@ -30,4 +30,5 @@ xml_fix_special_characters_escaping1.class: xml_fix_special_characters_escaping1
 
 clean:
 	rm -f xml_fix_special_characters_escaping1.class
+	rm -f Sequence.class
 
