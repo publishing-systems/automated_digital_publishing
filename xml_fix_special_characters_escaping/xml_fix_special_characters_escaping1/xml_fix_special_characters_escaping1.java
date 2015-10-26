@@ -786,7 +786,7 @@ public class xml_fix_special_characters_escaping1
                                 if (skipping == false)
                                 {
                                     int checkResult = sequences.get(indexSequencePair).get(START_SEQUENCE).CheckChar(buffer[i]);
-                                
+
                                     if (checkResult == 1)
                                     {
                                         matching = true;
@@ -861,7 +861,6 @@ public class xml_fix_special_characters_escaping1
 
                                 System.exit(-1);
                             }
-                            
                         }
                         else
                         {
@@ -909,7 +908,7 @@ public class xml_fix_special_characters_escaping1
 
                                 matchCount = 0;
                             }
-                        
+
                             if (skipping == true)
                             {
                                 if (fixQuotationMarksDebugOutput == true)
@@ -924,7 +923,7 @@ public class xml_fix_special_characters_escaping1
 
 
                         // Raw content.
-                    
+
                         if (sequenceTagStart.GetMatched() == true)
                         {
                             if (matching == false &&
@@ -940,7 +939,7 @@ public class xml_fix_special_characters_escaping1
                                             {
                                                 System.out.println("FQM: " + i + ": flushing " + matchCount);
                                             }
-                                        
+
                                             writer.write(matchBuffer, 0 , matchCount);
                                         }
                                         else
@@ -980,7 +979,7 @@ public class xml_fix_special_characters_escaping1
                                     }
 
                                     tagBuffer[tagBufferCount] = buffer[i];
-                                   
+
                                     tagBufferCount++;
 
                                     if (tagBufferCount > tagBuffer.length)
@@ -1008,7 +1007,7 @@ public class xml_fix_special_characters_escaping1
                                 skipping == false)
                             {
                                 // Not within any known sequence.
-                            
+
                                 if (fixQuotationMarksDebugOutput == true)
                                 {
                                     System.out.println("FQM: " + i + ": ignoring " + buffer[i]);
@@ -1154,7 +1153,7 @@ public class xml_fix_special_characters_escaping1
             {
                 System.out.println("ETSFQM: flushing " + tagBufferCount);
             }
-        
+
             writer.write(tagBuffer, 0, tagBufferCount);
             return 0;
         }
@@ -1208,7 +1207,7 @@ public class xml_fix_special_characters_escaping1
                     stage = ETSFQM_STAGE_ATTRIBUTE_VALUE_START_DELIMITER;
                     delimiterCharacter = tagBuffer[i];
                     startPos = i;
-                    
+
                     if (fixQuotationMarksDebugOutput == true)
                     {
                         System.out.println("ETSFQM: " + i + ": " + tagBuffer[i] + " triggers stage " + stage);
@@ -1252,8 +1251,16 @@ public class xml_fix_special_characters_escaping1
                 {
                     if (i == endPos + 1)
                     {
-                        stage = ETSFQM_STAGE_ATTRIBUTE_VALUE_START_DELIMITER;
-                        endPos = 0;
+                        if (tagBuffer[i] == delimiterCharacter)
+                        {
+                            stage = ETSFQM_STAGE_ATTRIBUTE_VALUE_END_DELIMITER;
+                            endPos = i;
+                        }
+                        else
+                        {
+                            stage = ETSFQM_STAGE_ATTRIBUTE_VALUE_START_DELIMITER;
+                            endPos = 0;
+                        }
 
                         if (fixQuotationMarksDebugOutput == true)
                         {
@@ -1730,82 +1737,3 @@ public class xml_fix_special_characters_escaping1
     private int singleQuotationMarksEscapedCount;
     private int doubleQuotationMarksEscapedCount;
 }
-
-class Sequence
-{
-    public Sequence(char[] sequence, boolean skip)
-    {
-        this.sequence = sequence;
-        this.skip = skip;
-        this.matchCount = 0;
-        this.matched = false;
-    }
-
-    public boolean GetSkip()
-    {
-       return this.skip;
-    }
-
-    public int CheckChar(char character)
-    {
-        if (this.matched == false &&
-            this.matchCount < this.sequence.length)
-        {
-            if (this.sequence[this.matchCount] == character)
-            {
-                this.matchCount += 1;
-
-                if (this.matchCount == this.sequence.length)
-                {
-                    this.matched = true;
-                    return 2;
-                }
-                
-                return 1;
-            }
-            else
-            {
-                Reset();
-                return 0;
-            }
-        }
-
-        return 2;
-    }
-
-    public boolean GetMatching()
-    {
-        return this.matchCount > 0;
-    }
-
-    public boolean GetMatched()
-    {
-        return this.matched;
-    }
-
-    public void Reset()
-    {
-        this.matchCount = 0;
-        this.matched = false;
-    }
-
-    public char[] GetSequence()
-    {
-        char[] sequenceCopy = new char[sequence.length];
-        System.arraycopy(this.sequence, 0, sequenceCopy, 0, sequence.length);
-        return sequenceCopy;
-    }
-
-    public int GetLength()
-    {
-        return this.sequence.length;
-    }
-
-    protected char[] sequence;
-    protected boolean skip;
-    protected int matchCount;
-    protected boolean matched;
-}
-
-
-

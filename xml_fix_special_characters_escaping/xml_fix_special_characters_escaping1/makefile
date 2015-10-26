@@ -25,10 +25,12 @@ xml_fix_special_characters_escaping1: xml_fix_special_characters_escaping1.class
 
 
 
-xml_fix_special_characters_escaping1.class: xml_fix_special_characters_escaping1.java
+Sequence.class: Sequence.java
+	javac Sequence.java
+
+xml_fix_special_characters_escaping1.class: xml_fix_special_characters_escaping1.java Sequence.class
 	javac xml_fix_special_characters_escaping1.java
 
 clean:
 	rm -f xml_fix_special_characters_escaping1.class
 	rm -f Sequence.class
-
