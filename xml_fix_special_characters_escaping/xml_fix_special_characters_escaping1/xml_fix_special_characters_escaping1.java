@@ -157,6 +157,10 @@ public class xml_fix_special_characters_escaping1
 
         // Fix ampersands.
 
+        /**
+         * @todo Doesn't recognize comments, CDATA etc.!
+         */
+
         final int FA_STAGE_NONE = 0;
         final int FA_STAGE_AMPERSAND = 1;
         final int FA_STAGE_CHARACTER_REFERENCE = 2;
@@ -632,8 +636,16 @@ public class xml_fix_special_characters_escaping1
 
         Sequence sequenceTagStart = new Sequence(new char[] { '<' }, false);
         Sequence sequenceTagEnd = new Sequence(new char[] { '>' }, false);
+        Sequence sequenceTagEmptyStart = new Sequence(new char[] { '<' }, false);
+        Sequence sequenceTagEmptyEnd = new Sequence(new char[] { '/', '>'}, false);
         Sequence sequenceProcessingInstructionStart = new Sequence(new char[] { '<', '?' }, true);
         Sequence sequenceProcessingInstructionEnd = new Sequence(new char[] { '?', '>' }, true);
+
+        // Can't rely solely on markup declaration open delimiter ("<!") and markup declaration close delimiter (">"),
+        // because CDATA or a comment might contain XML-unescaped ">". Either each possible markup declaration
+        // needs to be defined as skipping sequence here, or markup declarations shouldn't be skipped but be
+        // recognized, so a special handler could skip them properly.
+
         Sequence sequenceCommentStart = new Sequence(new char[] { '<', '!', '-', '-' }, true);
         Sequence sequenceCommentEnd = new Sequence(new char[] { '-', '-', '>' }, true);
         Sequence sequenceCDATAStart = new Sequence(new char[] { '<', '!', '[', 'C', 'D', 'A', 'T', 'A', '[' }, true);
@@ -646,6 +658,9 @@ public class xml_fix_special_characters_escaping1
         sequences.add(new ArrayList<Sequence>());
         sequences.get(sequences.size() - 1).add(sequenceTagStart);
         sequences.get(sequences.size() - 1).add(sequenceTagEnd);
+        sequences.add(new ArrayList<Sequence>());
+        sequences.get(sequences.size() - 1).add(sequenceTagEmptyStart);
+        sequences.get(sequences.size() - 1).add(sequenceTagEmptyEnd);
         sequences.add(new ArrayList<Sequence>());
         sequences.get(sequences.size() - 1).add(sequenceProcessingInstructionStart);
         sequences.get(sequences.size() - 1).add(sequenceProcessingInstructionEnd);
@@ -682,8 +697,10 @@ public class xml_fix_special_characters_escaping1
                         // that the current iteration doesn't have to deal with a sudden match
                         // situation while checking buffer[i].
 
-                        if (sequenceTagStart.GetMatched() == true &&
-                            sequenceTagEnd.GetMatched() == true)
+                        if ((sequenceTagStart.GetMatched() == true &&
+                             sequenceTagEnd.GetMatched() == true) ||
+                            (sequenceTagEmptyStart.GetMatched() == true &&
+                             sequenceTagEmptyEnd.GetMatched() == true))
                         {
                             if (fixQuotationMarksDebugOutput == true)
                             {
@@ -706,43 +723,17 @@ public class xml_fix_special_characters_escaping1
 
                                     writer.write(matchBuffer, 0, matchCount);
                                 }
-                                else
-                                {
-                                    if (tagBufferCount + matchCount > tagBuffer.length)
-                                    {
-                                        Object[] messageArguments = { new Integer(tagBufferCount),
-                                                                      new Integer(matchCount),
-                                                                      new Integer(tagBuffer.length),
-                                                                      new Integer((tagBufferCount + matchCount) - tagBuffer.length) };
-                                        MessageFormat formatter = new MessageFormat("");
-                                        formatter.setLocale(getLocale());
-
-                                        formatter.applyPattern(getI10nString("messageEscapeQuotationMarksAppendingMatchBufferToTagBufferWouldExceedTagBuffer"));
-                                        System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
-
-                                        System.exit(-1);
-                                    }
-
-                                    System.arraycopy(matchBuffer, 0, tagBuffer, tagBufferCount, matchCount);
-                                    tagBufferCount += matchCount;
-
-                                    if (tagBufferCount > tagBuffer.length)
-                                    {
-                                        Object[] messageArguments = { new Integer(tagBuffer.length) };
-                                        MessageFormat formatter = new MessageFormat("");
-                                        formatter.setLocale(getLocale());
-
-                                        formatter.applyPattern(getI10nString("messageEscapeQuotationMarksTagBufferCountLargerThanTagBuffer"));
-                                        System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
-
-                                        System.exit(-1);
-                                    }
-                                }
 
                                 matchCount = 0;
                             }
 
                             tagBufferCount = 0;
+
+                            // This should be data driven (from the sequence definitions)!
+                            sequenceTagStart.Reset();
+                            sequenceTagEnd.Reset();
+                            sequenceTagEmptyStart.Reset();
+                            sequenceTagEmptyEnd.Reset();
                         }
 
 
@@ -847,10 +838,7 @@ public class xml_fix_special_characters_escaping1
                                 System.out.println("FQM: " + i + ": matching " + buffer[i]);
                             }
 
-                            matchBuffer[matchCount] = buffer[i];
-                            matchCount++;
-
-                            if (matchCount >= matchBuffer.length)
+                            if (matchCount + 1 >= matchBuffer.length)
                             {
                                 Object[] messageArguments = { new Integer(matchBuffer.length) };
                                 MessageFormat formatter = new MessageFormat("");
@@ -861,39 +849,69 @@ public class xml_fix_special_characters_escaping1
 
                                 System.exit(-1);
                             }
+
+                            matchBuffer[matchCount] = buffer[i];
+                            matchCount++;
                         }
                         else
                         {
                             if (matchCount > 0)
                             {
                                 if (skipping == false &&
-                                    sequenceTagStart.GetMatched() == true)
+                                    (sequenceTagStart.GetMatched() == true ||
+                                     sequenceTagEmptyStart.GetMatched() == true))
                                 {
                                     if (fixQuotationMarksIncludeStartEndSequences == false)
                                     {
-                                        if (fixQuotationMarksDebugOutput == true)
+                                        if (tagBufferCount > 0)
                                         {
-                                            System.out.println("FQM: " + i + ": flushing " + matchCount);
-                                        }
+                                            if (tagBufferCount + matchCount > tagBuffer.length)
+                                            {
+                                                Object[] messageArguments = { new Integer(tagBufferCount),
+                                                                              new Integer(matchCount),
+                                                                              new Integer(tagBuffer.length),
+                                                                              new Integer((tagBufferCount + matchCount) - tagBuffer.length) };
+                                                MessageFormat formatter = new MessageFormat("");
+                                                formatter.setLocale(getLocale());
 
-                                        writer.write(matchBuffer, 0, matchCount);
+                                                formatter.applyPattern(getI10nString("messageEscapeQuotationMarksAppendingMatchBufferToTagBufferWouldExceedTagBuffer"));
+                                                System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
+
+                                                System.exit(-1);
+                                            }
+
+                                            System.arraycopy(matchBuffer, 0, tagBuffer, tagBufferCount, matchCount);
+                                            tagBufferCount += matchCount;
+                                        }
+                                        else
+                                        {
+                                            if (fixQuotationMarksDebugOutput == true)
+                                            {
+                                                System.out.println("FQM: " + i + ": flushing " + matchCount);
+                                            }
+
+                                            writer.write(matchBuffer, 0, matchCount);
+                                        }
                                     }
                                     else
                                     {
-                                        System.arraycopy(matchBuffer, 0, tagBuffer, 0, matchCount);
-                                        tagBufferCount = matchCount;
-
-                                        if (tagBufferCount > tagBuffer.length)
+                                        if (matchCount > tagBuffer.length)
                                         {
-                                            Object[] messageArguments = { new Integer(tagBuffer.length) };
+                                            Object[] messageArguments = { new Integer(0),
+                                                                          new Integer(matchCount),
+                                                                          new Integer(tagBuffer.length),
+                                                                          new Integer(matchCount - tagBuffer.length) };
                                             MessageFormat formatter = new MessageFormat("");
                                             formatter.setLocale(getLocale());
 
-                                            formatter.applyPattern(getI10nString("messageEscapeQuotationMarksTagBufferCountLargerThanTagBuffer"));
+                                            formatter.applyPattern(getI10nString("messageEscapeQuotationMarksAppendingMatchBufferToTagBufferWouldExceedTagBuffer"));
                                             System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
 
                                             System.exit(-1);
                                         }
+
+                                        System.arraycopy(matchBuffer, 0, tagBuffer, 0, matchCount);
+                                        tagBufferCount = matchCount;
                                     }
                                 }
                                 else
@@ -924,12 +942,14 @@ public class xml_fix_special_characters_escaping1
 
                         // Raw content.
 
-                        if (sequenceTagStart.GetMatched() == true)
+                        if (sequenceTagStart.GetMatched() == true ||
+                            sequenceTagEmptyStart.GetMatched() == true)
                         {
                             if (matching == false &&
                                 skipping == false)
                             {
-                                if (sequenceTagEnd.GetMatched() != true)
+                                if (sequenceTagEnd.GetMatched() != true &&
+                                    sequenceTagEmptyEnd.GetMatched() != true)
                                 {
                                     if (matchCount > 0)
                                     {
@@ -961,38 +981,25 @@ public class xml_fix_special_characters_escaping1
 
                                             System.arraycopy(matchBuffer, 0, tagBuffer, 0, matchCount);
                                             tagBufferCount = matchCount;
-
-                                            if (tagBufferCount > tagBuffer.length)
-                                            {
-                                                Object[] messageArguments = { new Integer(tagBuffer.length) };
-                                                MessageFormat formatter = new MessageFormat("");
-                                                formatter.setLocale(getLocale());
-
-                                                formatter.applyPattern(getI10nString("messageEscapeQuotationMarksTagBufferCountLargerThanTagBuffer"));
-                                                System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
-
-                                                System.exit(-1);
-                                            }
                                         }
 
                                         matchCount = 0;
                                     }
 
-                                    tagBuffer[tagBufferCount] = buffer[i];
-
-                                    tagBufferCount++;
-
-                                    if (tagBufferCount > tagBuffer.length)
+                                    if (tagBufferCount + 1 > tagBuffer.length)
                                     {
                                         Object[] messageArguments = { new Integer(tagBuffer.length) };
                                         MessageFormat formatter = new MessageFormat("");
                                         formatter.setLocale(getLocale());
 
-                                        formatter.applyPattern(getI10nString("messageEscapeQuotationMarksTagBufferCountLargerThanTagBuffer"));
+                                        formatter.applyPattern(getI10nString("messageEscapeQuotationMarksMaximumAmountOfMatchingCharactersExceeded"));
                                         System.out.println("xml_fix_special_characters_escaping1: " + formatter.format(messageArguments));
 
                                         System.exit(-1);
                                     }
+
+                                    tagBuffer[tagBufferCount] = buffer[i];
+                                    tagBufferCount++;
 
                                     if (fixQuotationMarksDebugOutput == true)
                                     {
@@ -1020,6 +1027,45 @@ public class xml_fix_special_characters_escaping1
                     }
 
                     charactersRead = reader.read(buffer, 0, buffer.length);
+                }
+
+
+                if ((sequenceTagStart.GetMatched() == true &&
+                     sequenceTagEnd.GetMatched() == true) ||
+                    (sequenceTagEmptyStart.GetMatched() == true &&
+                     sequenceTagEmptyEnd.GetMatched() == true))
+                {
+                    if (fixQuotationMarksDebugOutput == true)
+                    {
+                        System.out.println("FQM: end: ETSFQM");
+                    }
+
+                    EscapeTagSequenceForQuotationMarks(tagBuffer,
+                                                       tagBufferCount,
+                                                       writer,
+                                                       fixQuotationMarksDebugOutput);
+
+                    tagBufferCount = 0;
+                }
+
+                if (tagBufferCount > 0)
+                {
+                      if (fixQuotationMarksDebugOutput == true)
+                      {
+                          System.out.println("FQM: end: flushing " + tagBufferCount);
+                      }
+
+                      writer.write(tagBuffer, 0, tagBufferCount);
+                }
+
+                if (matchCount > 0)
+                {
+                    if (fixQuotationMarksDebugOutput == true)
+                    {
+                        System.out.println("FQM: end: flushing " + matchCount);
+                    }
+
+                    writer.write(matchBuffer, 0, matchCount);
                 }
             }
             finally
