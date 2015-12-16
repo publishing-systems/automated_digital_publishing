@@ -56,6 +56,8 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import org.w3c.dom.Text;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -74,11 +76,11 @@ public class html2epub1_config_metadata_editor
 
 
         File configFile = null;
-    
+
         if (args.length == 1)
         {
             configFile = new File(args[0]);
-            
+
             if (configFile.exists() != true)
             {
                 System.out.print("html2epub1_config_metadata_editor: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -143,18 +145,24 @@ public class html2epub1_config_metadata_editor
     {
         super("Metadata Editor for a Configuration File of html2epub1");
 
-        this.programPath = html2epub1_config_metadata_editor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        this.programPath = html2epub1_config_metadata_editor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+            this.programPath = URLDecoder.decode(this.programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
             System.exit(-1);
         }
-        
+
         this.configFile = configFile;
         this.metaData = new HashMap<String, String>();
 

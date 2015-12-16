@@ -51,6 +51,7 @@ import org.xml.sax.SAXException;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import java.net.URLDecoder;
 
 
 
@@ -114,11 +115,17 @@ public class html_attributereplace1
             System.exit(-1);
         }
 
-        String programPath = html_attributereplace1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html_attributereplace1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -127,7 +134,7 @@ public class html_attributereplace1
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)

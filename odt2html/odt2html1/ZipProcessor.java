@@ -34,6 +34,8 @@ import java.util.HashMap;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -43,11 +45,17 @@ class ZipProcessor
     {
         this.fileList = new HashMap<String, File>();
 
-        String programPath = ZipProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = ZipProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

@@ -54,6 +54,7 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 
@@ -97,11 +98,17 @@ public class html_attributeanalyzer1
             System.exit(-5);
         }
 
-        String programPath = html_attributeanalyzer1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html_attributeanalyzer1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -110,7 +117,7 @@ public class html_attributeanalyzer1
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)

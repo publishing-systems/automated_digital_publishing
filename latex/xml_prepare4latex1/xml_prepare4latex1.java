@@ -51,6 +51,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import javax.xml.stream.events.Namespace;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -74,11 +76,17 @@ public class xml_prepare4latex1
         }
 
 
-        String programPath = xml_prepare4latex1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = xml_prepare4latex1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

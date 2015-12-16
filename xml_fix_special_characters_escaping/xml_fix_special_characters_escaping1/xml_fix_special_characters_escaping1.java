@@ -41,6 +41,7 @@ import java.util.ResourceBundle;
 import java.text.MessageFormat;
 import java.util.List;
 import java.util.ArrayList;
+import java.net.URLDecoder;
 
 
 
@@ -69,11 +70,17 @@ public class xml_fix_special_characters_escaping1
             System.exit(1);
         }
 
-        String programPath = xml_fix_special_characters_escaping1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = xml_fix_special_characters_escaping1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

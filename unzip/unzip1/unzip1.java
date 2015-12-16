@@ -31,6 +31,7 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 
 
@@ -73,7 +74,7 @@ public class unzip1
             System.out.print("unzip1: '" + inFile.getAbsolutePath() + "' isn't readable.\n");
             System.exit(-3);
         }
-        
+
         File outDirectory = new File(args[1]);
 
         if (outDirectory.exists() == true)
@@ -106,20 +107,26 @@ public class unzip1
         Map<String, File> fileList = zipProcessor.Run(inFile, outDirectory);
 
 
-        String programPath = unzip1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = unzip1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
             ex.printStackTrace();
             System.exit(-1);
         }
-        
+
         File outLog = new File(programPath + "extraction.xml");
-        
+
         try
         {
             BufferedWriter writer = new BufferedWriter(
@@ -131,14 +138,14 @@ public class unzip1
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!-- This file was created by unzip1, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/skreutzer/automated_digital_publishing/). -->\n");
             writer.write("<unzip1-extraction>\n");
-            
+
             for (Map.Entry<String, File> entry : fileList.entrySet())
             {
                 String key = entry.getKey();
                 File value = entry.getValue();
-                
+
                 writer.write("  <file path=\"" + value.getAbsolutePath() + "\">" + key + "</file>\n");
-                
+
                 System.out.println("unzip1: File '" + value.getAbsolutePath() + "' extracted.");
             }
 
@@ -162,7 +169,7 @@ public class unzip1
             ex.printStackTrace();
             System.exit(-18);
         }
-        
+
 
         zipProcessor.Clean();
 

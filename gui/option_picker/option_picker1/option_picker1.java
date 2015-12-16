@@ -38,6 +38,8 @@ import org.w3c.dom.NamedNodeMap;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -94,11 +96,17 @@ public class option_picker1
     {
         super("option_picker1");
 
-        this.programPath = option_picker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        this.programPath = option_picker1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+            this.programPath = URLDecoder.decode(this.programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -155,9 +163,9 @@ public class option_picker1
 
         JPanel panelDescription = new JPanel();
         gridbag = new GridBagLayout();
- 
+
         panelDescription.setLayout(gridbag);
-  
+
         gridbagConstraints = new GridBagConstraints();
 
         gridbagConstraints.anchor = GridBagConstraints.NORTH;
@@ -166,7 +174,7 @@ public class option_picker1
         gridbagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridbagConstraints.gridheight = GridBagConstraints.REMAINDER;
         gridbagConstraints.fill = GridBagConstraints.BOTH;
-         
+
         this.textAreaDescription = new JTextArea();
         this.textAreaDescription.setEditable(false);
         this.textAreaDescription.setLineWrap(true);
@@ -180,25 +188,25 @@ public class option_picker1
         JScrollPane scrollPane = new JScrollPane(this.textAreaDescription);
 
         panelDescription.add(scrollPane, gridbagConstraints);
-        
+
         panelDescription.setBorder(BorderFactory.createEtchedBorder()); 
         getContentPane().add(panelDescription, BorderLayout.CENTER);
 
 
         JPanel panelButtons = new JPanel();
-        
+
         JButton buttonAbout = new JButton("About");
         buttonAbout.addActionListener(this);
         panelButtons.add(buttonAbout);
-        
+
         JButton buttonAbort = new JButton("Abort");
         buttonAbort.addActionListener(this);
         panelButtons.add(buttonAbort);
-        
+
         JButton buttonSelect = new JButton("Select");
         buttonSelect.addActionListener(this);
         panelButtons.add(buttonSelect);
-        
+
         panelButtons.setBorder(BorderFactory.createEtchedBorder()); 
         getContentPane().add(panelButtons, BorderLayout.SOUTH);
 
@@ -217,10 +225,10 @@ public class option_picker1
         if (event.getSource() instanceof JComboBox)
         {
             JComboBox comboBox = (JComboBox)event.getSource();
-            
+
             int optionsListSize = this.optionsList.size();
             int selection = comboBox.getSelectedIndex();
-            
+
             if (selection >= 0 &&
                 selection < optionsListSize)
             {
@@ -231,12 +239,12 @@ public class option_picker1
             {
                 this.textAreaDescription.setText("?");
             }
-            
+
             return;
         }
-    
+
         String clickedButton = event.getActionCommand();
-        
+
         if (clickedButton.equalsIgnoreCase("Abort") == true)
         {
             System.exit(2);
@@ -264,7 +272,7 @@ public class option_picker1
         }
         else
         {
-        
+
         }
     }
 
@@ -439,14 +447,14 @@ public class option_picker1
 
         return 0;
     }
-    
-    
+
+
     protected ArrayList<ChooseOption> optionsList;
 
     private String caption;
     private JComboBox optionsComboBox;
     private JTextArea textAreaDescription;
-    
+
     protected String programPath;
 }
 
@@ -492,11 +500,17 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -520,7 +534,7 @@ class AboutDialog extends JDialog
                                    "repository https://github.com/publishing-systems/automated_digital_publishing/<br/>" +
                                    "and the project website http://www.publishing-systems.org.<br/>" +
                                    "</body></html>");
-                                 
+
         notice.setFont(notice.getFont().deriveFont(notice.getFont().getStyle() & ~Font.BOLD));
         notice.setAlignmentX(0.5f);
         add(notice);

@@ -46,6 +46,8 @@ import java.io.FileReader;
 import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.BufferedReader;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -53,34 +55,34 @@ class XHTMLValidator implements ErrorHandler
 {
     public XHTMLValidator()
     {
-    
+
     }
-    
+
     public int validate(File xhtmlFile)
     {
         String doctypeDeclaration = new String("<!DOCTYPE");
         int doctypePosMatching = 0;
         String doctype = new String();
-    
+
         try
         {
             FileInputStream in = new FileInputStream(xhtmlFile);
-            
+
             int currentByte = 0;
  
             do
             {
                 currentByte = in.read();
-                
+
                 if (currentByte < 0 ||
                     currentByte > 255)
                 {
                     break;
                 }
-                
+
 
                 char currentByteCharacter = (char) currentByte;
-                
+
                 if (doctypePosMatching < doctypeDeclaration.length())
                 {
                     if (currentByteCharacter == doctypeDeclaration.charAt(doctypePosMatching))
@@ -97,13 +99,13 @@ class XHTMLValidator implements ErrorHandler
                 else
                 {
                     doctype += currentByteCharacter;
-                
+
                     if (currentByteCharacter == '>')
                     {
                         break;
                     }
                 }
-            
+
             } while (true);
         }
         catch (FileNotFoundException ex)
@@ -116,13 +118,19 @@ class XHTMLValidator implements ErrorHandler
             ex.printStackTrace();
             System.exit(-20);
         }
-        
-        
-        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+
+        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

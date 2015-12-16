@@ -52,6 +52,8 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -67,14 +69,14 @@ public class html2epub1_config_file_setup
                          "under certain conditions. See the GNU Affero General Public\n" +
                          "License 3 or any later version for details. Also, see the source\n" +
                          "code repository: https://github.com/skreutzer/automated_digital_publishing/\n\n");
-    
+
 
         File configFile = null;
-    
+
         if (args.length == 1)
-        {        
+        {
             configFile = new File(args[0]);
-            
+
             if (configFile.exists() != true)
             {
                 System.out.print("html2epub1_config_file_setup: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -136,11 +138,17 @@ public class html2epub1_config_file_setup
     {
         super("File Setup for a Configuration File of html2epub1");
 
-        this.programPath = html2epub1_config_file_setup.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        this.programPath = html2epub1_config_file_setup.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+            this.programPath = URLDecoder.decode(this.programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -149,7 +157,7 @@ public class html2epub1_config_file_setup
         }
 
         this.configFile = configFile;
-        
+
         this.xhtmlLabelList = new ArrayList<JLabel>();
         this.xhtmlFileList = new ArrayList<JTextField>();
         this.titleList = new ArrayList<JTextField>();

@@ -57,6 +57,7 @@ import java.io.InputStreamReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 
@@ -96,20 +97,20 @@ public class epubcheck1_recursive_checker1
                 System.exit(2);
             }
         });
-        
+
         this.workingDirectory = new File(System.getProperty("user.home"));
 
         this.tabbedPane = new JTabbedPane();
-    
+
         {
             JPanel panelInput = new JPanel();
-    
+
             String columnCaptions[] = { getI10nString("tableInputColumnPathCaption"),
                                         getI10nString("tableInputColumnRecursiveCaption") };
             this.inputTableModel = new InputTableModel(columnCaptions);
             this.inputTable = new JTable(this.inputTableModel);
             JScrollPane scrollPane = new JScrollPane(this.inputTable);
-          
+
             GridBagConstraints gridbagConstraints = new GridBagConstraints();
             gridbagConstraints.gridwidth = GridBagConstraints.REMAINDER;
             gridbagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -120,23 +121,23 @@ public class epubcheck1_recursive_checker1
 
 
             JPanel panelButtons = new JPanel();
-            
+
             this.buttonLoad = new JButton(getI10nString("buttonLoad"));
             this.buttonLoad.addActionListener(this);
             panelButtons.add(this.buttonLoad);
-            
+
             this.buttonSave = new JButton(getI10nString("buttonSave"));
             this.buttonSave.addActionListener(this);
             panelButtons.add(this.buttonSave);
-            
+
             this.buttonAdd = new JButton(getI10nString("buttonAdd"));
             this.buttonAdd.addActionListener(this);
             panelButtons.add(this.buttonAdd);
-            
+
             this.buttonRemove = new JButton(getI10nString("buttonRemove"));
             this.buttonRemove.addActionListener(this);
             panelButtons.add(this.buttonRemove);
-            
+
             panelInput.add(panelButtons, BorderLayout.PAGE_END);
 
             tabbedPane.addTab(getI10nString("tabInputCaption"), panelInput);
@@ -149,12 +150,12 @@ public class epubcheck1_recursive_checker1
                                         getI10nString("tableResultsColumnResultCaption") };
             this.resultsTableModel = new ResultsTableModel(columnCaptions);
             this.resultsTable = new JTable(this.resultsTableModel);
-          
+
             this.resultsTable.setFillsViewportHeight(true);
             this.resultsTable.setPreferredScrollableViewportSize(new Dimension(50, 100));
 
             JScrollPane scrollPaneResultEntries = new JScrollPane(this.resultsTable);
-          
+
             panelResults.setLayout(new BorderLayout(5, 5));
             panelResults.add(scrollPaneResultEntries, BorderLayout.PAGE_START);
 
@@ -162,7 +163,7 @@ public class epubcheck1_recursive_checker1
             JPanel panelDescription = new JPanel();
             GridBagLayout gridbag = new GridBagLayout();
             panelDescription.setLayout(gridbag);
-      
+
             GridBagConstraints gridbagConstraints = new GridBagConstraints();
             gridbagConstraints.anchor = GridBagConstraints.NORTH;
             gridbagConstraints.weightx = 1.0;
@@ -820,13 +821,13 @@ public class epubcheck1_recursive_checker1
     public void removeInput()
     {
         int rows[] = this.inputTable.getSelectedRows();
-        
+
         for (int i = rows.length - 1; i >= 0; i--)
         {
             this.inputTableModel.removeRow(rows[i]);
         }
     }
-    
+
     public void check()
     {
         if (this.resultsTableSelectionListener != null)
@@ -834,17 +835,23 @@ public class epubcheck1_recursive_checker1
             this.resultsTable.getSelectionModel().removeListSelectionListener(this.resultsTableSelectionListener);
             this.resultsTableSelectionListener = null;
         }
-        
+
         this.resultsTableModel.setRowCount(0);
         this.resultsTable.revalidate();
 
         this.textAreaResult.setText("");
 
-        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -1153,24 +1160,30 @@ public class epubcheck1_recursive_checker1
                 }
             }
         };
-        
+
         this.resultsTable.getSelectionModel().addListSelectionListener(this.resultsTableSelectionListener);
     }
-    
+
     public int LoadResultFile(int row)
     {
         if (row < 0 || row > this.resultsTable.getRowCount())
         {
             return 1;
         }
-        
+
         this.textAreaResult.setText("");
-        
-        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

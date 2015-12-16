@@ -57,6 +57,7 @@ import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.Namespace;
 import javax.xml.stream.XMLStreamException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 
@@ -81,7 +82,7 @@ public class html_concatenate1
         }
 
         File jobFile = new File(args[0]);
-        
+
         if (jobFile.exists() != true)
         {
             System.out.print("html_concatenate1: '" + jobFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -100,11 +101,17 @@ public class html_concatenate1
             System.exit(-1);
         }
 
-        String programPath = html_concatenate1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html_concatenate1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -113,7 +120,7 @@ public class html_concatenate1
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)

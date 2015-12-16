@@ -45,6 +45,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
+import java.net.URLDecoder;
 
 
 
@@ -59,12 +60,18 @@ public class odt2epub3
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
-    
-        String programPath = odt2epub3.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        String programPath = odt2epub3.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -81,7 +88,7 @@ public class odt2epub3
 
 
         File configFile = new File(args[0]);
-        
+
         if (configFile.exists() != true)
         {
             System.out.print("odt2epub3 workflow: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");

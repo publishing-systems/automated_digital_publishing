@@ -35,6 +35,7 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 
@@ -57,11 +58,17 @@ public class odt2epub2
             System.exit(1);
         }
 
-        String programPath = odt2epub2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = odt2epub2.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -77,7 +84,7 @@ public class odt2epub2
         {
             Process process = builder.start();
             Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\n");
-            
+
             while (scanner.hasNext() == true)
             {
                 System.out.println(scanner.next());

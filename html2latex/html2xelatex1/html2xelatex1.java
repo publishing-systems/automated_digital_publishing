@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -53,11 +55,17 @@ public class html2xelatex1
         }
 
 
-        String programPath = html2xelatex1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html2xelatex1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -66,7 +74,7 @@ public class html2xelatex1
         }
 
         File inputHTMLFile = new File(args[0]);
-        
+
         if (inputHTMLFile.exists() != true)
         {
             System.out.print("html2xelatex1: '" + inputHTMLFile.getAbsolutePath() + "' doesn't exist.\n");

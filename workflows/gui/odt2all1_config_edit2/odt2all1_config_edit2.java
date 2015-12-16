@@ -55,6 +55,8 @@ import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -71,13 +73,13 @@ public class odt2all1_config_edit2
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
-    
+
         File configFile = null;
 
         if (args.length == 1)
-        {        
+        {
             configFile = new File(args[0]);
-            
+
             if (configFile.exists() != true)
             {
                 System.out.print("odt2all1_config_edit2: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");
@@ -176,11 +178,17 @@ public class odt2all1_config_edit2
     {
         super("File Setup for a Configuration File of odt2all1");
 
-        this.programPath = odt2all1_config_edit2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        this.programPath = odt2all1_config_edit2.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             this.programPath = new File(this.programPath).getCanonicalPath() + File.separator;
+            this.programPath = URLDecoder.decode(this.programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -189,7 +197,7 @@ public class odt2all1_config_edit2
         }
 
         this.configFile = configFile;
-        
+
         this.odtLabelList = new ArrayList<JLabel>();
         this.odtFileList = new ArrayList<JTextField>();
         this.buttonUpList = new ArrayList<JButton>();
@@ -200,10 +208,10 @@ public class odt2all1_config_edit2
 
         GridBagLayout gridbag = new GridBagLayout();
         panelConfig.setLayout(gridbag);
-      
+
         this.labelConfigurationFile = new JLabel("Configuration",
                                                  SwingConstants.LEFT);
-      
+
         GridBagConstraints gridbagConstraints = new GridBagConstraints();
         gridbagConstraints.gridwidth = GridBagConstraints.RELATIVE;
         gridbagConstraints.fill = GridBagConstraints.HORIZONTAL;
@@ -213,28 +221,28 @@ public class odt2all1_config_edit2
         this.textFieldConfigurationFile = new JTextField(45);
         this.textFieldConfigurationFile.setEditable(false);
         this.textFieldConfigurationFile.setText(this.configFile.getAbsolutePath());
-        
+
         gridbagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridbagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridbagConstraints.weightx = 1.0;
         panelConfig.add(this.textFieldConfigurationFile, gridbagConstraints);
-        
+
         panelConfig.setBorder(BorderFactory.createEtchedBorder()); 
 
-    
+
         JPanel panelHead = new JPanel();
 
         gridbag = new GridBagLayout();
         panelHead.setLayout(gridbag);
-        
+
         gridbagConstraints = new GridBagConstraints();        
         gridbagConstraints.gridwidth = GridBagConstraints.REMAINDER;
         gridbagConstraints.fill = GridBagConstraints.HORIZONTAL;
         gridbagConstraints.weightx = 1.0;
         panelHead.add(panelConfig, gridbagConstraints);
         this.getContentPane().add(panelHead, BorderLayout.PAGE_START);
-    
-    
+
+
         this.panelMain = new JPanel();
 
         if (readConfigurationFile() == true)
@@ -247,12 +255,12 @@ public class odt2all1_config_edit2
             ImageIcon iconIncorrect = new ImageIcon(this.programPath + "incorrect.png");
             this.labelConfigurationFile.setIcon(iconIncorrect);
         }
-        
+
         this.buttonAdd = new JButton("Add new ODT file");
         this.buttonAdd.addActionListener(this);
-        
+
         this.generateGUI();
-        
+
         this.panelMain.setBorder(BorderFactory.createEtchedBorder()); 
         this.getContentPane().add(this.panelMain, BorderLayout.CENTER);
 
@@ -262,7 +270,7 @@ public class odt2all1_config_edit2
         JButton buttonExit = new JButton("Exit");
         buttonExit.addActionListener(this);
         panelButtons.add(buttonExit);
-        
+
         JButton buttonCheck = new JButton("Check");
         buttonCheck.addActionListener(this);
         panelButtons.add(buttonCheck);
@@ -299,11 +307,11 @@ public class odt2all1_config_edit2
                 System.exit(2);
             }
         });
-        
+
         this.CheckFields();
         this.pack();
     }
-    
+
     protected boolean generateGUI()
     {
         this.panelMain.removeAll();
@@ -311,17 +319,17 @@ public class odt2all1_config_edit2
         this.buttonUpList.clear();
         this.buttonDownList.clear();
         this.buttonRemoveList.clear();
-        
+
         GridBagLayout gridbag = new GridBagLayout();
         this.panelMain.setLayout(gridbag);
-           
+
         { 
             ImageIcon iconUp = new ImageIcon(this.programPath + "up.png");
             ImageIcon iconDown = new ImageIcon(this.programPath + "down.png");
             ImageIcon iconRemove = new ImageIcon(this.programPath + "remove.png");
-        
+
             GridBagConstraints gridbagConstraints = new GridBagConstraints();
-        
+
             Iterator<JTextField> iter = this.odtFileList.iterator();
             int i = 1;
 
@@ -329,13 +337,13 @@ public class odt2all1_config_edit2
             {
                 JLabel label = new JLabel("ODT #" + i,
                                           SwingConstants.LEFT);
-            
+
                 gridbagConstraints.gridwidth = 1;
                 gridbagConstraints.fill = GridBagConstraints.HORIZONTAL;
                 gridbagConstraints.weightx = 0.0;
                 this.odtLabelList.add(label);
                 panelMain.add(label, gridbagConstraints);
-            
+
                 JTextField textField = iter.next();
 
                 gridbagConstraints.gridwidth = 2;
@@ -799,26 +807,26 @@ public class odt2all1_config_edit2
             ex.printStackTrace();
             System.exit(-11);
         }
-        
+
         return true;
     }
-    
-    
+
+
     protected File configFile;
-    
+
     protected JPanel panelMain;
-    
+
     private JLabel labelConfigurationFile;
     private JTextField textFieldConfigurationFile;
-    
+
     private JButton buttonAdd;
-    
+
     private ArrayList<JLabel> odtLabelList;
     private ArrayList<JTextField> odtFileList;
     private ArrayList<JButton> buttonUpList;
     private ArrayList<JButton> buttonDownList;
     private ArrayList<JButton> buttonRemoveList;
-    
+
     private String programPath;
 }
 
@@ -835,11 +843,17 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

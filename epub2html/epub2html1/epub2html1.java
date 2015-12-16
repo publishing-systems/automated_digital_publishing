@@ -27,6 +27,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Map;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -63,18 +65,24 @@ public class epub2html1
             System.out.println("epub2html1: No input file specified.");
             System.exit(-1);
         }
-        
+
         if (outDirectory == null)
         {
             System.out.println("epub2html1: No output directory specified.");
             System.exit(-1);
         }
 
-        String programPath = epub2html1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = epub2html1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -85,7 +93,7 @@ public class epub2html1
         File tempDirectory = new File(programPath + "temp" + File.separator);
         File epubDirectory = null;
         Map<String, File> epubFiles = null;
-        
+
         if (inFileType.equalsIgnoreCase("epub") == true)
         {
             if (tempDirectory.exists() == true)

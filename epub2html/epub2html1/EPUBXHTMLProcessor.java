@@ -51,6 +51,8 @@ import org.w3c.dom.Element;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.xml.stream.events.Namespace;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -68,11 +70,17 @@ class EPUBXHTMLProcessor
          *     is existing, readable, etc.?
          */
 
-        String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -81,7 +89,7 @@ class EPUBXHTMLProcessor
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)
@@ -104,7 +112,7 @@ class EPUBXHTMLProcessor
         try
         {
             EntityResolverLocal localResolver = new EntityResolverLocal(entitiesDirectory);
-        
+
             XMLInputFactory inputFactory = XMLInputFactory.newInstance();
             inputFactory.setXMLResolver(localResolver);
             InputStream in = new FileInputStream(this.inFile);
@@ -437,11 +445,17 @@ class EPUBXHTMLProcessor
          *     are existing, readable, etc.?
          */
 
-        String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = EPUBXHTMLProcessor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -450,7 +464,7 @@ class EPUBXHTMLProcessor
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)

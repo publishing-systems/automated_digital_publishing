@@ -27,6 +27,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -34,16 +36,22 @@ class XHTMLValidator
 {
     public XHTMLValidator()
     {
-    
+
     }
 
     public int validate(File xhtmlFile)
     {
-        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -54,26 +62,26 @@ class XHTMLValidator
         String doctypeDeclaration = new String("<!DOCTYPE");
         int doctypePosMatching = 0;
         String doctype = new String();
-    
+
         try
         {
             FileInputStream in = new FileInputStream(xhtmlFile);
-            
+
             int currentByte = 0;
  
             do
             {
                 currentByte = in.read();
-                
+
                 if (currentByte < 0 ||
                     currentByte > 255)
                 {
                     break;
                 }
-                
+
 
                 char currentByteCharacter = (char) currentByte;
-                
+
                 if (doctypePosMatching < doctypeDeclaration.length())
                 {
                     if (currentByteCharacter == doctypeDeclaration.charAt(doctypePosMatching))
@@ -90,13 +98,13 @@ class XHTMLValidator
                 else
                 {
                     doctype += currentByteCharacter;
-                
+
                     if (currentByteCharacter == '>')
                     {
                         break;
                     }
                 }
-            
+
             } while (true);
         }
         catch (FileNotFoundException ex)
@@ -109,7 +117,7 @@ class XHTMLValidator
             ex.printStackTrace();
             System.exit(-20);
         }
-        
+
         File entitiesResolverConfigFile = null;
         File schemaFile = null;
         File schemataResolverConfigFile = null;

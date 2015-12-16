@@ -46,6 +46,7 @@ import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.util.Scanner;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 
 
@@ -64,7 +65,7 @@ public class epubcheck1_recursive_checker1
         epubcheck1_recursive_checker1 checker = new epubcheck1_recursive_checker1();
         checker.check(args);
     }
-    
+
     public int check(String args[])
     {
         if (args.length < 2)
@@ -74,11 +75,17 @@ public class epubcheck1_recursive_checker1
             System.exit(1);
         }
 
-        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = epubcheck1_recursive_checker1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

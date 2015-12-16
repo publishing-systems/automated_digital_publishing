@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import java.io.UnsupportedEncodingException;
 import java.io.File;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 
 
@@ -47,11 +48,17 @@ class AboutDialog extends JDialog
 
         add(Box.createRigidArea(new Dimension(0, 10)));
 
-        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = AboutDialog.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -75,7 +82,7 @@ class AboutDialog extends JDialog
                                    "repository https://github.com/publishing-systems/automated_digital_publishing/<br/>" +
                                    "and the project website http://www.publishing-systems.org.<br/>" +
                                    "</body></html>");
-                                 
+
         notice.setFont(notice.getFont().deriveFont(notice.getFont().getStyle() & ~Font.BOLD));
         notice.setAlignmentX(0.5f);
         add(notice);
@@ -100,7 +107,7 @@ class AboutDialog extends JDialog
         setLocationRelativeTo(parent);
         setSize(520, 435);
     }
-    
+
     public Locale getLocale()
     {
         return Locale.getDefault();
@@ -115,7 +122,7 @@ class AboutDialog extends JDialog
         {
             this.i10nGUI = ResourceBundle.getBundle("i10n.i10nAboutDialogGUI", getLocale());
         }
-    
+
         try
         {
             return new String(this.i10nGUI.getString(key).getBytes("ISO-8859-1"), "UTF-8");

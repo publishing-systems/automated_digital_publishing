@@ -46,6 +46,7 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NamedNodeMap;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import java.net.URLDecoder;
 
 
 
@@ -68,11 +69,17 @@ public class odt2all1
             System.exit(1);
         }
 
-        String programPath = odt2all1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = odt2all1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -81,7 +88,7 @@ public class odt2all1
         }
 
         File configFile = new File(args[0]);
-        
+
         if (configFile.exists() != true)
         {
             System.out.print("odt2all1 workflow: '" + configFile.getAbsolutePath() + "' doesn't exist.\n");

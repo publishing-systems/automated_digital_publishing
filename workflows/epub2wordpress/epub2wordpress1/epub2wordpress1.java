@@ -42,6 +42,7 @@ import org.w3c.dom.Node;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import java.util.ArrayList;
+import java.net.URLDecoder;
 
 
 
@@ -64,11 +65,17 @@ public class epub2wordpress1
             System.exit(1);
         }
 
-        String programPath = epub2wordpress1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = epub2wordpress1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

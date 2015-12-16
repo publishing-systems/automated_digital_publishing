@@ -36,6 +36,7 @@ import java.util.StringTokenizer;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
+import java.net.URLDecoder;
 
 
 
@@ -51,11 +52,17 @@ public class html2pdf2
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "and the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = html2pdf2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html2pdf2.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -68,7 +75,7 @@ public class html2pdf2
         if (args.length > 0)
         {
             inputHTMLFile = new File(args[0]);
-        
+
             if (inputHTMLFile.exists() != true)
             {
                 System.out.print("html2pdf2 workflow: '" + inputHTMLFile.getAbsolutePath() + "' doesn't exist.\n");

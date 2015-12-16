@@ -53,6 +53,7 @@ import org.xml.sax.SAXException;
 import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
+import java.net.URLDecoder;
 
 
 
@@ -75,7 +76,7 @@ public class html2wordpress1
 
             System.exit(1);
         }
-        
+
         File jobFile = new File(args[0]);
 
         if (jobFile.exists() != true)
@@ -106,19 +107,19 @@ public class html2wordpress1
             System.out.println("html2wordpress1: No input file specified.");
             System.exit(-1);
         }
-        
+
         if (jobSettings.containsKey("wordpress-xmlrpc-url") != true)
         {
             System.out.println("html2wordpress1: No WordPress XML-RPC URL specified.");
             System.exit(-1);
         }
-        
+
         if (jobSettings.containsKey("wordpress-user-public-key") != true)
         {
             System.out.println("html2wordpress1: No WordPress authentication public key specified.");
             System.exit(-1);
         }
-        
+
         if (jobSettings.containsKey("wordpress-user-private-key") != true)
         {
             System.out.println("html2wordpress1: No WordPress authentication private key specified.");
@@ -149,7 +150,7 @@ public class html2wordpress1
         validator.Validate(inFile);
 
         String xmlrpcURL = jobSettings.get("wordpress-xmlrpc-url");
-        
+
         if (xmlrpcURL.startsWith("http://") == true)
         {
             xmlrpcURL = xmlrpcURL.substring(new String("http://").length());
@@ -158,9 +159,9 @@ public class html2wordpress1
         {
             xmlrpcURL = xmlrpcURL.substring(new String("https://").length());
         }
-        
+
         int slashPosition = Math.max(xmlrpcURL.indexOf('/'), xmlrpcURL.indexOf('\\'));
-        
+
         if (slashPosition < 1)
         {
             System.out.println("html2wordpress1: WordPress XML-RPC URL '" + xmlrpcURL + "' doesn't contain a host/file path.");
@@ -169,7 +170,7 @@ public class html2wordpress1
 
         String host = xmlrpcURL.substring(0, slashPosition);
         String xmlrpcPath = xmlrpcURL.substring(slashPosition);
-        
+
         if (host.length() <= 0)
         {
             System.out.println("html2wordpress1: WordPress XML-RPC URL '" + xmlrpcURL + "' is missing the host.");
@@ -181,7 +182,7 @@ public class html2wordpress1
             System.out.println("html2wordpress1: WordPress XML-RPC URL '" + xmlrpcURL + "' is missing the XML-RPC file path.");
             System.exit(-1);
         }
-        
+
         if (xmlrpcPath.indexOf('/') != 0 &&
             xmlrpcPath.indexOf('\\') != 0)
         {
@@ -231,7 +232,7 @@ public class html2wordpress1
                                           "<value><string>" + jobSettings.get("wordpress-post-title") + "</string></value>" +
                                         "</member>";
         }
-        
+
         if (jobSettings.containsKey("wordpress-post-user-id") == true)
         {
             xmlrpc +=                   "<member>" +
@@ -239,7 +240,7 @@ public class html2wordpress1
                                           "<value><int>" + jobSettings.get("wordpress-post-user-id") + "</int></value>" +
                                         "</member>";
         }
-        
+
         if (jobSettings.containsKey("wordpress-post-excerpt") == true)
         {
             xmlrpc +=                   "<member>" +
@@ -247,17 +248,23 @@ public class html2wordpress1
                                           "<value><string>" + jobSettings.get("wordpress-post-excerpt") + "</string></value>" +
                                         "</member>";
         }
-        
+
         xmlrpc +=                       "<member>" +
                                           "<name>post_content</name>" +
                                           "<value>" +
                                             "<string>";
 
-        String programPath = html2wordpress1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = html2wordpress1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -266,7 +273,7 @@ public class html2wordpress1
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)
@@ -527,7 +534,7 @@ public class html2wordpress1
                         characters = characters.replaceAll("'", "&amp;apos;");
                         characters = characters.replaceAll("<", "&amp;lt;");
                         characters = characters.replaceAll(">", "&amp;gt;");
-                    
+
                         xmlrpc += characters;
                     }
                 }
@@ -542,11 +549,6 @@ public class html2wordpress1
         {
             ex.printStackTrace();
             System.exit(-62);
-        }
-        catch (IOException ex)
-        {
-            ex.printStackTrace();
-            System.exit(-63);
         }
 
 

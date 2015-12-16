@@ -46,6 +46,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
+import java.net.URLDecoder;
 
 
 
@@ -61,11 +62,17 @@ public class odt2html2
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
 
-        String programPath = odt2html2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = odt2html2.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -78,7 +85,7 @@ public class odt2html2
         if (args.length > 0)
         {
             jobDescriptionFile = new File(args[0]);
-        
+
             if (jobDescriptionFile.exists() != true)
             {
                 System.out.print("odt2html2 workflow: '" + jobDescriptionFile.getAbsolutePath() + "' doesn't exist.\n");

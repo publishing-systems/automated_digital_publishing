@@ -61,6 +61,7 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
+import java.net.URLDecoder;
 
 
 
@@ -75,12 +76,18 @@ public class odt2all2
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
-    
-        String programPath = odt2all2.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        String programPath = odt2all2.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {

@@ -33,6 +33,7 @@ import java.io.FileOutputStream;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.io.IOException;
+import java.net.URLDecoder;
 
 
 
@@ -47,12 +48,18 @@ public class setup1
                          "License 3 or any later version for details. Also, see the source code\n" +
                          "repository https://github.com/publishing-systems/automated_digital_publishing/\n" +
                          "or the project website http://www.publishing-systems.org.\n\n");
-    
-        String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+
+        String programPath = setup1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -60,7 +67,7 @@ public class setup1
             System.exit(-1);
         }
 
-    
+
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_flat2hierarchical" + File.separator + "html_flat2hierarchical1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html_split" + File.separator + "html_split1" + File.separator + "entities");
@@ -72,16 +79,16 @@ public class setup1
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "xml_split" + File.separator + "xml_split1" + File.separator + "entities");
         CopyEntitiesXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub2" + File.separator + "entities");
-    
-        CopyEntitiesXHTML_1_1(programPath, "../epub2html/epub2html1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../html2wordpress/html2wordpress1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../xsltransformator/xsltransformator1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../html_attributeanalyzer/html_attributeanalyzer1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../html_attributereplace/html_attributereplace1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../html_concatenate/html_concatenate1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../html_split/html_split1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../schemavalidator/schemavalidator1/entities/");
-        CopyEntitiesXHTML_1_1(programPath, "../xml_split/xml_split1/entities/");
+
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "epub2html" + File.separator + "epub2html1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "html2wordpress" + File.separator + "html2wordpress1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "xsltransformator" + File.separator + "xsltransformator1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "html_attributeanalyzer" + File.separator + "html_attributeanalyzer1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "html_attributereplace" + File.separator + "html_attributereplace1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "html_concatenate" + File.separator + "html_concatenate1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "html_split" + File.separator + "html_split1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "schemavalidator" + File.separator + "schemavalidator1" + File.separator + "entities");
+        CopyEntitiesXHTML_1_1(programPath, ".." + File.separator + "xml_split" + File.separator + "xml_split1" + File.separator + "entities");
 
         CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "html2epub" + File.separator + "html2epub1");
         CopySchemataXHTML_1_0_Strict(programPath, ".." + File.separator + "html2wordpress" + File.separator + "html2wordpress1" + File.separator + "schemata");
@@ -101,7 +108,7 @@ public class setup1
         {
             programPath += File.separator;
         }
-        
+
         if (to.startsWith("/") == true)
         {
             to = to.substring(0, new String("/").length());
@@ -110,7 +117,7 @@ public class setup1
         {
             to = to.substring(0, new String("\\").length());
         }
-        
+
         if (to.endsWith("/") != true &&
             to.endsWith("\\") != true)
         {
@@ -118,25 +125,25 @@ public class setup1
         }
 
 
-        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml1-strict.dtd"), 
+        if (setup1.CopyFile(new File(programPath + ".." + File.separator + "w3c" + File.separator + "xhtml1-strict.dtd"), 
                             new File(programPath + to + "xhtml1-strict.dtd")) != 0)
         {
             System.exit(-1);
         }
 
-        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-lat1.ent"), 
+        if (setup1.CopyFile(new File(programPath + ".." + File.separator + "w3c" + File.separator + "xhtml-lat1.ent"), 
                             new File(programPath + to + "xhtml-lat1.ent")) != 0)
         {
             System.exit(-1);
         }
 
-        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-symbol.ent"), 
+        if (setup1.CopyFile(new File(programPath + ".." + File.separator + "w3c" + File.separator + "xhtml-symbol.ent"), 
                             new File(programPath + to + "xhtml-symbol.ent")) != 0)
         {
             System.exit(-1);
         }
 
-        if (setup1.CopyFile(new File(programPath + "../w3c/xhtml-special.ent"), 
+        if (setup1.CopyFile(new File(programPath + ".." + File.separator + "w3c" + File.separator + "xhtml-special.ent"), 
                             new File(programPath + to + "xhtml-special.ent")) != 0)
         {
             System.exit(-1);
@@ -702,7 +709,7 @@ public class setup1
         try
         {
             to.createNewFile();
-        
+
             BufferedReader reader = new BufferedReader(
                                     new InputStreamReader(
                                     new FileInputStream(from),
@@ -718,7 +725,7 @@ public class setup1
                 writer.write(buffer, 0, charactersRead);
                 charactersRead = reader.read(buffer, 0, buffer.length);
             }
-            
+
             writer.close();
             reader.close();
         }
@@ -737,7 +744,7 @@ public class setup1
             ex.printStackTrace();
             System.exit(-21);
         }
-    
+
         return 0;
     }
 }

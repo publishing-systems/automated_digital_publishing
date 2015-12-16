@@ -34,6 +34,8 @@ import java.util.Scanner;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -55,11 +57,17 @@ public class multitransform1
             System.exit(1);
         }
 
-        String programPath = multitransform1.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = multitransform1.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -68,7 +76,7 @@ public class multitransform1
         }
 
         File inputListFile = new File(args[0]);
-        
+
         if (inputListFile.exists() != true)
         {
             System.out.print("multitransform1: '" + inputListFile.getAbsolutePath() + "' doesn't exist.\n");

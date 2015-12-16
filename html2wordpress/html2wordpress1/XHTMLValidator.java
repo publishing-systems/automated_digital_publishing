@@ -54,6 +54,8 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.BufferedReader;
+import java.net.URLDecoder;
+import java.io.UnsupportedEncodingException;
 
 
 
@@ -61,16 +63,22 @@ class XHTMLValidator implements ErrorHandler
 {
     public XHTMLValidator()
     {
-    
+
     }
-    
+
     public int Validate(File xhtmlFile)
     {
-        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getFile();
+        String programPath = XHTMLValidator.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
         try
         {
             programPath = new File(programPath).getCanonicalPath() + File.separator;
+            programPath = URLDecoder.decode(programPath, "UTF-8");
+        }
+        catch (UnsupportedEncodingException ex)
+        {
+            ex.printStackTrace();
+            System.exit(-1);
         }
         catch (IOException ex)
         {
@@ -79,7 +87,7 @@ class XHTMLValidator implements ErrorHandler
         }
 
         File entitiesDirectory = new File(programPath + "entities");
-        
+
         if (entitiesDirectory.exists() != true)
         {
             if (entitiesDirectory.mkdir() != true)
@@ -119,26 +127,26 @@ class XHTMLValidator implements ErrorHandler
         String doctypeDeclaration = new String("<!DOCTYPE");
         int doctypePosMatching = 0;
         String doctype = new String();
-    
+
         try
         {
             FileInputStream in = new FileInputStream(xhtmlFile);
-            
+
             int currentByte = 0;
  
             do
             {
                 currentByte = in.read();
-                
+
                 if (currentByte < 0 ||
                     currentByte > 255)
                 {
                     break;
                 }
-                
+
 
                 char currentByteCharacter = (char) currentByte;
-                
+
                 if (doctypePosMatching < doctypeDeclaration.length())
                 {
                     if (currentByteCharacter == doctypeDeclaration.charAt(doctypePosMatching))
@@ -155,13 +163,13 @@ class XHTMLValidator implements ErrorHandler
                 else
                 {
                     doctype += currentByteCharacter;
-                
+
                     if (currentByteCharacter == '>')
                     {
                         break;
                     }
                 }
-            
+
             } while (true);
         }
         catch (FileNotFoundException ex)
@@ -174,7 +182,7 @@ class XHTMLValidator implements ErrorHandler
             ex.printStackTrace();
             System.exit(-1);
         }
-        
+
 
         if (doctype.contains("\"-//W3C//DTD XHTML 1.0 Strict//EN\"") == true)
         {
@@ -200,15 +208,15 @@ class XHTMLValidator implements ErrorHandler
                     schemaFile = null;
                 }
             }
-            
+
             if (schemaFile == null)
             {
                 System.out.print("html2wordpress1: Can't validate XHTML 1.0 Strict file - schema 'xhtml1-strict.xsd' is missing.\n");
                 System.exit(-1);
             }
-            
+
             File entitiesConfigFile = new File(entitiesDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
-            
+
             if (entitiesConfigFile.exists() != true)
             {
                 entitiesConfigFile = null;
@@ -229,15 +237,15 @@ class XHTMLValidator implements ErrorHandler
                     entitiesConfigFile = null;
                 }
             }
-            
+
             if (entitiesConfigFile == null)
             {
                 System.out.print("html2wordpress1: Can't validate XHTML 1.0 Strict file - entity resolver configuration file is missing.\n");
                 System.exit(-1);
             }
-            
+
             File schemataConfigFile = new File(schemataDirectory.getAbsolutePath() + "/config_xhtml1-strict.xml");
-            
+
             if (schemataConfigFile.exists() != true)
             {
                 schemataConfigFile = null;
@@ -258,7 +266,7 @@ class XHTMLValidator implements ErrorHandler
                     schemataConfigFile = null;
                 }
             }
-            
+
             if (schemataConfigFile == null)
             {
                 System.out.print("html2wordpress1: Can't validate XHTML 1.0 Strict file - schema resolver configuration file is missing.\n");
@@ -277,10 +285,10 @@ class XHTMLValidator implements ErrorHandler
 
                 SchemaFactory schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
                 schemaFactory.setResourceResolver(localResolver);
-                
+
                 Source schemaSource = new StreamSource(schemaFile);
                 parserFactory.setSchema(schemaFactory.newSchema(new Source[] { schemaSource }));
-                
+
                 SAXParser parser = parserFactory.newSAXParser();
                 XMLReader reader = parser.getXMLReader();
                 reader.setErrorHandler(this);
