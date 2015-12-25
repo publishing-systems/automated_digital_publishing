@@ -47,7 +47,7 @@ class XHTMLProcessor
 {
     public XHTMLProcessor()
     {
-    
+
     }
 
     public ReferencedFiles getReferencedFiles(File xhtmlFile,
@@ -62,7 +62,7 @@ class XHTMLProcessor
          * @todo Maybe check besides exception handler, if in file
          *     is existing, readable, etc.?
          */
-    
+
         ReferencedFiles referencedFiles = new ReferencedFiles();
 
         try
@@ -77,10 +77,10 @@ class XHTMLProcessor
             inputFactory.setProperty("javax.xml.stream.supportDTD", xhtmlReaderUseDTDNotDTDFallback);
 
             InputStream in = new FileInputStream(xhtmlFile);
-            XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
+            XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF-8");
 
             XMLEvent event = null;
-            
+
             boolean head = false;
             boolean body = false;
 
@@ -91,7 +91,13 @@ class XHTMLProcessor
 
                 if (event.isStartElement() == true)
                 {
-                    String tagName = event.asStartElement().getName().getLocalPart();
+                    QName elementName = event.asStartElement().getName();
+                    String tagName = elementName.getLocalPart();
+
+                    if (elementName.getPrefix().length() > 0)
+                    {
+                        tagName = elementName.getPrefix() + ":" + tagName;
+                    }
 
                     if (head == false &&
                         body == false &&
@@ -108,7 +114,7 @@ class XHTMLProcessor
                         body = true;
                         continue;
                     }
-                    
+
                     if (body == false &&
                         head == false)
                     {
@@ -125,7 +131,7 @@ class XHTMLProcessor
 
                             {
                                 Attribute attributeRel = event.asStartElement().getAttributeByName(new QName("rel"));
-                                
+
                                 if (attributeRel != null)
                                 {
                                     rel = attributeRel.getValue();
@@ -134,22 +140,22 @@ class XHTMLProcessor
 
                             {
                                 Attribute attributeType = event.asStartElement().getAttributeByName(new QName("type"));
-                                
+
                                 if (attributeType != null)
                                 {
                                     type = attributeType.getValue();
                                 }
                             }
-                            
+
                             {
                                 Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
-                                
+
                                 if (attributeHref != null)
                                 {
                                     href = attributeHref.getValue();
                                 }
                             }
-                            
+
                             if (rel != null &&
                                 type != null &&
                                 href != null)
@@ -165,7 +171,7 @@ class XHTMLProcessor
                                     if (href.contains("://") == false)
                                     {
                                         File cssFile = new File(href);
-                                        
+
                                         if (cssFile.isAbsolute() != true)
                                         {
                                             cssFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + href);
@@ -217,7 +223,7 @@ class XHTMLProcessor
                             if (src.contains("://") == false)
                             {
                                 File srcFile = new File(src);
-                                
+
                                 if (srcFile.isAbsolute() != true)
                                 {
                                     srcFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + src);
@@ -267,12 +273,12 @@ class XHTMLProcessor
                                 {
                                     String hrefFilePart = href.getValue();
                                     //String hrefAnchor = new String();
-                                    
+
                                     if (hrefFilePart.contains("?") == true)
                                     {
                                         hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
                                     }
-                                    
+
                                     if (hrefFilePart.contains("#") == true)
                                     {
                                         //hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
@@ -281,12 +287,12 @@ class XHTMLProcessor
 
 
                                     File hrefFile = new File(hrefFilePart);
-                                    
+
                                     if (hrefFile.isAbsolute() != true)
                                     {
                                         hrefFile = new File(xhtmlFile.getAbsoluteFile().getParent() + System.getProperty("file.separator") + hrefFilePart);
                                     }
-                                    
+
                                     if (referencedFiles.ContainsXHTMLFile(hrefFile.getAbsolutePath()) != true)
                                     {
                                         if (hrefFile.exists() != true)
@@ -314,7 +320,7 @@ class XHTMLProcessor
                                 {
                                     if (href.getValue().startsWith("file://") == true)
                                     {
-                                    
+
                                     }
                                 }
                             }
@@ -323,8 +329,14 @@ class XHTMLProcessor
                 }
                 else if (event.isEndElement() == true)
                 {
-                    String tagName = event.asEndElement().getName().getLocalPart();
-                
+                    QName elementName = event.asEndElement().getName();
+                    String tagName = elementName.getLocalPart();
+
+                    if (elementName.getPrefix().length() > 0)
+                    {
+                        tagName = elementName.getPrefix() + ":" + tagName;
+                    }
+
                     if (tagName.equalsIgnoreCase("head") == true)
                     {
                         if (head == true)
@@ -350,7 +362,7 @@ class XHTMLProcessor
                             System.out.println("html2epub2: Misplaced </body> found.");
                             System.exit(-1);
                         }
-                    }    
+                    }
                 }
             }
         }
@@ -392,7 +404,7 @@ class XHTMLProcessor
             BufferedWriter writer = new BufferedWriter(
                                     new OutputStreamWriter(
                                     new FileOutputStream(xhtmlOutFile),
-                                    "UTF8"));
+                                    "UTF-8"));
 
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html>\n");
@@ -409,7 +421,7 @@ class XHTMLProcessor
             for (int currentXHTMLFile = 1; currentXHTMLFile <= xhtmlInFiles.size(); currentXHTMLFile++)
             {
                 String inFileTitle = xhtmlInFileTitles.get(currentXHTMLFile-1);
-                
+
                 // Ampersand needs to be the first, otherwise it would double-encode
                 // other entities.
                 inFileTitle = inFileTitle.replaceAll("&", "&amp;");
@@ -417,10 +429,10 @@ class XHTMLProcessor
                 inFileTitle = inFileTitle.replaceAll("'", "&apos;");
                 inFileTitle = inFileTitle.replaceAll("<", "&lt;");
                 inFileTitle = inFileTitle.replaceAll(">", "&gt;");
-                
+
                 writer.write("        <li><a href=\"page_" + currentXHTMLFile + ".xhtml\">" + inFileTitle + "</a></li>\n");
             }
-            
+
             writer.write("        </ol>\n");
             writer.write("      </nav>\n");
             writer.write("    </body>\n");
@@ -444,7 +456,7 @@ class XHTMLProcessor
             ex.printStackTrace();
             System.exit(-63);
         }
-    
+
         return true;
     }
 
@@ -486,16 +498,16 @@ class XHTMLProcessor
             inputFactory.setProperty("javax.xml.stream.supportDTD", xhtmlReaderUseDTDNotDTDFallback);
 
             InputStream in = new FileInputStream(xhtmlInFile);
-            XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF8");
+            XMLEventReader eventReader = inputFactory.createXMLEventReader(in, "UTF-8");
 
             XMLEvent event = null;
-            
+
             BufferedWriter writer = new BufferedWriter(
                                     new OutputStreamWriter(
                                     new FileOutputStream(xhtmlOutFile),
-                                    "UTF8"));
+                                    "UTF-8"));
 
-            
+
             writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             writer.write("<!DOCTYPE html>\n");
             writer.write("<!-- This file was generated by html2epub2, which is free software licensed under the GNU Affero General Public License 3 or any later version (see https://github.com/publishing-systems/automated_digital_publishing/ and http://www.publishing-systems.org). -->\n");
@@ -519,7 +531,13 @@ class XHTMLProcessor
 
                 if (event.isStartElement() == true)
                 {
-                    String tagName = event.asStartElement().getName().getLocalPart();
+                    QName elementName = event.asStartElement().getName();
+                    String tagName = elementName.getLocalPart();
+
+                    if (elementName.getPrefix().length() > 0)
+                    {
+                        tagName = elementName.getPrefix() + ":" + tagName;
+                    }
 
                     if (head == false &&
                         body == false &&
@@ -537,7 +555,7 @@ class XHTMLProcessor
                         writer.write("\n<body>\n");
                         continue;
                     }
-                    
+
                     if (body == false &&
                         head == false)
                     {
@@ -551,25 +569,25 @@ class XHTMLProcessor
                             style = true;
 
                             writer.write("<" + tagName);
-                            
+
                             // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                             @SuppressWarnings("unchecked")
                             Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                            
+
                             while (attributes.hasNext() == true)
                             {
                                 Attribute attribute = attributes.next();
                                 QName attributeName = attribute.getName();
-                                
+
                                 writer.write(" ");
-                                
+
                                 if (attributeName.getPrefix().length() > 0)
                                 {
                                     writer.write(attributeName.getPrefix() + ":");
                                 }
 
                                 String attributeValue = attribute.getValue();
-                                
+
                                 // Ampersand needs to be the first, otherwise it would double-encode
                                 // other entities.
                                 attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -580,8 +598,8 @@ class XHTMLProcessor
 
                                 writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                             }
-                            
-                            writer.write(">");
+
+                            CloseTag(eventReader, event, writer);
                         }
                         else if (tagName.equalsIgnoreCase("link") == true)
                         {
@@ -591,7 +609,7 @@ class XHTMLProcessor
 
                             {
                                 Attribute attributeRel = event.asStartElement().getAttributeByName(new QName("rel"));
-                                
+
                                 if (attributeRel != null)
                                 {
                                     rel = attributeRel.getValue();
@@ -600,22 +618,22 @@ class XHTMLProcessor
 
                             {
                                 Attribute attributeType = event.asStartElement().getAttributeByName(new QName("type"));
-                                
+
                                 if (attributeType != null)
                                 {
                                     type = attributeType.getValue();
                                 }
                             }
-                            
+
                             {
                                 Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
-                                
+
                                 if (attributeHref != null)
                                 {
                                     href = attributeHref.getValue();
                                 }
                             }
-                            
+
                             if (rel != null &&
                                 type != null &&
                                 href != null)
@@ -631,7 +649,7 @@ class XHTMLProcessor
                                     if (href.contains("://") == false)
                                     {
                                         File cssFile = new File(href);
-                                        
+
                                         if (cssFile.isAbsolute() != true)
                                         {
                                             cssFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + href);
@@ -649,7 +667,7 @@ class XHTMLProcessor
                                             ex.printStackTrace();
                                             System.exit(-1);
                                         }
-                                        
+
                                         if (cssFilePath == null)
                                         {
                                             System.out.println("html2epub2: Can't get canonical path of referenced CSS file '" + cssFile.getAbsolutePath() + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "'.");
@@ -660,7 +678,7 @@ class XHTMLProcessor
                                         {
                                             File currentCSSFile = referencedCSSFiles.get(referencedCSSFile-1);
                                             String currentCSSFilePath = null;
-                                            
+
                                             try
                                             {
                                                 currentCSSFilePath = currentCSSFile.getCanonicalPath();
@@ -670,22 +688,22 @@ class XHTMLProcessor
                                                 ex.printStackTrace();
                                                 System.exit(-1);
                                             }
-                                            
+
                                             if (currentCSSFilePath == null)
                                             {
                                                 System.out.println("html2epub2: Can't get canonical path of CSS file '" + currentCSSFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
                                                 System.exit(-1);
                                             }
-                                        
+
                                             if (currentCSSFilePath.equals(cssFilePath) == true)
                                             {
                                                 writer.write("    <link rel=\"stylesheet\" type=\"text/css\" href=\"style_" + referencedCSSFile + ".css\"/>");
-                                                
+
                                                 found = true;
                                                 break;
                                             }
                                         }
-                                        
+
                                         if (found == false)
                                         {
                                             System.out.print("html2epub2: In '" + xhtmlInFile.getAbsolutePath() + "', there was the CSS file '" + cssFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files. Comparison is case sensitive.\n");
@@ -715,7 +733,7 @@ class XHTMLProcessor
                             if (src.contains("://") == false)
                             {
                                 File srcFile = new File(src);
-                                
+
                                 if (srcFile.isAbsolute() != true)
                                 {
                                     srcFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + src);
@@ -723,7 +741,7 @@ class XHTMLProcessor
 
                                 boolean found = false;
                                 String srcFilePath = null;
-                                
+
                                 try
                                 {
                                     srcFilePath = srcFile.getCanonicalPath();
@@ -744,7 +762,7 @@ class XHTMLProcessor
                                 {
                                     File currentImageFile = referencedImageFiles.get(referencedImageFile-1);
                                     String currentImageFilePath = null;
-                                    
+
                                     try
                                     {
                                         currentImageFilePath = currentImageFile.getCanonicalPath();
@@ -760,33 +778,33 @@ class XHTMLProcessor
                                         System.out.println("html2epub2: Can't get canonical path of image file '" + currentImageFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
                                         System.exit(-1);
                                     }
-                                
+
                                     if (currentImageFilePath.equals(srcFilePath) == true)
                                     {
                                         String extension = currentImageFile.getName().toLowerCase().substring(currentImageFile.getName().toLowerCase().lastIndexOf('.'));
-                                    
+
                                         writer.write("<img src=\"image_" + referencedImageFile + extension + "\"");
-                                        
+
                                         // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                         @SuppressWarnings("unchecked")
                                         Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                        
+
                                         while (attributes.hasNext() == true)
-                                        {  
+                                        {
                                             Attribute attribute = attributes.next();
                                             QName attributeName = attribute.getName();
-                                            
+
                                             if (attributeName.getLocalPart().equalsIgnoreCase("src") != true)
                                             {
                                                 writer.write(" ");
-                                                
+
                                                 if (attributeName.getPrefix().length() > 0)
                                                 {
                                                     writer.write(attributeName.getPrefix() + ":");
                                                 }
 
                                                 String attributeValue = attribute.getValue();
-                                                
+
                                                 // Ampersand needs to be the first, otherwise it would double-encode
                                                 // other entities.
                                                 attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -798,14 +816,14 @@ class XHTMLProcessor
                                                 writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                             }
                                         }
-                                        
-                                        writer.write(">");
+
+                                        CloseTag(eventReader, event, writer);
 
                                         found = true;
                                         break;
                                     }
                                 }
-                                
+
                                 if (found == false)
                                 {
                                     System.out.print("html2epub2: In '" + xhtmlInFile.getAbsolutePath() + "', there was the image '" + srcFile.getAbsolutePath() + "' referenced, which couldn't be found in the prepared EPUB2 files. Comparison is case sensitive.\n");
@@ -821,29 +839,29 @@ class XHTMLProcessor
                         else if (tagName.equalsIgnoreCase("a") == true)
                         {
                             Attribute attributeHref = event.asStartElement().getAttributeByName(new QName("href"));
-                                
+
                             if (attributeHref == null)
                             {
                                 writer.write("<a");
-                                
+
                                 // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                 @SuppressWarnings("unchecked")
                                 Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                
+
                                 while (attributes.hasNext() == true)
-                                {  
+                                {
                                     Attribute attribute = attributes.next();
                                     QName attributeName = attribute.getName();
-                                    
+
                                     writer.write(" ");
-                                    
+
                                     if (attributeName.getPrefix().length() > 0)
                                     {
                                         writer.write(attributeName.getPrefix() + ":");
                                     }
 
                                     String attributeValue = attribute.getValue();
-                                    
+
                                     // Ampersand needs to be the first, otherwise it would double-encode
                                     // other entities.
                                     attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -855,11 +873,11 @@ class XHTMLProcessor
                                     writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                 }
 
-                                writer.write(">");
-                                
+                                CloseTag(eventReader, event, writer);
+
                                 continue;
                             }
-                        
+
                             String href = attributeHref.getValue();
 
                             if (href.startsWith("file://") == true)
@@ -870,27 +888,27 @@ class XHTMLProcessor
                             if (href.startsWith("#") == true || href.startsWith("mailto:") == true)
                             {
                                 // Referencing an anchor or ID within the same file.
-                                
+
                                 writer.write("<a");
-                                
+
                                 // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                 @SuppressWarnings("unchecked")
                                 Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                
+
                                 while (attributes.hasNext() == true)
-                                {  
+                                {
                                     Attribute attribute = attributes.next();
                                     QName attributeName = attribute.getName();
-                                    
+
                                     writer.write(" ");
-                                    
+
                                     if (attributeName.getPrefix().length() > 0)
                                     {
                                         writer.write(attributeName.getPrefix() + ":");
                                     }
 
                                     String attributeValue = attribute.getValue();
-                                    
+
                                     // Ampersand needs to be the first, otherwise it would double-encode
                                     // other entities.
                                     attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -902,18 +920,18 @@ class XHTMLProcessor
                                     writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                                 }
 
-                                writer.write(">");
+                                CloseTag(eventReader, event, writer);
                             }
                             else if (href.contains("://") == false)
                             {
                                 String hrefFilePart = href;
                                 String hrefAnchor = new String();
-                                
+
                                 if (hrefFilePart.contains("?") == true)
                                 {
                                     hrefFilePart = hrefFilePart.substring(0, hrefFilePart.indexOf("?"));
                                 }
-                                
+
                                 if (hrefFilePart.contains("#") == true)
                                 {
                                     hrefAnchor = hrefFilePart.substring(hrefFilePart.indexOf("#"));
@@ -922,15 +940,15 @@ class XHTMLProcessor
 
 
                                 File hrefFile = new File(hrefFilePart);
-                                
+
                                 if (hrefFile.isAbsolute() != true)
                                 {
                                     hrefFile = new File(xhtmlInFile.getAbsoluteFile().getParent() + File.separator + hrefFilePart);
                                 }
-                                
+
                                 boolean found = false;
                                 String hrefFilePath = null;
-                                
+
                                 try
                                 {
                                     hrefFilePath = hrefFile.getCanonicalPath();
@@ -940,18 +958,18 @@ class XHTMLProcessor
                                     ex.printStackTrace();
                                     System.exit(-1);
                                 }
-                                
+
                                 if (hrefFilePath == null)
                                 {
                                     System.out.println("html2epub2: Can't get canonical path of linked file '" + hrefFile.getAbsolutePath() + "', referenced in '" + xhtmlInFile.getAbsolutePath() + "'.");
                                     System.exit(-1);
                                 }
-                                
+
                                 for (int referencedXHTMLFile = 1; referencedXHTMLFile <= xhtmlInFiles.size(); referencedXHTMLFile++)
                                 {
                                     File currentXHTMLFile = xhtmlInFiles.get(referencedXHTMLFile-1);
                                     String currentXHTMLFilePath = null;
-                                    
+
                                     try
                                     {
                                         currentXHTMLFilePath = currentXHTMLFile.getCanonicalPath();
@@ -961,7 +979,7 @@ class XHTMLProcessor
                                         ex.printStackTrace();
                                         System.exit(-1);
                                     }
-                                    
+
                                     if (currentXHTMLFilePath == null)
                                     {
                                         System.out.println("html2epub2: Can't get canonical path of linked file '" + currentXHTMLFile.getAbsolutePath() + "' of the prepared EPUB2 files.");
@@ -971,27 +989,27 @@ class XHTMLProcessor
                                     if (currentXHTMLFilePath.equals(hrefFilePath) == true)
                                     {
                                         writer.write("<a href=\"page_" + referencedXHTMLFile + ".xhtml" + hrefAnchor + "\"");
-                                        
+
                                         // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                         @SuppressWarnings("unchecked")
                                         Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                        
+
                                         while (attributes.hasNext() == true)
-                                        {  
+                                        {
                                             Attribute attribute = attributes.next();
                                             QName attributeName = attribute.getName();
-                                            
+
                                             if (attributeName.getLocalPart().equalsIgnoreCase("href") != true)
                                             {
                                                 writer.write(" ");
-                                                
+
                                                 if (attributeName.getPrefix().length() > 0)
                                                 {
                                                     writer.write(attributeName.getPrefix() + ":");
                                                 }
 
                                                 String attributeValue = attribute.getValue();
-                                                
+
                                                 // Ampersand needs to be the first, otherwise it would double-encode
                                                 // other entities.
                                                 attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -1004,13 +1022,13 @@ class XHTMLProcessor
                                             }
                                         }
 
-                                        writer.write(">");
+                                        CloseTag(eventReader, event, writer);
 
                                         found = true;
                                         break;
                                     }
                                 }
-                                
+
                                 if (found == false)
                                 {
                                     System.out.print("html2epub2: In '" + xhtmlInFile.getAbsolutePath() + "', there was a link found to '" + hrefFile.getAbsolutePath() + "', but there is no corresponding local XHTML file in the prepared EPUB2 files. Comparison is case sensitive.\n");
@@ -1020,29 +1038,29 @@ class XHTMLProcessor
                             else
                             {
                                 href = href.replaceAll("&", "&amp;");
-                            
+
                                 writer.write("<a href=\"" + href + "\"");
-                                
+
                                 // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                                 @SuppressWarnings("unchecked")
                                 Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                                
+
                                 while (attributes.hasNext() == true)
-                                {  
+                                {
                                     Attribute attribute = attributes.next();
                                     QName attributeName = attribute.getName();
 
                                     if (attributeName.getLocalPart().equalsIgnoreCase("href") != true)
                                     {
                                         writer.write(" ");
-                                        
+
                                         if (attributeName.getPrefix().length() > 0)
                                         {
                                             writer.write(attributeName.getPrefix() + ":");
                                         }
 
                                         String attributeValue = attribute.getValue();
-                                        
+
                                         // Ampersand needs to be the first, otherwise it would double-encode
                                         // other entities.
                                         attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -1055,31 +1073,31 @@ class XHTMLProcessor
                                     }
                                 }
 
-                                writer.write(">");
+                                CloseTag(eventReader, event, writer);
                             }
                         }
                         else
                         {
                             writer.write("<" + tagName);
-                            
+
                             // http://coding.derkeiler.com/Archive/Java/comp.lang.java.help/2008-12/msg00090.html
                             @SuppressWarnings("unchecked")
                             Iterator<Attribute> attributes = (Iterator<Attribute>)event.asStartElement().getAttributes();
-                            
+ 
                             while (attributes.hasNext() == true)
-                            {  
+                            {
                                 Attribute attribute = attributes.next();
                                 QName attributeName = attribute.getName();
-                                
+
                                 writer.write(" ");
-                                
+
                                 if (attributeName.getPrefix().length() > 0)
                                 {
                                     writer.write(attributeName.getPrefix() + ":");
                                 }
 
                                 String attributeValue = attribute.getValue();
-                                
+
                                 // Ampersand needs to be the first, otherwise it would double-encode
                                 // other entities.
                                 attributeValue = attributeValue.replaceAll("&", "&amp;");
@@ -1090,15 +1108,21 @@ class XHTMLProcessor
 
                                 writer.write(attributeName.getLocalPart() + "=\"" + attributeValue + "\"");
                             }
-                            
-                            writer.write(">");
+
+                            CloseTag(eventReader, event, writer);
                         }
                     }
                 }
                 else if (event.isEndElement() == true)
                 {
-                    String tagName = event.asEndElement().getName().getLocalPart();
-                
+                    QName elementName = event.asEndElement().getName();
+                    String tagName = elementName.getLocalPart();
+
+                    if (elementName.getPrefix().length() > 0)
+                    {
+                        tagName = elementName.getPrefix() + ":" + tagName;
+                    }
+
                     if (tagName.equalsIgnoreCase("head") == true)
                     {
                         if (head == true)
@@ -1166,11 +1190,11 @@ class XHTMLProcessor
                     }
                 }
             }
-            
+
             writer.write("\n");
             writer.write("  </body>\n");
             writer.write("</html>\n");
-            
+
             writer.flush();
             writer.close();
         }
@@ -1189,8 +1213,57 @@ class XHTMLProcessor
             ex.printStackTrace();
             System.exit(-63);
         }
-    
+
         return true;
+    }
+
+    private void CloseTag(XMLEventReader eventReader, XMLEvent event, BufferedWriter writer)
+      throws XMLStreamException, IOException
+    {
+        QName elementName = event.asStartElement().getName();
+        String tagName = elementName.getLocalPart();
+
+        if (elementName.getPrefix().length() > 0)
+        {
+            tagName = elementName.getPrefix() + ":" + tagName;
+        }
+
+        if (eventReader.hasNext() == true)
+        {
+            XMLEvent peeked = eventReader.peek();
+
+            if (peeked.isEndElement() == true)
+            {
+                QName peekedElementName = peeked.asEndElement().getName();
+                String peekedTagName = peekedElementName.getLocalPart();
+
+                if (peekedElementName.getPrefix().length() > 0)
+                {
+                    peekedTagName = peekedElementName.getPrefix() + ":" + peekedTagName;
+                }
+
+                if (peekedTagName.equals(tagName) == true)
+                {
+                    writer.write(" />");
+                    event = eventReader.nextEvent();
+                }
+                else
+                {
+                    writer.write(">");
+
+                    System.out.println("html2epub2: Misplaced </" + peekedTagName + "> found.");
+                    System.exit(-1);
+                }
+            }
+            else
+            {
+                writer.write(">");
+            }
+        }
+        else
+        {
+            writer.write(">");
+        }
     }
 }
 
@@ -1202,37 +1275,37 @@ class ReferencedFiles
         this.imageFiles = new ArrayList<File>();
         this.cssFiles = new ArrayList<File>();
     }
-    
+
     public boolean AddXHTMLFile(File xhtmlFile)
     {
         return this.xhtmlFiles.add(xhtmlFile);
     }
-    
+
     public boolean AddImageFile(File imageFile)
     {
         return this.imageFiles.add(imageFile);
     }
-    
+
     public boolean AddCSSFile(File cssFile)
     {
         return this.cssFiles.add(cssFile);
     }
-    
+
     public ArrayList<File> GetXHTMLFiles()
     {
         return this.xhtmlFiles;
     }
-    
+
     public ArrayList<File> GetImageFiles()
     {
         return this.imageFiles;
     }
-    
+
     public ArrayList<File> GetCSSFiles()
     {
         return this.cssFiles;
     }
-    
+
     public boolean ContainsXHTMLFile(String absolutePath)
     {
         for (int i = 0; i < this.xhtmlFiles.size(); i++)
@@ -1242,10 +1315,10 @@ class ReferencedFiles
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public boolean ContainsImageFile(String absolutePath)
     {
         for (int i = 0; i < this.imageFiles.size(); i++)
@@ -1255,10 +1328,10 @@ class ReferencedFiles
                 return true;
             }
         }
-        
+
         return false;
     }
-    
+
     public boolean ContainsCSSFile(String absolutePath)
     {
         for (int i = 0; i < this.cssFiles.size(); i++)
@@ -1268,7 +1341,7 @@ class ReferencedFiles
                 return true;
             }
         }
-        
+
         return false;
     }
 
