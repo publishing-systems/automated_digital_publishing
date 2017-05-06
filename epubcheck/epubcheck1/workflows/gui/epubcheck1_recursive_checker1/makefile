@@ -1,4 +1,4 @@
-# Copyright (C) 2015  Stephan Kreutzer
+# Copyright (C) 2015-2017  Stephan Kreutzer
 #
 # This file is part of epubcheck1_recursive_checker1 GUI.
 #
@@ -16,12 +16,16 @@
 
 
 
-.PHONY: all epubcheck1_recursive_checker1 clean
+directories = ./i10n
+
+
+
+.PHONY: all $(directories) epubcheck1_recursive_checker1 clean
 
 
 
 all: epubcheck1_recursive_checker1
-epubcheck1_recursive_checker1: epubcheck1_recursive_checker1.class
+epubcheck1_recursive_checker1: $(directories) epubcheck1_recursive_checker1.class
 
 
 
@@ -36,6 +40,9 @@ SaveJobfileOverrideDialog.class: SaveJobfileOverrideDialog.java
 
 epubcheck1_recursive_checker1.class: epubcheck1_recursive_checker1.java AboutDialog.class AddInputDecideRecursiveDialog.class SaveJobfileOverrideDialog.class
 	javac epubcheck1_recursive_checker1.java
+
+$(directories):
+	$(MAKE) --directory=$@
 
 clean:
 	rm -f epubcheck1_recursive_checker1.class

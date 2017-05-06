@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017  Stephan Kreutzer
  *
  * This file is part of epubcheck1_recursive_checker1 GUI.
  *
@@ -67,7 +67,7 @@ public class epubcheck1_recursive_checker1
 {
     public static void main(String[] args)
     {
-        System.out.print("epubcheck1_recursive_checker1 GUI Copyright (C) 2015 Stephan Kreutzer\n" +
+        System.out.print("epubcheck1_recursive_checker1 GUI Copyright (C) 2015-2017 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -270,15 +270,15 @@ public class epubcheck1_recursive_checker1
             panelTabInfo.add(panelInfo, BorderLayout.PAGE_START);
 
             JPanel panelButtons = new JPanel();
-            
-            this.buttonExit = new JButton(getI10nString("buttonExit"));
-            this.buttonExit.addActionListener(this);
-            panelButtons.add(this.buttonExit);
-            
+
             this.buttonAbout = new JButton(getI10nString("buttonAbout"));
             this.buttonAbout.addActionListener(this);
             panelButtons.add(this.buttonAbout);
-            
+
+            this.buttonExit = new JButton(getI10nString("buttonExit"));
+            this.buttonExit.addActionListener(this);
+            panelButtons.add(this.buttonExit);
+
             /*
             this.buttonApply = new JButton(getI10nString("buttonApply"));
             this.buttonApply.addActionListener(this);
@@ -1275,6 +1275,8 @@ public class epubcheck1_recursive_checker1
             
                 charactersRead = reader.read(buffer, 0, buffer.length);
             }
+
+            reader.close();
         }
         catch (FileNotFoundException ex)
         {

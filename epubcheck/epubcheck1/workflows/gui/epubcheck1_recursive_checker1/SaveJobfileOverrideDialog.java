@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017  Stephan Kreutzer
  *
  * This file is part of epubcheck1_recursive_checker1 GUI.
  *
@@ -77,8 +77,9 @@ class SaveJobfileOverrideDialog extends JDialog
 
         setTitle(getI10nString("dialogCaption"));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        setSize(getI10nInteger("DialogSizeX"), getI10nInteger("DialogSizeY"));
         setLocationRelativeTo(parent);
-        setSize(200, 125);
     }
     
     public void actionPerformed(ActionEvent event)
@@ -116,7 +117,7 @@ class SaveJobfileOverrideDialog extends JDialog
         {
             this.i10nGUI = ResourceBundle.getBundle("i10n.i10nSaveJobfileOverrideDialogGUI", getLocale());
         }
-    
+
         try
         {
             return new String(this.i10nGUI.getString(key).getBytes("ISO-8859-1"), "UTF-8");
@@ -126,8 +127,19 @@ class SaveJobfileOverrideDialog extends JDialog
             return this.i10nGUI.getString(key);
         }
     }
+    
+    public Integer getI10nInteger(String key)
+    {
+        if (this.i10nGUIObjects == null)
+        {
+            this.i10nGUIObjects = ResourceBundle.getBundle("i10n.i10nSaveJobfileOverrideDialogGUIObjects", getLocale());
+        }
+
+        return (Integer)this.i10nGUIObjects.getObject(key);
+    }
 
     private ResourceBundle i10nGUI;
+    private ResourceBundle i10nGUIObjects;
     private boolean override;
     private JButton buttonYes;
     private JButton buttonNo;

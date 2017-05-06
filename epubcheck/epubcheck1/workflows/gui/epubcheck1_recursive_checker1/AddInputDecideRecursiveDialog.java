@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017  Stephan Kreutzer
  *
  * This file is part of epubcheck1_recursive_checker1 GUI.
  *
@@ -77,8 +77,9 @@ class AddInputDecideRecursiveDialog extends JDialog
 
         setTitle(getI10nString("dialogCaption"));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(parent);
+
         setSize(200, 125);
+        setLocationRelativeTo(parent);
     }
     
     public void actionPerformed(ActionEvent event)

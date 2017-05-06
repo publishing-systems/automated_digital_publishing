@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017  Stephan Kreutzer
  *
  * This file is part of epubcheck1_recursive_checker1 workflow.
  *
@@ -54,7 +54,7 @@ public class epubcheck1_recursive_checker1
 {
     public static void main(String args[])
     {
-        System.out.print("epubcheck1_recursive_checker1 workflow Copyright (C) 2015 Stephan Kreutzer\n" +
+        System.out.print("epubcheck1_recursive_checker1 workflow Copyright (C) 2015-2017 Stephan Kreutzer\n" +
                          "This program comes with ABSOLUTELY NO WARRANTY.\n" +
                          "This is free software, and you are welcome to redistribute it\n" +
                          "under certain conditions. See the GNU Affero General Public\n" +
@@ -390,12 +390,14 @@ public class epubcheck1_recursive_checker1
                     String line = scanner.next();
                     writer.write(line + "\n");
                     System.out.println(line);
-                    
-                    if (line.equals(getI10nString("epubcheckNoErrorsNorWarningsMessage")) == true)
+
+                    // line.equals() won't work because some i10ns contain line breaks and others don't,
+                    // and they're handled differently by the scanner.
+                    if (line.startsWith(getI10nString("epubcheckNoErrorsNorWarningsMessage")) == true)
                     {
                         status = "valid";
                     }
-                    else if (line.equals(getI10nString("epubcheckNoErrorsButWarnings")) == true)
+                    else if (line.startsWith(getI10nString("epubcheckNoErrorsButWarnings")) == true)
                     {
                         status = "warning";
                     }

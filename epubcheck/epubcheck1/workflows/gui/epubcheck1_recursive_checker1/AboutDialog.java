@@ -1,4 +1,4 @@
-/* Copyright (C) 2015  Stephan Kreutzer
+/* Copyright (C) 2015-2017  Stephan Kreutzer
  *
  * This file is part of epubcheck1_recursive_checker1 GUI.
  *
@@ -74,7 +74,7 @@ class AboutDialog extends JDialog
         add(Box.createRigidArea(new Dimension(0, 10)));
 
         JLabel notice = new JLabel("<html><head><title>" + getI10nString("noticeHTMLTitleAbout") + " epubcheck1_recursive_checker1</title></head><body>" +
-                                   "epubcheck1_recursive_checker1 GUI  Copyright (C) 2015  Stephan Kreutzer<br/><br/>" +
+                                   "epubcheck1_recursive_checker1 GUI Copyright (C) 2015-2017 Stephan Kreutzer<br/><br/>" +
                                    "This program comes with ABSOLUTELY NO WARRANTY.<br/>" +
                                    "This is free software, and you are welcome to redistribute it<br/>" +
                                    "under certain conditions. See the GNU Affero General Public<br/>" +
@@ -104,8 +104,9 @@ class AboutDialog extends JDialog
 
         setTitle(getI10nString("dialogCaption"));
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(parent);
+
         setSize(520, 435);
+        setLocationRelativeTo(parent);
     }
 
     public Locale getLocale()
